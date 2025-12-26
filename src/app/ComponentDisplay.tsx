@@ -13,6 +13,8 @@ import { categoryRegistry as inputPrimitivesRegistry } from './input-primitives/
 import { categoryRegistry as labeledInputRegistry } from './labeled-input/config';
 import { categoryRegistry as groupRegistry } from './group/config';
 import { categoryRegistry as stateRegistry } from './state/config';
+import { categoryRegistry as dialogsRegistry } from './dialogs/config';
+import { categoryRegistry as fragmentsRegistry } from './fragments/config';
 
 
 // ============================================================================
@@ -23,6 +25,8 @@ const registries: CategoryRegistry[] = [
     labeledInputRegistry,
     groupRegistry,
     stateRegistry,
+    dialogsRegistry,
+    fragmentsRegistry,
 ];
 
 // ============================================================================
@@ -265,7 +269,7 @@ export function ComponentDisplay() {
                     </div>
                 </div>
 
-                <ScrollArea className="flex-1">
+                <ScrollArea className="flex-1 min-h-0">
                     <div className="p-2 space-y-1">
                         {categories.map((category) => {
                             const CategoryIcon = category.icon;

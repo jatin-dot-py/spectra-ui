@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Check, Copy, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { FileCodeView, ContentTab, getFileIconName } from '@/spectra/ui/fragments';
 import type { ExampleItem } from './types';
 
 // ============================================================================
@@ -41,41 +39,42 @@ export function CopyButton({ text, label }: { text: string; label?: string }) {
 // ============================================================================
 export function ExampleCard({ example }: { example: ExampleItem }) {
     return (
-        <div className="rounded-lg border border-border min-w-0">
-            {/* Title */}
-            <div className="px-4 py-3 border-b border-border">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h3 className="text-sm font-medium">{example.title}</h3>
-                        {example.description && (
-                            <p className="text-xs text-muted-foreground mt-0.5">{example.description}</p>
-                        )}
-                    </div>
-                </div>
+        <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+            {/* Title - more prominent */}
+            <div className="px-5 py-4 bg-muted/30">
+                <h3 className="text-base font-semibold">{example.title}</h3>
+                {example.description && (
+                    <p className="text-sm text-muted-foreground mt-1">{example.description}</p>
+                )}
             </div>
 
-            {/* Code */}
-            <div className="border-b border-border overflow-hidden">
-                <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/50">
-                    <span className="text-[10px] font-mono text-muted-foreground uppercase">Code</span>
-                    <CopyButton text={example.code} />
+            {/* Code section */}
+            <div className="border-t border-border">
+                <div className="flex bg-muted/50">
+                    <ContentTab
+                        name="example.tsx"
+                        icon={getFileIconName('example.tsx')}
+                        onClick={() => { }}
+                        isActive={true}
+                    />
                 </div>
-                <ScrollArea className="w-full" type="auto">
-                    <SyntaxHighlighter
-                        language="tsx"
-                        style={vscDarkPlus}
-                        customStyle={{ margin: 0, padding: '1rem', background: '#0d0d0d', fontSize: '12px' }}
-                    >
-                        {example.code}
-                    </SyntaxHighlighter>
-                    <ScrollBar orientation="horizontal" />
-                </ScrollArea>
+                <FileCodeView
+                    filename="example.tsx"
+                    content={example.code}
+                    showLineNumbers={true}
+                    showFooter={false}
+                />
             </div>
 
-            {/* Preview - overflow-visible ensures dropdowns aren't clipped */}
-            <div className="p-6 overflow-visible">
-                <div className="text-[10px] font-mono text-muted-foreground uppercase mb-3">Preview</div>
-                {example.preview}
+            {/* Preview section - clearly separated */}
+            <div className="border-t-2 border-primary/20 bg-background p-6">
+                <div className="flex items-center gap-2 mb-4">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-primary">Preview</span>
+                </div>
+                <div className="overflow-visible">
+                    {example.preview}
+                </div>
             </div>
         </div>
     );
@@ -93,16 +92,20 @@ interface HeaderProps {
 
 export function HeaderSection({ icon: Icon, name, description, markdownText }: HeaderProps) {
     return (
-        <div className="space-y-3 min-w-0">
-            <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Icon className="h-4 w-4 text-primary" />
+        <div className="space-y-4">
+            <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Icon className="h-6 w-6 text-primary" />
                 </div>
-                <h1 className="text-2xl font-bold">{name}</h1>
-                <Badge variant="secondary" className="text-[10px]">Component</Badge>
-                <CopyButton text={markdownText} label="Copy as Markdown" />
+                <div>
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-3xl font-bold">{name}</h1>
+                        <Badge variant="secondary" className="text-xs">Component</Badge>
+                    </div>
+                </div>
             </div>
-            <p className="text-muted-foreground">{description}</p>
+            <p className="text-lg text-muted-foreground">{description}</p>
+            <CopyButton text={markdownText} label="Copy as Markdown" />
         </div>
     );
 }
@@ -116,23 +119,23 @@ interface ImportProps {
 
 export function ImportSection({ importCode }: ImportProps) {
     return (
-        <section className="space-y-3 min-w-0">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Import</h2>
-            <div className="rounded-lg border border-border overflow-hidden">
-                <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/50">
-                    <span className="text-[10px] font-mono text-muted-foreground uppercase">TSX</span>
-                    <CopyButton text={importCode} />
+        <section className="space-y-4">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Import</h2>
+            <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+                <div className="flex bg-muted/50">
+                    <ContentTab
+                        name="import.tsx"
+                        icon={getFileIconName('import.tsx')}
+                        onClick={() => { }}
+                        isActive={true}
+                    />
                 </div>
-                <ScrollArea className="w-full" type="auto">
-                    <SyntaxHighlighter
-                        language="tsx"
-                        style={vscDarkPlus}
-                        customStyle={{ margin: 0, padding: '0.75rem', background: '#0d0d0d', fontSize: '12px' }}
-                    >
-                        {importCode}
-                    </SyntaxHighlighter>
-                    <ScrollBar orientation="horizontal" />
-                </ScrollArea>
+                <FileCodeView
+                    filename="import.tsx"
+                    content={importCode}
+                    showLineNumbers={false}
+                    showFooter={false}
+                />
             </div>
         </section>
     );
