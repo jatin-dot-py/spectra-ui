@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import { Check, Copy } from 'lucide-react';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { getExtensionInfo, getInfoFromMimeType } from '../../../utils/fileExtensions';
 import { CodeContent, MAX_HIGHLIGHT_CHARS } from './parts/CodeContent';
 
@@ -77,8 +76,8 @@ export function FileCodeView({
 
     return (
         <div className="flex flex-col overflow-hidden bg-background">
-            {/* Code Content - scrolls both directions */}
-            <ScrollArea className="flex-1 relative group">
+            {/* Code Content - scrolls both directions with native scrollbars */}
+            <div className="flex-1 overflow-auto relative group">
                 {/* Copy button */}
                 <button
                     onClick={onCopy}
@@ -94,9 +93,7 @@ export function FileCodeView({
                         showLineNumbers={showLineNumbers}
                     />
                 </div>
-                <ScrollBar orientation="vertical" />
-                <ScrollBar orientation="horizontal" />
-            </ScrollArea>
+            </div>
 
             {/* Footer */}
             {showFooter && (

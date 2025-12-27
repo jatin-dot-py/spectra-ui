@@ -1,6 +1,5 @@
 import { useState, useRef, type InputHTMLAttributes } from 'react';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -121,7 +120,7 @@ export function TextInput({
 
             {open && filtered.length > 0 && (
                 <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-popover border border-border rounded-md shadow-md py-1">
-                    <ScrollArea className="max-h-40">
+                    <div className="max-h-40 overflow-auto">
                         {filtered.map((suggestion) => (
                             <button
                                 key={suggestion}
@@ -137,7 +136,7 @@ export function TextInput({
                                 <span className="block truncate">{suggestion}</span>
                             </button>
                         ))}
-                    </ScrollArea>
+                    </div>
                 </div>
             )}
         </div>

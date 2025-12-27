@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { ChevronRight, Layers, Box, Copy, Check } from 'lucide-react';
 
@@ -269,7 +268,7 @@ export function ComponentDisplay() {
                     </div>
                 </div>
 
-                <ScrollArea className="flex-1 min-h-0">
+                <div className="flex-1 min-h-0 overflow-auto">
                     <div className="p-2 space-y-1">
                         {categories.map((category) => {
                             const CategoryIcon = category.icon;
@@ -341,7 +340,7 @@ export function ComponentDisplay() {
                             );
                         })}
                     </div>
-                </ScrollArea>
+                </div>
 
                 <div className="h-10 px-4 flex items-center border-t border-border bg-muted/20">
                     <span className="text-[10px] text-muted-foreground">

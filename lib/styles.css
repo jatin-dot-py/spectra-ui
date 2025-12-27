@@ -1,0 +1,57 @@
+/**
+ * Spectra UI Global Styles
+ * 
+ * Import this in your app's CSS or JS entry point:
+ * 
+ * CSS:   @import 'spectra/styles.css';
+ * JS:    import 'spectra/styles.css';
+ */
+
+/* =============================================================================
+   Scrollbar Theming
+   - Native browser scrollbars with theme support
+   - Responds to .dark class on html/body
+   ============================================================================= */
+
+:root {
+    --spectra-scrollbar-size: 10px;
+    --spectra-scrollbar-track: oklch(0.95 0 0);
+    --spectra-scrollbar-thumb: oklch(0.75 0 0);
+    --spectra-scrollbar-thumb-hover: oklch(0.6 0 0);
+}
+
+.dark {
+    --spectra-scrollbar-track: oklch(0.2 0 0);
+    --spectra-scrollbar-thumb: oklch(0.4 0 0);
+    --spectra-scrollbar-thumb-hover: oklch(0.5 0 0);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--spectra-scrollbar-thumb) var(--spectra-scrollbar-track);
+}
+
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: var(--spectra-scrollbar-size);
+    height: var(--spectra-scrollbar-size);
+}
+
+::-webkit-scrollbar-track {
+    background: var(--spectra-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--spectra-scrollbar-thumb);
+    border-radius: 4px;
+    border: 2px solid var(--spectra-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--spectra-scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--spectra-scrollbar-track);
+}

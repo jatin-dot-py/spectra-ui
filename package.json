@@ -35,7 +35,8 @@
       "types": "./lib/spectra/ui/labeled-input/index.d.ts",
       "import": "./lib/labeled-input.js",
       "require": "./lib/labeled-input.cjs"
-    }
+    },
+    "./styles.css": "./lib/styles.css"
   },
   "scripts": {
     "dev": "vite",

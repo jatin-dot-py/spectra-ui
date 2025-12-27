@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { buildTree } from './parts/buildTree';
 import { TreeItem } from './parts/TreeItem';
 
@@ -65,7 +64,7 @@ export function FileTree({
 
             {/* Tree */}
             <div className="flex-1 min-h-0 overflow-hidden">
-                <ScrollArea className="h-full w-full">
+                <div className="h-full w-full overflow-auto">
                     <div className="py-1 min-w-max">
                         {tree.map(node => (
                             <TreeItem
@@ -81,9 +80,7 @@ export function FileTree({
                             />
                         ))}
                     </div>
-                    <ScrollBar orientation="vertical" />
-                    <ScrollBar orientation="horizontal" />
-                </ScrollArea>
+                </div>
             </div>
         </div>
     );

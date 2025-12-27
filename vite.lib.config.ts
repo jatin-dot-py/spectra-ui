@@ -2,7 +2,7 @@ import path from "path"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
-import { readFileSync } from "fs"
+import { readFileSync, copyFileSync, mkdirSync } from "fs"
 
 // Read peerDependencies from package.json - these get externalized
 const pkg = JSON.parse(readFileSync("./package.json", "utf-8"))
@@ -39,6 +39,14 @@ export default defineConfig({
             tsconfigPath: "./tsconfig.app.json",
             rollupTypes: false, // api-extractor has path issues on Windows
         }),
+        // Copy static CSS file to lib output
+        {
+            name: 'copy-styles',
+            closeBundle() {
+                mkdirSync('lib', { recursive: true })
+                copyFileSync('src/spectra/styles.css', 'lib/styles.css')
+            }
+        },
     ],
     resolve: {
         alias: {
