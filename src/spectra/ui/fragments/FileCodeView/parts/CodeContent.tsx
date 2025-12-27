@@ -9,16 +9,13 @@ interface CodeContentProps {
     content: string;
     language: string;
     showLineNumbers: boolean;
+    wrapLines?: boolean;
 }
 
-export function CodeContent({ content, language, showLineNumbers }: CodeContentProps) {
-    // Check if dark mode by looking at document class
+export function CodeContent({ content, language, showLineNumbers, wrapLines = false }: CodeContentProps) {
     const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
-
-    // Check if content exceeds limit
     const isTooBig = content.length > MAX_HIGHLIGHT_CHARS;
 
-    // Render plain text for large files
     if (isTooBig) {
         return (
             <div
@@ -28,10 +25,58 @@ export function CodeContent({ content, language, showLineNumbers }: CodeContentP
                 <div className="text-muted-foreground text-[10px] uppercase mb-2 pb-2 border-b border-border">
                     Syntax highlighting disabled ({Math.round(content.length / 1000)}KB)
                 </div>
-                <pre className="whitespace-pre-wrap break-words text-foreground">
+                <pre className={wrapLines ? "whitespace-pre-wrap break-all overflow-x-hidden" : "whitespace-pre"}>
                     {content}
                 </pre>
             </div>
+        );
+    }
+
+    if (wrapLines) {
+        return (
+            <SyntaxHighlighter
+                language={language}
+                style={isDark ? oneDark : oneLight}
+                showLineNumbers={showLineNumbers}
+                wrapLines
+                wrapLongLines
+                lineProps={{
+                    style: {
+                        display: 'block',
+                        width: '100%',
+                    }
+                }}
+                customStyle={{
+                    margin: 0,
+                    padding: '12px',
+                    background: 'hsl(var(--muted))',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-all',
+                    overflowWrap: 'break-word',
+                }}
+                codeTagProps={{
+                    className: 'text-xs font-mono',
+                    style: {
+                        display: 'block',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-all',
+                    }
+                }}
+                lineNumberStyle={{
+                    minWidth: '2.5em',
+                    paddingRight: '1em',
+                    color: 'hsl(var(--muted-foreground))',
+                    userSelect: 'none',
+                    display: 'inline-block',
+                    textAlign: 'right',
+                }}
+                lineNumberContainerStyle={{
+                    float: 'left',
+                    paddingRight: '10px',
+                }}
+            >
+                {content}
+            </SyntaxHighlighter>
         );
     }
 

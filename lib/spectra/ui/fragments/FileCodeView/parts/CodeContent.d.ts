@@ -3,6 +3,7 @@ interface CodeContentProps {
     content: string;
     language: string;
     showLineNumbers: boolean;
+    wrapLines?: boolean;
 }
-export declare function CodeContent({ content, language, showLineNumbers }: CodeContentProps): import("react/jsx-runtime").JSX.Element;
+export declare function CodeContent({ content, language, showLineNumbers, wrapLines }: CodeContentProps): import("react/jsx-runtime").JSX.Element;
 export {};

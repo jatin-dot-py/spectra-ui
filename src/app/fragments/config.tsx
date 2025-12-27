@@ -174,11 +174,11 @@ function ContentTabLongNamesPreview() {
 // Preview Components - FileCodeView
 // ============================================================================
 
-const SAMPLE_CODE = `import { useState } from 'react';
+// Example: React component
+const REACT_COMPONENT = `import { useState } from 'react';
 
 export function Counter() {
     const [count, setCount] = useState(0);
-
     return (
         <button onClick={() => setCount(c => c + 1)}>
             Count: {count}
@@ -186,53 +186,97 @@ export function Counter() {
     );
 }`;
 
-function FileCodeViewDefaultPreview() {
+// Example: Long file with many lines (for scroll testing)
+const LONG_FILE = Array.from({ length: 25 }, (_, i) =>
+    `const value${i + 1} = ${i + 1};`
+).join('\n');
+
+// Example: Wide line (for horizontal scroll testing)
+const WIDE_LINE = `export const API_CONFIG = { baseUrl: "https://api.example.com/v1", timeout: 30000, headers: { "Authorization": "Bearer token", "Content-Type": "application/json" } }; export const API_CONFIG = { baseUrl: "https://api.example.com/v1", timeout: 30000, headers: { "Authorization": "Bearer token", "Content-Type": "application/json" } }; export const API_CONFIG = { baseUrl: "https://api.example.com/v1", timeout: 30000, headers: { "Authorization": "Bearer token", "Content-Type": "application/json" } };`;
+
+// Example: JSON response
+const JSON_RESPONSE = `{"status":"success","data":{"id":1,"name":"John Doe","email":"john@example.com"}}`;
+
+function FileCodeViewBasicPreview() {
     return (
-        <div className="border border-border rounded-lg overflow-hidden">
-            <FileCodeView
-                filename="src/Counter.tsx"
-                content={SAMPLE_CODE}
-                showLineNumbers={true}
-            />
-        </div>
+        <FileCodeView
+            filename="Counter.tsx"
+            content={REACT_COMPONENT}
+        />
+    );
+}
+
+function FileCodeViewNoLineNumbersPreview() {
+    return (
+        <FileCodeView
+            filename="greeting.ts"
+            content={`const greeting = "Hello, World!";
+console.log(greeting);`}
+            showLineNumbers={false}
+        />
     );
 }
 
 function FileCodeViewNoFooterPreview() {
     return (
-        <div className="border border-border rounded-lg overflow-hidden">
-            <FileCodeView
-                filename="example.ts"
-                content={`const greeting = "Hello, World!";`}
-                showLineNumbers={false}
-                showFooter={false}
-            />
-        </div>
+        <FileCodeView
+            filename="snippet.js"
+            content={`function add(a, b) { return a + b; }`}
+            showFooter={false}
+        />
     );
 }
 
-function FileCodeViewLongTextPreview() {
+function FileCodeViewCustomFooterPreview() {
     return (
-        <div className="w-64 border border-border rounded-lg overflow-hidden">
-            <FileCodeView
-                filename="src/components/ui/very-long-component-name.tsx"
-                content={`export function VeryLongComponentName() { return null; }`}
-                showLineNumbers={false}
-            />
-        </div>
+        <FileCodeView
+            filename="api/users.ts"
+            content={`export async function getUsers() {
+    return fetch('/api/users').then(r => r.json());
+}`}
+            footer={{ left: 'Modified 2 days ago', right: 'API' }}
+        />
     );
 }
-
-// Minified JSON that will be auto-prettified
-const MINIFIED_JSON = `{"name":"my-app","version":"1.0.0","dependencies":{"react":"^18.2.0","next":"^14.0.0"}}`;
 
 function FileCodeViewJsonPreview() {
     return (
-        <div className="border border-border rounded-lg overflow-hidden">
+        <FileCodeView
+            filename="response.json"
+            content={JSON_RESPONSE}
+        />
+    );
+}
+
+function FileCodeViewMaxHeightPreview() {
+    return (
+        <div style={{ height: '180px' }}>
             <FileCodeView
-                filename="response"
-                content={MINIFIED_JSON}
-                showLineNumbers={true}
+                filename="constants.ts"
+                content={LONG_FILE}
+                maxHeight="180px"
+            />
+        </div>
+    );
+}
+
+function FileCodeViewWrapLinesPreview() {
+    return (
+        <FileCodeView
+            filename="config.ts"
+            content={WIDE_LINE}
+            wrapLines={true}
+        />
+    );
+}
+
+function FileCodeViewHorizontalScrollPreview() {
+    return (
+        <div style={{ width: '350px' }}>
+            <FileCodeView
+                filename="config.ts"
+                content={WIDE_LINE}
+                wrapLines={false}
             />
         </div>
     );
@@ -406,67 +450,87 @@ const CONTENT_TAB_CONFIG: ComponentConfig = {
 const FILE_CODE_VIEW_CONFIG: ComponentConfig = {
     id: 'file-code-view',
     name: 'FileCodeView',
-    description: 'Syntax-highlighted code content with optional footer.',
+    description: 'Syntax-highlighted code viewer with auto language detection, JSON prettification, and scrolling.',
     icon: Code,
     importPath: '@/spectra/ui/fragments',
     examples: [
         {
-            title: 'Default',
-            description: 'Code view with line numbers and auto-generated footer',
-            code: `const SAMPLE_CODE = \`import { useState } from 'react';
-
-export function Counter() {
-    const [count, setCount] = useState(0);
-
-    return (
-        <button onClick={() => setCount(c => c + 1)}>
-            Count: {count}
-        </button>
-    );
-}\`;
-
-<FileCodeView
-    filename="src/Counter.tsx"
-    content={SAMPLE_CODE}
-    showLineNumbers={true}
+            title: 'Basic Usage',
+            description: 'Display code with auto-detected language and footer',
+            code: `<FileCodeView
+    filename="Counter.tsx"
+    content={code}
 />`,
-            preview: <FileCodeViewDefaultPreview />,
+            preview: <FileCodeViewBasicPreview />,
         },
         {
-            title: 'No Footer',
-            description: 'Code view with footer hidden using showFooter={false}',
+            title: 'Without Line Numbers',
+            description: 'Hide line numbers for cleaner snippets',
             code: `<FileCodeView
-    filename="example.ts"
-    content={\`const greeting = "Hello, World!";\`}
+    filename="greeting.ts"
+    content={code}
     showLineNumbers={false}
+/>`,
+            preview: <FileCodeViewNoLineNumbersPreview />,
+        },
+        {
+            title: 'Without Footer',
+            description: 'Hide footer for embedded code blocks',
+            code: `<FileCodeView
+    filename="snippet.js"
+    content={code}
     showFooter={false}
 />`,
             preview: <FileCodeViewNoFooterPreview />,
         },
         {
-            title: 'Long File Path',
-            description: 'Footer left text truncates with tooltip on hover',
-            code: `<div className="w-64">
-    <FileCodeView
-        filename="src/components/ui/very-long-component-name.tsx"
-        content={\`export function VeryLongComponentName() { return null; }\`}
-        showLineNumbers={false}
-    />
-</div>`,
-            preview: <FileCodeViewLongTextPreview />,
+            title: 'Custom Footer',
+            description: 'Override footer text with custom values',
+            code: `<FileCodeView
+    filename="api/users.ts"
+    content={code}
+    footer={{ left: 'Modified 2 days ago', right: 'API' }}
+/>`,
+            preview: <FileCodeViewCustomFooterPreview />,
         },
         {
-            title: 'Auto JSON Prettify',
-            description: 'Minified JSON is auto-detected and prettified',
-            code: `// Minified JSON input
-const json = '{"name":"my-app","version":"1.0.0"}';
-
-<FileCodeView
-    filename="response"
-    content={json}
-    showLineNumbers={true}
+            title: 'JSON Auto-Prettify',
+            description: 'Minified JSON is automatically formatted',
+            code: `<FileCodeView
+    filename="response.json"
+    content='{"status":"success","data":{"id":1}}'
 />`,
             preview: <FileCodeViewJsonPreview />,
+        },
+        {
+            title: 'Max Height (Vertical Scroll)',
+            description: 'Constrain height for long files',
+            code: `<FileCodeView
+    filename="constants.ts"
+    content={longCode}
+    maxHeight="180px"
+/>`,
+            preview: <FileCodeViewMaxHeightPreview />,
+        },
+        {
+            title: 'Wrap Long Lines',
+            description: 'Wrap at container boundary instead of scrolling',
+            code: `<FileCodeView
+    filename="config.ts"
+    content={wideCode}
+    wrapLines={true}
+/>`,
+            preview: <FileCodeViewWrapLinesPreview />,
+        },
+        {
+            title: 'Horizontal Scroll',
+            description: 'Default behavior for wide content',
+            code: `<FileCodeView
+    filename="config.ts"
+    content={wideCode}
+    wrapLines={false}
+/>`,
+            preview: <FileCodeViewHorizontalScrollPreview />,
         },
     ],
 };
