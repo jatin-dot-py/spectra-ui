@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
+import { type GroupSize, sizeConfig } from './sizeConfig';
 
 export interface GroupItemProps {
     /** Group item title */
@@ -24,6 +25,8 @@ export interface GroupItemProps {
     badgeText?: string;
     /** If true, action icon is always visible (not just on hover) */
     alwaysShowAction?: boolean;
+    /** Size variant */
+    size?: GroupSize;
 }
 
 export function GroupItem({
@@ -37,8 +40,10 @@ export function GroupItem({
     onActionIconClick,
     badgeText,
     alwaysShowAction = false,
+    size = 'sm',
 }: GroupItemProps) {
     const [expanded, setExpanded] = useState(defaultExpanded);
+    const s = sizeConfig[size];
 
     // When not collapsible, always show content
     const isExpanded = collapsible ? expanded : true;
@@ -65,26 +70,29 @@ export function GroupItem({
                 onClick={handleToggle}
                 onKeyDown={handleKeyDown}
                 className={cn(
-                    'w-full flex items-center justify-between py-1.5 text-xs font-medium text-muted-foreground transition-colors group uppercase tracking-wider select-none',
+                    'w-full flex items-center justify-between font-medium text-muted-foreground transition-colors group  tracking-wider select-none',
+                    s.headerPy,
+                    s.text,
                     collapsible && 'hover:text-foreground cursor-pointer'
                 )}
             >
-                <div className="flex items-center gap-1.5">
+                <div className={cn('flex items-center', s.gap)}>
                     {/* Chevron - always shown, but disabled look when not collapsible */}
                     <ChevronDown
                         className={cn(
-                            'h-3 w-3 transition-transform',
+                            'transition-transform',
+                            s.iconSm,
                             !isExpanded && '-rotate-90',
                             !collapsible && 'opacity-30'
                         )}
                     />
                     {/* Optional Icon */}
-                    {Icon && <Icon className="h-3.5 w-3.5" />}
+                    {Icon && <Icon className={s.icon} />}
                     {/* Title */}
                     <span>{title}</span>
                     {/* Badge */}
                     {badgeText && (
-                        <span className="text-[10px] font-normal normal-case px-1.5 py-0.5 rounded-sm bg-muted text-muted-foreground/70">
+                        <span className={cn('font-normal normal-case rounded-sm bg-muted text-muted-foreground/70', s.badgeText, s.badgePx, s.badgePy)}>
                             {badgeText}
                         </span>
                     )}
@@ -103,14 +111,14 @@ export function GroupItem({
                             alwaysShowAction ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                         )}
                     >
-                        <ActionIcon className="h-3.5 w-3.5" />
+                        <ActionIcon className={s.icon} />
                     </button>
                 )}
             </div>
 
             {/* Content */}
             {isExpanded && (
-                <div className={cn('pb-3 pt-1', indentChildren && 'pl-4')}>
+                <div className={cn(s.contentPb, s.contentPt, indentChildren && s.indent)}>
                     {children}
                 </div>
             )}

@@ -1,4 +1,5 @@
 import { SpectraIconType } from '../../types';
+import { StateSize } from './sizeConfig';
 export interface ErrorProps {
     /** Custom icon (defaults to AlertCircle) */
     icon?: SpectraIconType;
@@ -10,5 +11,7 @@ export interface ErrorProps {
     onAction: () => void;
     /** Optional external help link */
     learnMoreUrl?: string;
+    /** Size variant */
+    size?: StateSize;
 }
-export declare function Error({ icon: Icon, title, actionLabel, onAction, learnMoreUrl, }: ErrorProps): import("react/jsx-runtime").JSX.Element;
+export declare function Error({ icon: Icon, title, actionLabel, onAction, learnMoreUrl, size, }: ErrorProps): import("react/jsx-runtime").JSX.Element;

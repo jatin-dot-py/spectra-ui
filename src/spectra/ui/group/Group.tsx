@@ -1,20 +1,25 @@
 import { type ReactNode, Children, isValidElement } from 'react';
+import { cn } from '@/lib/utils';
 import { GroupItem, type GroupItemProps } from './GroupItem';
+import { type GroupSize, sizeConfig } from './sizeConfig';
 
 export interface GroupProps {
     /** Group content - should be GroupItem components */
     children: ReactNode;
     /** Optional description text for the group */
     description?: string;
+    /** Size variant */
+    size?: GroupSize;
 }
 
-export function Group({ children, description }: GroupProps) {
+export function Group({ children, description, size = 'sm' }: GroupProps) {
     const childArray = Children.toArray(children).filter(isValidElement);
+    const s = sizeConfig[size];
 
     return (
         <div className="space-y-1">
             {description && (
-                <div className="text-xs text-muted-foreground mb-2 px-1">
+                <div className={cn("text-muted-foreground mb-2 px-1", s.text)}>
                     {description}
                 </div>
             )}
@@ -58,11 +63,13 @@ export interface GroupConfigProps {
     items: GroupItemConfig[];
     /** Optional description text for the group */
     description?: string;
+    /** Size variant */
+    size?: GroupSize;
 }
 
-export function GroupConfig({ items, description }: GroupConfigProps) {
+export function GroupConfig({ items, description, size = 'sm' }: GroupConfigProps) {
     return (
-        <Group description={description}>
+        <Group description={description} size={size}>
             {items.map((item, index) => (
                 <GroupItem
                     key={item.title + index}
@@ -74,6 +81,7 @@ export function GroupConfig({ items, description }: GroupConfigProps) {
                     actionIcon={item.actionIcon}
                     onActionIconClick={item.onActionIconClick}
                     badgeText={item.badgeText}
+                    size={size}
                 >
                     {item.children}
                 </GroupItem>

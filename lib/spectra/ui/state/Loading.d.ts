@@ -1,3 +1,4 @@
+import { StateSize } from './sizeConfig';
 export interface LoadingProps {
     /** Loading variant type */
     variant?: 'spinner' | 'input' | 'text' | 'card' | 'custom';
@@ -7,5 +8,7 @@ export interface LoadingProps {
     title?: string;
     /** Custom className for sizing (primarily for 'custom' variant) */
     className?: string;
+    /** Size variant */
+    size?: StateSize;
 }
-export declare function Loading({ variant, lines, title, className, }: LoadingProps): import("react/jsx-runtime").JSX.Element;
+export declare function Loading({ variant, lines, title, className, size, }: LoadingProps): import("react/jsx-runtime").JSX.Element;

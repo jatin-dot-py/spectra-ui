@@ -1,12 +1,12 @@
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { AsyncIconLoader } from '@/spectra/ui/input-primitives/parts/icons';
+import { type SpectraIconType } from '@/spectra/types';
 
 export interface ContentTabProps {
     /** Tab display name */
     name: string;
-    /** Tab icon - lazy icon name string */
-    icon: string;
+    /** Tab icon */
+    icon?: SpectraIconType;
     /** Click handler when tab is clicked */
     onClick: () => void;
     /** Whether this tab is currently active */
@@ -17,7 +17,7 @@ export interface ContentTabProps {
 
 export function ContentTab({
     name,
-    icon,
+    icon: Icon,
     onClick,
     isActive = false,
     onClose,
@@ -33,12 +33,9 @@ export function ContentTab({
                     : 'bg-muted/30 text-muted-foreground hover:bg-muted/50'
             )}
         >
-            <AsyncIconLoader
-                name={icon}
-                size={14}
-                className="text-muted-foreground flex-shrink-0"
-                showSpinner={false}
-            />
+            {Icon && (
+                <Icon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+            )}
 
             <span className="max-w-32 truncate">{name}</span>
 

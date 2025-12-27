@@ -1,11 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Check, Copy, FileText } from 'lucide-react';
+import { Check, Copy, FileText, FileCode2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileCodeView, ContentTab } from '@/spectra/ui/fragments';
-import { getFileIconName } from '@/spectra/utils/fileExtensions';
 import type { ExampleItem } from './types';
 
 // ============================================================================
@@ -54,7 +53,7 @@ export function ExampleCard({ example }: { example: ExampleItem }) {
                 <div className="flex bg-muted/50">
                     <ContentTab
                         name="example.tsx"
-                        icon={getFileIconName('example.tsx')}
+                        icon={FileCode2}
                         onClick={() => { }}
                         isActive={true}
                     />
@@ -126,7 +125,7 @@ export function ImportSection({ importCode }: ImportProps) {
                 <div className="flex bg-muted/50">
                     <ContentTab
                         name="import.tsx"
-                        icon={getFileIconName('import.tsx')}
+                        icon={FileCode2}
                         onClick={() => { }}
                         isActive={true}
                     />

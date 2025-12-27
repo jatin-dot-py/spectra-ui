@@ -1,0 +1,51 @@
+export type StateSize = 'sm' | 'md' | 'lg';
+export declare const sizeConfig: {
+    readonly sm: {
+        readonly padding: "p-3";
+        readonly gap: "gap-1.5";
+        readonly iconContainer: "h-8 w-8";
+        readonly icon: "h-4 w-4";
+        readonly text: "text-xs";
+        readonly titleText: "text-sm";
+        readonly linkText: "text-[10px]";
+        readonly linkIcon: "h-2.5 w-2.5";
+        readonly buttonMargin: "mt-0.5";
+        readonly skeletonGap: "gap-2";
+        readonly avatarSize: "h-8 w-8";
+        readonly lineHeight: "h-3";
+        readonly inputHeight: "h-6";
+        readonly labelWidth: "w-16";
+    };
+    readonly md: {
+        readonly padding: "p-4";
+        readonly gap: "gap-2";
+        readonly iconContainer: "h-10 w-10";
+        readonly icon: "h-5 w-5";
+        readonly text: "text-sm";
+        readonly titleText: "text-sm";
+        readonly linkText: "text-xs";
+        readonly linkIcon: "h-3 w-3";
+        readonly buttonMargin: "mt-1";
+        readonly skeletonGap: "gap-3";
+        readonly avatarSize: "h-10 w-10";
+        readonly lineHeight: "h-4";
+        readonly inputHeight: "h-8";
+        readonly labelWidth: "w-20";
+    };
+    readonly lg: {
+        readonly padding: "p-5";
+        readonly gap: "gap-2.5";
+        readonly iconContainer: "h-12 w-12";
+        readonly icon: "h-6 w-6";
+        readonly text: "text-base";
+        readonly titleText: "text-base";
+        readonly linkText: "text-sm";
+        readonly linkIcon: "h-3.5 w-3.5";
+        readonly buttonMargin: "mt-2";
+        readonly skeletonGap: "gap-4";
+        readonly avatarSize: "h-12 w-12";
+        readonly lineHeight: "h-5";
+        readonly inputHeight: "h-10";
+        readonly labelWidth: "w-24";
+    };
+};

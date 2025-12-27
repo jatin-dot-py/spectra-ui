@@ -1,6 +1,8 @@
 import { AlertCircle, ExternalLink } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
 import { Button } from '@/components/ui/button';
+import { type StateSize, sizeConfig } from './sizeConfig';
 
 export interface ErrorProps {
     /** Custom icon (defaults to AlertCircle) */
@@ -13,6 +15,8 @@ export interface ErrorProps {
     onAction: () => void;
     /** Optional external help link */
     learnMoreUrl?: string;
+    /** Size variant */
+    size?: StateSize;
 }
 
 export function Error({
@@ -21,18 +25,21 @@ export function Error({
     actionLabel,
     onAction,
     learnMoreUrl,
+    size = 'md',
 }: ErrorProps) {
+    const s = sizeConfig[size];
+
     return (
-        <div className="flex flex-col items-center justify-center gap-3 p-6 text-center">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10">
-                <Icon className="h-5 w-5 text-destructive" />
+        <div className={cn('flex flex-col items-center justify-center text-center', s.padding, s.gap)}>
+            <div className={cn('flex items-center justify-center rounded-full bg-destructive/10', s.iconContainer)}>
+                <Icon className={cn('text-destructive', s.icon)} />
             </div>
-            <p className="text-sm font-medium text-foreground">{title}</p>
+            <p className={cn('font-medium text-foreground', s.titleText)}>{title}</p>
             <Button
                 variant="default"
-                size="sm"
+                size={size === 'lg' ? 'default' : 'sm'}
                 onClick={onAction}
-                className="mt-1"
+                className={s.buttonMargin}
             >
                 {actionLabel}
             </Button>
@@ -41,9 +48,9 @@ export function Error({
                     href={learnMoreUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    className={cn('inline-flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors', s.linkText)}
                 >
-                    Learn more <ExternalLink className="h-3 w-3" />
+                    Learn more <ExternalLink className={s.linkIcon} />
                 </a>
             )}
         </div>

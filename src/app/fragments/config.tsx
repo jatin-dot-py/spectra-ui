@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { FolderTree, Columns, Code, FileX2 } from 'lucide-react';
+import { FolderTree, Columns, Code, FileX2, TableProperties, Globe, Bookmark, FileCode2, FileType2 } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
-import { FileTree, ContentTab, FileCodeView } from '@/spectra/ui/fragments';
+import { FileTree, ContentTab, FileCodeView, KeyValuePairTable, HttpRequestMetadata } from '@/spectra/ui/fragments';
 import { NoContent } from '@/spectra/ui/state';
 
 // ============================================================================
@@ -117,21 +117,21 @@ function ContentTabDefaultPreview() {
         <div className="flex border border-border rounded-lg overflow-hidden">
             <ContentTab
                 name="page.tsx"
-                icon="react-icons/si:SiTypescript"
+                icon={FileCode2}
                 onClick={() => setActive('page.tsx')}
                 isActive={active === 'page.tsx'}
                 onClose={() => { }}
             />
             <ContentTab
                 name="utils.ts"
-                icon="react-icons/si:SiTypescript"
+                icon={FileCode2}
                 onClick={() => setActive('utils.ts')}
                 isActive={active === 'utils.ts'}
                 onClose={() => { }}
             />
             <ContentTab
                 name="styles.css"
-                icon="react-icons/si:SiCss3"
+                icon={FileType2}
                 onClick={() => setActive('styles.css')}
                 isActive={active === 'styles.css'}
             />
@@ -147,21 +147,21 @@ function ContentTabLongNamesPreview() {
             <div className="flex overflow-x-auto">
                 <ContentTab
                     name="MyVeryLongComponentName.tsx"
-                    icon="react-icons/si:SiTypescript"
+                    icon={FileCode2}
                     onClick={() => setActive('MyVeryLongComponentName.tsx')}
                     isActive={active === 'MyVeryLongComponentName.tsx'}
                     onClose={() => { }}
                 />
                 <ContentTab
                     name="AnotherLongFilename.test.tsx"
-                    icon="react-icons/si:SiTypescript"
+                    icon={FileCode2}
                     onClick={() => setActive('AnotherLongFilename.test.tsx')}
                     isActive={active === 'AnotherLongFilename.test.tsx'}
                     onClose={() => { }}
                 />
                 <ContentTab
                     name="utils.ts"
-                    icon="react-icons/si:SiTypescript"
+                    icon={FileCode2}
                     onClick={() => setActive('utils.ts')}
                     isActive={active === 'utils.ts'}
                     onClose={() => { }}
@@ -402,7 +402,7 @@ const FILE_TREE_CONFIG: ComponentConfig = {
 const CONTENT_TAB_CONFIG: ComponentConfig = {
     id: 'content-tab',
     name: 'ContentTab',
-    description: 'Single tab with lazy icon, active state, and optional close button.',
+    description: 'Single tab with icon, active state, and optional close button.',
     icon: Columns,
     importPath: '@/spectra/ui/fragments',
     examples: [
@@ -413,21 +413,21 @@ const CONTENT_TAB_CONFIG: ComponentConfig = {
 
 <ContentTab
     name="page.tsx"
-    icon="react-icons/si:SiTypescript"
+    icon={FileCode2}
     onClick={() => setActive('page.tsx')}
     isActive={active === 'page.tsx'}
     onClose={() => {}}
 />
 <ContentTab
     name="utils.ts"
-    icon="react-icons/si:SiTypescript"
+    icon={FileCode2}
     onClick={() => setActive('utils.ts')}
     isActive={active === 'utils.ts'}
     onClose={() => {}}
 />
 <ContentTab
     name="styles.css"
-    icon="react-icons/si:SiCss3"
+    icon={FileType2}
     onClick={() => setActive('styles.css')}
     isActive={active === 'styles.css'}
 />`,
@@ -442,14 +442,14 @@ const CONTENT_TAB_CONFIG: ComponentConfig = {
     <div className="flex overflow-x-auto">
         <ContentTab
             name="MyVeryLongComponentName.tsx"
-            icon="react-icons/si:SiTypescript"
+            icon={FileCode2}
             onClick={() => setActive('MyVeryLongComponentName.tsx')}
             isActive={active === 'MyVeryLongComponentName.tsx'}
             onClose={() => {}}
         />
         <ContentTab
             name="AnotherLongFilename.test.tsx"
-            icon="react-icons/si:SiTypescript"
+            icon={FileCode2}
             onClick={() => setActive('AnotherLongFilename.test.tsx')}
             isActive={active === 'AnotherLongFilename.test.tsx'}
             onClose={() => {}}
@@ -562,11 +562,206 @@ const FILE_CODE_VIEW_CONFIG: ComponentConfig = {
 };
 
 // ============================================================================
+// Preview Components - KeyValuePairTable
+// ============================================================================
+
+const SAMPLE_ENV_VARS = {
+    'NODE_ENV': 'production',
+    'API_URL': 'https://api.example.com/v1',
+    'DATABASE_URL': 'postgresql://user:pass@localhost:5432/mydb',
+    'SECRET_KEY': 'sk_live_xxxxxxxxxxxxxxxxxxxxx',
+};
+
+const SAMPLE_HEADERS = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
+    'X-Request-ID': 'req_abc123xyz',
+    'Cache-Control': 'no-cache',
+};
+
+function KeyValuePairTableDefaultPreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <KeyValuePairTable data={SAMPLE_ENV_VARS} />
+        </div>
+    );
+}
+
+function KeyValuePairTableWithCopyPreview() {
+    return (
+        <div style={{ width: '450px' }}>
+            <KeyValuePairTable
+                data={SAMPLE_HEADERS}
+                showCopy={true}
+                showCopyJson={true}
+            />
+        </div>
+    );
+}
+
+function KeyValuePairTableCustomLabelsPreview() {
+    return (
+        <div style={{ width: '450px' }}>
+            <KeyValuePairTable
+                data={SAMPLE_ENV_VARS}
+                keyLabel="Variable"
+                valueLabel="Value"
+                showCopy={true}
+                showCopyJson={true}
+            />
+        </div>
+    );
+}
+
+const KEY_VALUE_PAIR_TABLE_CONFIG: ComponentConfig = {
+    id: 'key-value-pair-table',
+    name: 'KeyValuePairTable',
+    description: 'Table for displaying key-value pairs with expandable rows and copy functionality.',
+    icon: TableProperties,
+    importPath: '@/spectra/ui/fragments',
+    examples: [
+        {
+            title: 'Basic Usage',
+            description: 'Simple key-value table, click rows to expand',
+            code: `<KeyValuePairTable
+    data={{
+        'NODE_ENV': 'production',
+        'API_URL': 'https://api.example.com/v1',
+    }}
+/>`,
+            preview: <KeyValuePairTableDefaultPreview />,
+        },
+        {
+            title: 'With Copy Buttons',
+            description: 'Copy icons integrated in the table header',
+            code: `<KeyValuePairTable
+    data={headers}
+    showCopy={true}
+    showCopyJson={true}
+/>`,
+            preview: <KeyValuePairTableWithCopyPreview />,
+        },
+        {
+            title: 'Custom Labels',
+            description: 'Override default column headers',
+            code: `<KeyValuePairTable
+    data={envVars}
+    keyLabel="Variable"
+    valueLabel="Value"
+    showCopy={true}
+    showCopyJson={true}
+/>`,
+            preview: <KeyValuePairTableCustomLabelsPreview />,
+        },
+    ],
+};
+
+// ============================================================================
+// Preview Components - HttpRequestMetadata
+// ============================================================================
+
+function HttpRequestMetadataDefaultPreview() {
+    return (
+        <div style={{ width: '450px' }}>
+            <HttpRequestMetadata
+                method="GET"
+                url="https://api.example.com/v1/users/123"
+                status={200}
+                statusText="OK"
+                mimeType="application/json"
+                showActionButton={true}
+                actionButtonText="Save"
+                actionButtonIcon={Bookmark}
+                onActionButtonClick={() => { }}
+            />
+        </div>
+    );
+}
+
+function HttpRequestMetadataErrorPreview() {
+    return (
+        <div style={{ width: '450px' }}>
+            <HttpRequestMetadata
+                method="POST"
+                url="https://api.example.com/v1/auth/login"
+                status={401}
+                statusText="Unauthorized"
+                mimeType="application/json"
+            />
+        </div>
+    );
+}
+
+function HttpRequestMetadataDataUrlPreview() {
+    return (
+        <div style={{ width: '450px' }}>
+            <HttpRequestMetadata
+                method="GET"
+                url="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+                status={200}
+                statusText="OK"
+                mimeType="image/png"
+            />
+        </div>
+    );
+}
+
+const HTTP_REQUEST_METADATA_CONFIG: ComponentConfig = {
+    id: 'http-request-metadata',
+    name: 'HttpRequestMetadata',
+    description: 'Displays HTTP request details with status badges and smart URL formatting.',
+    icon: Globe,
+    importPath: '@/spectra/ui/fragments',
+    examples: [
+        {
+            title: 'Basic Usage',
+            description: 'Standard GET request with success status',
+            code: `<HttpRequestMetadata
+    method="GET"
+    url="https://api.example.com/v1/users/123"
+    status={200}
+    statusText="OK"
+    mimeType="application/json"
+    showActionButton={true}
+    actionButtonText="Save"
+    actionButtonIcon={Bookmark}
+    onActionButtonClick={() => {}}
+/>`,
+            preview: <HttpRequestMetadataDefaultPreview />,
+        },
+        {
+            title: 'Error State',
+            description: 'Failed request with 4xx status',
+            code: `<HttpRequestMetadata
+    method="POST"
+    url="https://api.example.com/v1/auth/login"
+    status={401}
+    statusText="Unauthorized"
+    mimeType="application/json"
+/>`,
+            preview: <HttpRequestMetadataErrorPreview />,
+        },
+        {
+            title: 'Data URL',
+            description: 'Smart formatting for data URLs',
+            code: `<HttpRequestMetadata
+    method="GET"
+    url="data:image/png;base64,..."
+    status={200}
+    statusText="OK"
+    mimeType="image/png"
+/>`,
+            preview: <HttpRequestMetadataDataUrlPreview />,
+        },
+    ],
+};
+
+// ============================================================================
 // Category Registry Export
 // ============================================================================
 export const categoryRegistry: CategoryRegistry = {
     id: 'fragments',
     name: 'Fragments',
     icon: FolderTree,
-    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG],
+    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG],
 };

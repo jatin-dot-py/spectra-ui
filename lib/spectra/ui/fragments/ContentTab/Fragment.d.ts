@@ -1,8 +1,9 @@
+import { SpectraIconType } from '../../../types';
 export interface ContentTabProps {
     /** Tab display name */
     name: string;
-    /** Tab icon - lazy icon name string */
-    icon: string;
+    /** Tab icon */
+    icon?: SpectraIconType;
     /** Click handler when tab is clicked */
     onClick: () => void;
     /** Whether this tab is currently active */
@@ -10,4 +11,4 @@ export interface ContentTabProps {
     /** Optional close button handler */
     onClose?: () => void;
 }
-export declare function ContentTab({ name, icon, onClick, isActive, onClose, }: ContentTabProps): import("react/jsx-runtime").JSX.Element;
+export declare function ContentTab({ name, icon: Icon, onClick, isActive, onClose, }: ContentTabProps): import("react/jsx-runtime").JSX.Element;

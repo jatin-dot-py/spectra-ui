@@ -1,12 +1,15 @@
 import { ReactNode } from 'react';
 import { GroupItemProps } from './GroupItem';
+import { GroupSize } from './sizeConfig';
 export interface GroupProps {
     /** Group content - should be GroupItem components */
     children: ReactNode;
     /** Optional description text for the group */
     description?: string;
+    /** Size variant */
+    size?: GroupSize;
 }
-export declare function Group({ children, description }: GroupProps): import("react/jsx-runtime").JSX.Element;
+export declare function Group({ children, description, size }: GroupProps): import("react/jsx-runtime").JSX.Element;
 export interface GroupItemConfig {
     /** Group item title */
     title: string;
@@ -32,6 +35,8 @@ export interface GroupConfigProps {
     items: GroupItemConfig[];
     /** Optional description text for the group */
     description?: string;
+    /** Size variant */
+    size?: GroupSize;
 }
-export declare function GroupConfig({ items, description }: GroupConfigProps): import("react/jsx-runtime").JSX.Element;
+export declare function GroupConfig({ items, description, size }: GroupConfigProps): import("react/jsx-runtime").JSX.Element;
 export { GroupItem, type GroupItemProps } from './GroupItem';
