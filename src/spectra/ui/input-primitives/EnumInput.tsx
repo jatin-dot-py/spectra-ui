@@ -75,7 +75,7 @@ export function EnumInput({
 
     // Auto-determine variant if not specified
     const effectiveVariant = variant ?? (options.length > 5 ? 'dropdown' : 'buttons');
-    const selectedOption = options.find(opt => opt.value === value);
+    // const selectedOption = options.find(opt => opt.value === value);
 
     // ========================================================================
     // Dropdown Variant

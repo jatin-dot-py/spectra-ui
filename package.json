@@ -1,25 +1,88 @@
 {
-  "name": "spectra2",
-  "private": true,
-  "version": "0.0.0",
+  "name": "spectra",
+  "version": "0.0.1",
   "type": "module",
+  "files": [
+    "lib"
+  ],
+  "exports": {
+    "./input-primitives": {
+      "types": "./lib/spectra/ui/input-primitives/index.d.ts",
+      "import": "./lib/input-primitives.js",
+      "require": "./lib/input-primitives.cjs"
+    },
+    "./dialogs": {
+      "types": "./lib/spectra/ui/dialogs/index.d.ts",
+      "import": "./lib/dialogs.js",
+      "require": "./lib/dialogs.cjs"
+    },
+    "./fragments": {
+      "types": "./lib/spectra/ui/fragments/index.d.ts",
+      "import": "./lib/fragments.js",
+      "require": "./lib/fragments.cjs"
+    },
+    "./group": {
+      "types": "./lib/spectra/ui/group/index.d.ts",
+      "import": "./lib/group.js",
+      "require": "./lib/group.cjs"
+    },
+    "./state": {
+      "types": "./lib/spectra/ui/state/index.d.ts",
+      "import": "./lib/state.js",
+      "require": "./lib/state.cjs"
+    },
+    "./labeled-input": {
+      "types": "./lib/spectra/ui/labeled-input/index.d.ts",
+      "import": "./lib/labeled-input.js",
+      "require": "./lib/labeled-input.cjs"
+    }
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
+    "build:lib": "vite build --config vite.lib.config.ts",
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "lucide-react": ">=0.400.0",
+    "react-icons": ">=5.0.0",
+    "radix-ui": ">=1.0.0",
+    "class-variance-authority": ">=0.7.0",
+    "clsx": ">=2.0.0",
+    "tailwind-merge": ">=2.0.0",
+    "cmdk": ">=1.0.0",
+    "sonner": ">=1.0.0",
+    "vaul": ">=1.0.0",
+    "react-syntax-highlighter": ">=15.0.0",
+    "@monaco-editor/react": ">=4.0.0"
+  },
   "dependencies": {
-    "@base-ui/react": "^1.0.0",
     "@fontsource-variable/inter": "^5.2.8",
-    "@monaco-editor/react": "^4.7.0",
     "@tailwindcss/vite": "^4.1.17",
+    "tailwindcss": "^4.1.17",
+    "tw-animate-css": "^1.4.0"
+  },
+  "devDependencies": {
+    "@base-ui/react": "^1.0.0",
+    "@eslint/js": "^9.39.1",
+    "@monaco-editor/react": "^4.7.0",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@vitejs/plugin-react": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.562.0",
     "next-themes": "^0.4.6",
@@ -27,6 +90,7 @@
     "react": "^19.2.0",
     "react-day-picker": "^9.13.0",
     "react-dom": "^19.2.0",
+    "react-element-to-jsx-string": "^17.0.1",
     "react-icons": "^5.5.0",
     "react-resizable-panels": "^4.0.15",
     "react-syntax-highlighter": "^16.1.0",
@@ -35,23 +99,10 @@
     "shadcn": "^3.6.2",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.17",
-    "tw-animate-css": "^1.4.0",
-    "vaul": "^1.1.2"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@types/node": "^24.10.1",
-    "@types/react": "^19.2.5",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "globals": "^16.5.0",
-    "react-element-to-jsx-string": "^17.0.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vaul": "^1.1.2",
+    "vite": "^7.2.4",
+    "vite-plugin-dts": "^4.5.0"
   }
 }

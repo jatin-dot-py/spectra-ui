@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Check, Copy, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { FileCodeView, ContentTab, getFileIconName } from '@/spectra/ui/fragments';
+import { FileCodeView, ContentTab } from '@/spectra/ui/fragments';
+import { getFileIconName } from '@/spectra/utils/fileExtensions';
 import type { ExampleItem } from './types';
 
 // ============================================================================
