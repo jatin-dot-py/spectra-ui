@@ -4,10 +4,10 @@ export interface NoContentProps {
     icon?: SpectraIconType;
     /** Empty state message title */
     title: string;
-    /** Action button label */
-    actionLabel: string;
-    /** Action button click handler */
-    onAction: () => void;
+    /** Action button label (optional) */
+    actionLabel?: string;
+    /** Action button click handler (optional) */
+    onAction?: () => void;
     /** Optional external help link */
     learnMoreUrl?: string;
 }

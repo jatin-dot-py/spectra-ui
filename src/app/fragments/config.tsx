@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { FolderTree, Columns, Code } from 'lucide-react';
+import { FolderTree, Columns, Code, FileX2 } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
 import { FileTree, ContentTab, FileCodeView } from '@/spectra/ui/fragments';
+import { NoContent } from '@/spectra/ui/state';
 
 // ============================================================================
 // Preview Components - FileTree
@@ -270,6 +271,19 @@ function FileCodeViewWrapLinesPreview() {
     );
 }
 
+function FileCodeViewEmptyStatePreview() {
+    const content: string | undefined = undefined;
+    return (
+        <div className="border border-border rounded-lg overflow-hidden" style={{ width: '300px' }}>
+            {content ? (
+                <FileCodeView filename="example.ts" content={content} />
+            ) : (
+                <NoContent icon={FileX2} title="No content to display" />
+            )}
+        </div>
+    );
+}
+
 function FileCodeViewHorizontalScrollPreview() {
     return (
         <div style={{ width: '350px' }}>
@@ -531,6 +545,18 @@ const FILE_CODE_VIEW_CONFIG: ComponentConfig = {
     wrapLines={false}
 />`,
             preview: <FileCodeViewHorizontalScrollPreview />,
+        },
+        {
+            title: 'Empty State',
+            description: 'Handle undefined/empty content with NoContent component',
+            code: `const content: string | undefined = undefined;
+
+{content ? (
+    <FileCodeView filename="example.ts" content={content} />
+) : (
+    <NoContent icon={FileX2} title="No content to display" />
+)}`,
+            preview: <FileCodeViewEmptyStatePreview />,
         },
     ],
 };

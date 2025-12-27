@@ -7,10 +7,10 @@ export interface NoContentProps {
     icon?: SpectraIconType;
     /** Empty state message title */
     title: string;
-    /** Action button label */
-    actionLabel: string;
-    /** Action button click handler */
-    onAction: () => void;
+    /** Action button label (optional) */
+    actionLabel?: string;
+    /** Action button click handler (optional) */
+    onAction?: () => void;
     /** Optional external help link */
     learnMoreUrl?: string;
 }
@@ -28,14 +28,16 @@ export function NoContent({
                 <Icon className="h-5 w-5 text-muted-foreground" />
             </div>
             <p className="text-sm font-medium text-foreground">{title}</p>
-            <Button
-                variant="default"
-                size="sm"
-                onClick={onAction}
-                className="mt-1"
-            >
-                {actionLabel}
-            </Button>
+            {actionLabel && onAction && (
+                <Button
+                    variant="default"
+                    size="sm"
+                    onClick={onAction}
+                    className="mt-1"
+                >
+                    {actionLabel}
+                </Button>
+            )}
             {learnMoreUrl && (
                 <a
                     href={learnMoreUrl}

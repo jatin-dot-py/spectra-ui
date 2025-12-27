@@ -2,8 +2,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-// Maximum characters before syntax highlighting is disabled (50KB)
-export const MAX_HIGHLIGHT_CHARS = 50000;
+// Maximum characters before syntax highlighting is disabled (15KB)
+export const MAX_HIGHLIGHT_CHARS = 15000;
 
 interface CodeContentProps {
     content: string;
