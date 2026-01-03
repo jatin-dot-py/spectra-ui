@@ -229,6 +229,22 @@ export function getInputPrimitivesComponents(): ComponentConfig[] {
                 { title: 'Nested Object', initialValue: { user: { name: 'Jane', email: 'jane@example.com' }, settings: { theme: 'dark' } } },
                 { title: 'Array Value', initialValue: ['apple', 'banana', 'cherry'] },
                 { title: 'Custom Label', props: { label: 'Edit Configuration' }, initialValue: { debug: true, verbose: false } },
+                {
+                    title: 'With Suggestions',
+                    description: 'Autocomplete suggestions appear as you type (try typing or press Ctrl+Space)',
+                    props: {
+                        label: 'Edit with Variables',
+                        suggestions: [
+                            '{{step1.response.body}}',
+                            '{{step1.response.status}}',
+                            '{{env.BASE_URL}}',
+                            '{{env.API_KEY}}',
+                            '{{variables.userId}}',
+                            '{{variables.token}}',
+                        ],
+                    },
+                    initialValue: { url: '{{env.BASE_URL}}/api', headers: { Authorization: 'Bearer {{variables.token}}' } },
+                },
                 { title: 'Disabled', props: { disabled: true }, initialValue: { locked: true } },
             ]
         ),

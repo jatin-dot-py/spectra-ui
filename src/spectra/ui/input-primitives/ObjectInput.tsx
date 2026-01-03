@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import Editor from '@monaco-editor/react';
+import { useState, useEffect, useRef } from 'react';
+import Editor, { type OnMount } from '@monaco-editor/react';
+import type * as Monaco from 'monaco-editor';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -19,6 +20,8 @@ export interface ObjectInputProps {
     label?: string;
     /** Disabled state */
     disabled?: boolean;
+    /** List of text suggestions to show in autocomplete */
+    suggestions?: string[];
 }
 
 export function ObjectInput({
@@ -26,23 +29,63 @@ export function ObjectInput({
     onChange,
     label = 'Edit JSON',
     disabled = false,
+    suggestions = [],
 }: ObjectInputProps) {
     const [open, setOpen] = useState(false);
     const [editValue, setEditValue] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const completionProviderRef = useRef<Monaco.IDisposable | null>(null);
 
-    // Format value as string
     const storeValue = typeof value === 'object'
         ? JSON.stringify(value, null, 2)
         : typeof value === 'string' ? value : '';
 
-    // Initialize edit value when dialog opens
     useEffect(() => {
         if (open) {
             setEditValue(storeValue);
             setError(null);
         }
     }, [open, storeValue]);
+
+    useEffect(() => {
+        return () => {
+            completionProviderRef.current?.dispose();
+        };
+    }, []);
+
+    const handleEditorMount: OnMount = (editor, monaco) => {
+        completionProviderRef.current?.dispose();
+
+        if (suggestions.length === 0) return;
+
+        const model = editor.getModel();
+        const language = model?.getLanguageId() ?? 'json';
+
+        completionProviderRef.current = monaco.languages.registerCompletionItemProvider(language, {
+            provideCompletionItems: (
+                model: Monaco.editor.ITextModel,
+                position: Monaco.Position
+            ) => {
+                const word = model.getWordUntilPosition(position);
+                const range = {
+                    startLineNumber: position.lineNumber,
+                    endLineNumber: position.lineNumber,
+                    startColumn: word.startColumn,
+                    endColumn: word.endColumn,
+                };
+
+                return {
+                    suggestions: suggestions.map((text, index) => ({
+                        label: text,
+                        kind: monaco.languages.CompletionItemKind.Text,
+                        insertText: text,
+                        range,
+                        sortText: String(index).padStart(5, '0'),
+                    })),
+                };
+            },
+        });
+    };
 
     // Validate JSON on change
     const handleChange = (newValue: string | undefined) => {
@@ -110,6 +153,7 @@ export function ObjectInput({
                         defaultLanguage="json"
                         value={editValue}
                         onChange={handleChange}
+                        onMount={handleEditorMount}
                         theme="vs-dark"
                         options={{
                             minimap: { enabled: false },
@@ -128,6 +172,14 @@ export function ObjectInput({
                             renderLineHighlight: 'line',
                             cursorBlinking: 'smooth',
                             smoothScrolling: true,
+                            // Enable suggestions inside strings (normally disabled for JSON)
+                            quickSuggestions: {
+                                strings: true,
+                                other: true,
+                                comments: false,
+                            },
+                            // Show suggestions on trigger characters immediately
+                            suggestOnTriggerCharacters: true,
                         }}
                     />
                 </div>

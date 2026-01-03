@@ -7,5 +7,7 @@ export interface ObjectInputProps {
     label?: string;
     /** Disabled state */
     disabled?: boolean;
+    /** List of text suggestions to show in autocomplete */
+    suggestions?: string[];
 }
-export declare function ObjectInput({ value, onChange, label, disabled, }: ObjectInputProps): import("react/jsx-runtime").JSX.Element;
+export declare function ObjectInput({ value, onChange, label, disabled, suggestions, }: ObjectInputProps): import("react/jsx-runtime").JSX.Element;
