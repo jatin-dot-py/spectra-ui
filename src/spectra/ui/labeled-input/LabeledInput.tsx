@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, AlertCircle, AlertTriangle } from 'lucide-react';
 
 export interface LabeledInputProps {
     label: string;
@@ -15,6 +15,10 @@ export interface LabeledInputProps {
     children: ReactNode;
     helpText?: string;
     helpUrl?: string;
+    /** Error message - shows destructive styling */
+    error?: string;
+    /** Warning message - shows warning styling (lower priority than error) */
+    warning?: string;
 }
 
 export function LabeledInput({
@@ -23,9 +27,16 @@ export function LabeledInput({
     children,
     helpText,
     helpUrl,
+    error,
+    warning,
 }: LabeledInputProps) {
     const childCount = Children.count(children);
     const hasMultipleChildren = childCount > 1;
+
+    // Determine validation state (error takes priority)
+    const hasError = !!error;
+    const hasWarning = !hasError && !!warning;
+    const validationMessage = error || warning;
 
     const labelElement = (
         <span
@@ -84,19 +95,41 @@ export function LabeledInput({
     };
 
     return (
-        <div className={cn('flex items-center gap-3')}>
-            <div className="flex-shrink-0 w-20">
-                {labelWithTooltip}
+        <div className="flex flex-col gap-1">
+            {/* Main row: label + input */}
+            <div className={cn('flex items-center gap-3')}>
+                <div className="flex-shrink-0 w-20">
+                    {labelWithTooltip}
+                </div>
+                <div
+                    className={cn(
+                        'min-w-0 flex items-center gap-1 flex-1 rounded-md transition-colors',
+                        hasMultipleChildren && 'bg-muted/30 p-0.5'
+                    )}
+                >
+                    {renderChildren()}
+                </div>
             </div>
-            <div
-                className={cn(
-                    'min-w-0 flex items-center gap-1',
-                    'flex-1',
-                    hasMultipleChildren && 'rounded-md bg-muted/30 p-0.5'
-                )}
-            >
-                {renderChildren()}
-            </div>
+
+            {/* Validation message row */}
+            {validationMessage && (
+                <div className={cn('flex items-start gap-3')}>
+                    {/* Empty spacer matching label width */}
+                    <div className="flex-shrink-0 w-20" />
+                    {/* Message */}
+                    <div
+                        className={cn(
+                            'flex items-center gap-1.5 text-xs',
+                            hasError && 'text-destructive',
+                            hasWarning && 'text-yellow-600 dark:text-yellow-500'
+                        )}
+                    >
+                        {hasError && <AlertCircle className="h-3 w-3 flex-shrink-0" />}
+                        {hasWarning && <AlertTriangle className="h-3 w-3 flex-shrink-0" />}
+                        <span>{validationMessage}</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

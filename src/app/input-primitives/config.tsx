@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {
     Type, AlignLeft, CheckSquare, Image, Hash, Calculator, Braces,
     List, ListChecks, Bold, Italic, Underline, AlignCenter, AlignJustify,
-    AlignRight, CircleSlash, type LucideIcon, Layers
+    AlignRight, CircleSlash, type LucideIcon, Layers, FileCode2, Route, Globe
 } from 'lucide-react';
 import type { ComponentConfig, ExampleItem, CategoryRegistry } from '../types';
 import { generateCodeSnippet } from '../serialization';
@@ -17,9 +17,12 @@ import { IconInput } from '@/spectra/ui/input-primitives/IconInput';
 import { NumericalInput } from '@/spectra/ui/input-primitives/NumericalInput';
 import { NumberInput } from '@/spectra/ui/input-primitives/NumberInput';
 import { ObjectInput } from '@/spectra/ui/input-primitives/ObjectInput';
+import { PythonInput } from '@/spectra/ui/input-primitives/PythonInput';
 import { EnumInput } from '@/spectra/ui/input-primitives/EnumInput';
 import { MultiEnumSelect } from '@/spectra/ui/input-primitives/MultiEnumSelect';
 import { DynamicInput } from '@/spectra/ui/input-primitives/DynamicInput';
+import { JsonPathInput } from '@/spectra/ui/input-primitives/JsonPathInput';
+import { UrlInput } from '@/spectra/ui/input-primitives/UrlInput';
 
 // ============================================================================
 // Base path for all primitives
@@ -127,6 +130,21 @@ export function getInputPrimitivesComponents(): ComponentConfig[] {
                     props: { placeholder: 'Frozen until clicked...', frozen: true },
                     initialValue: 'Click me to edit',
                 },
+            ]
+        ),
+
+        buildComponentConfig(
+            'url-input',
+            'UrlInput',
+            'URL input with automatic favicon from Google favicon service.',
+            Globe,
+            UrlInput,
+            [
+                { title: 'Empty', props: { placeholder: 'Enter URL...' }, initialValue: '' },
+                { title: 'With URL', initialValue: 'https://github.com' },
+                { title: 'Without Protocol', description: 'Protocol is auto-detected', initialValue: 'google.com' },
+                { title: 'API Endpoint', initialValue: 'https://api.openai.com/v1/chat' },
+                { title: 'Disabled', props: { disabled: true }, initialValue: 'https://example.com' },
             ]
         ),
 
@@ -246,6 +264,37 @@ export function getInputPrimitivesComponents(): ComponentConfig[] {
                     initialValue: { url: '{{env.BASE_URL}}/api', headers: { Authorization: 'Bearer {{variables.token}}' } },
                 },
                 { title: 'Disabled', props: { disabled: true }, initialValue: { locked: true } },
+            ]
+        ),
+
+        buildComponentConfig(
+            'python-input',
+            'PythonInput',
+            'Python code editor with Monaco Editor in a dialog. For scripts and code snippets.',
+            FileCode2,
+            PythonInput,
+            [
+                { title: 'Empty', initialValue: '' },
+                { title: 'Simple Script', initialValue: 'def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("World"))' },
+                { title: 'With Imports', initialValue: 'import requests\nimport json\n\nresponse = requests.get(url)\ndata = response.json()' },
+                { title: 'Custom Label', props: { label: 'Edit Script' }, initialValue: '# Your script here\npass' },
+                {
+                    title: 'With Suggestions',
+                    description: 'Autocomplete suggestions for context variables (try Ctrl+Space)',
+                    props: {
+                        label: 'Edit with Context',
+                        suggestions: [
+                            'request',
+                            'response',
+                            'context',
+                            'step_results',
+                            'env',
+                            'variables',
+                        ],
+                    },
+                    initialValue: '# Access context variables\nresult = response.json()\nprint(context.get("user_id"))',
+                },
+                { title: 'Disabled', props: { disabled: true }, initialValue: '# Locked script\npass' },
             ]
         ),
 
@@ -530,6 +579,21 @@ export function getInputPrimitivesComponents(): ComponentConfig[] {
                 { title: 'Object Value', description: 'JSON object editor mode', initialValue: { name: 'John', age: 30 } },
                 { title: 'Restricted Types', description: 'Only allow string and number', props: { allowedTypes: ['string', 'number'] }, initialValue: 'Only text or numbers' },
                 { title: 'Disabled', description: 'Disabled state', props: { disabled: true }, initialValue: 'Cannot change' },
+            ]
+        ),
+
+        buildComponentConfig(
+            'json-path-input',
+            'JsonPathInput',
+            'Segmented JSON path builder. Add string keys or numeric indices as chips to build a path.',
+            Route,
+            JsonPathInput,
+            [
+                { title: 'Empty', initialValue: [] },
+                { title: 'Simple Path', description: 'Object keys only', initialValue: ['data', 'user', 'name'] },
+                { title: 'With Array Index', description: 'Mixed keys and indices', initialValue: ['users', 0, 'email'] },
+                { title: 'Nested Response', description: 'Deep path navigation', initialValue: ['response', 'body', 'results', 0, 'items', 2, 'value'] },
+                { title: 'Disabled', props: { disabled: true }, initialValue: ['locked', 'path'] },
             ]
         ),
     ];

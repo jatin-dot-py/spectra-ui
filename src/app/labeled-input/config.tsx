@@ -1,24 +1,47 @@
+'use client';
+
 import { useState } from 'react';
 import {
     Tag, Mail, Smartphone, Tablet, Monitor, Maximize,
-    SlidersHorizontal, ArrowUpRight, Layers
+    SlidersHorizontal, ArrowUpRight, Layers, User, Key, Send
 } from 'lucide-react';
-import type { CategoryConfig, CategoryRegistry } from '../types';
+import type { CategoryConfig, CategoryRegistry, ComponentConfig } from '../types';
 import { LabeledInput } from '@/spectra/ui/labeled-input/LabeledInput';
+import { LabeledInputGroup } from '@/spectra/ui/labeled-input/LabeledInputGroup';
 import { TextInput } from '@/spectra/ui/input-primitives/TextInput';
 import { EnumInput } from '@/spectra/ui/input-primitives/EnumInput';
+import { BooleanInput } from '@/spectra/ui/input-primitives/BooleanInput';
 
+// ============================================================================
+// Preview Components
+// ============================================================================
 
-function BasicPreview({ label, placeholder, icon, helpText, helpUrl }: any) {
+function BasicPreview({ label, placeholder, icon, helpText, helpUrl, error, warning }: any) {
     const [value, setValue] = useState('');
     return (
-        <LabeledInput label={label} icon={icon} helpText={helpText} helpUrl={helpUrl}>
+        <LabeledInput label={label} icon={icon} helpText={helpText} helpUrl={helpUrl} error={error} warning={warning}>
             <TextInput value={value} onChange={setValue} placeholder={placeholder} />
         </LabeledInput>
     );
 }
 
+function ErrorPreview() {
+    const [value, setValue] = useState('invalid-email');
+    return (
+        <LabeledInput label="Email" icon={Mail} error="Invalid email format">
+            <TextInput value={value} onChange={setValue} placeholder="you@example.com" />
+        </LabeledInput>
+    );
+}
 
+function WarningPreview() {
+    const [value, setValue] = useState('sk-1234...');
+    return (
+        <LabeledInput label="API Key" icon={Key} warning="This key expires in 7 days">
+            <TextInput value={value} onChange={setValue} />
+        </LabeledInput>
+    );
+}
 
 function CanvasToolbarPreview() {
     const [viewMode, setViewMode] = useState('full');
@@ -71,28 +94,64 @@ function CanvasToolbarPreview() {
     );
 }
 
-const LABELED_INPUT_CONFIG: CategoryConfig = {
+function FormGroupPreview() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [subscribe, setSubscribe] = useState(false);
+
+    return (
+        <LabeledInputGroup>
+            <LabeledInput label="Name" icon={User}>
+                <TextInput value={name} onChange={setName} placeholder="Your name" />
+            </LabeledInput>
+            <LabeledInput label="Email" icon={Mail}>
+                <TextInput value={email} onChange={setEmail} placeholder="you@example.com" />
+            </LabeledInput>
+            <LabeledInput label="Subscribe">
+                <BooleanInput value={subscribe} onChange={setSubscribe} variant="switch" />
+            </LabeledInput>
+        </LabeledInputGroup>
+    );
+}
+
+function FormWithValidationPreview() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('bad-email');
+    const [webhook, setWebhook] = useState('');
+
+    return (
+        <LabeledInputGroup>
+            <LabeledInput label="Name" icon={User}>
+                <TextInput value={name} onChange={setName} placeholder="Required" />
+            </LabeledInput>
+            <LabeledInput label="Email" icon={Mail} error="Invalid email format">
+                <TextInput value={email} onChange={setEmail} />
+            </LabeledInput>
+            <LabeledInput label="Webhook" icon={Send} warning="No HTTPS detected">
+                <TextInput value={webhook} onChange={setWebhook} placeholder="https://..." />
+            </LabeledInput>
+        </LabeledInputGroup>
+    );
+}
+
+// ============================================================================
+// LabeledInput Component Config
+// ============================================================================
+
+const LABELED_INPUT_COMPONENT: ComponentConfig = {
     id: 'labeled-input',
     name: 'LabeledInput',
-    description: 'A component for wrapping input primitives with a label and optional help text.',
+    description: 'Wraps input primitives with a label, optional icon, help tooltip, and validation states.',
     icon: Tag,
     importPath: '@/spectra/ui/labeled-input/LabeledInput',
     examples: [
         {
-            title: 'Inline (Default)',
+            title: 'Basic',
             description: 'Label and input side-by-side',
             code: `<LabeledInput label="Username">
   <TextInput value={value} onChange={setValue} />
 </LabeledInput>`,
             preview: <BasicPreview label="Username" placeholder="Type here..." />
-        },
-        {
-            title: 'Stacked',
-            description: 'Label above input (form-style)',
-            code: `<LabeledInput label="Description" variant="stacked">
-  <TextInput value={value} onChange={setValue} />
-</LabeledInput>`,
-            preview: <BasicPreview label="Description" variant="stacked" placeholder="Type here..." />
         },
         {
             title: 'With Icon',
@@ -112,7 +171,7 @@ const LABELED_INPUT_CONFIG: CategoryConfig = {
         },
         {
             title: 'With Help URL',
-            description: 'Tooltip with a reference link to external documentation',
+            description: 'Tooltip with a reference link',
             code: `<LabeledInput 
   label="Webhook" 
   helpText="Triggered on form submission" 
@@ -128,76 +187,86 @@ const LABELED_INPUT_CONFIG: CategoryConfig = {
             />
         },
         {
-            title: 'Canvas Toolbar',
-            description: 'App bar with size buttons, sidebar toggle, expand, and surface dropdown',
-            code: `<LabeledInput label="CANVAS" wrap>
-  <EnumInput
-    variant="buttons"
-    buttonDisplay="both"
-    value={viewMode}
-    onChange={setViewMode}
-    options={[
-      { value: '320', label: '320', icon: Smartphone },
-      { value: '480', label: '480', icon: Tablet },
-      { value: '640', label: '640', icon: Monitor },
-      { value: '800', label: '800', icon: Monitor },
-      { value: 'full', label: 'Full', icon: Maximize },
-    ]}
-  />
-  <EnumInput
-    variant="buttons"
-    buttonDisplay="icon"
-    options={[
-      { value: 'sidebar', icon: SlidersHorizontal },
-      { value: 'expand', icon: ArrowUpRight },
-    ]}
-  />
-  <EnumInput
-    variant="dropdown"
-    iconTrigger={Layers}
-    dropdownTitle="CANVAS SURFACE"
-    value={canvasBg}
-    onChange={setCanvasBg}
-    options={[
-      { value: 'bg-background', label: 'bg-background', hoverText: 'Default page background' },
-      { value: 'bg-card', label: 'bg-card', hoverText: 'Elevated card surface' },
-      { value: 'bg-muted', label: 'bg-muted', hoverText: 'Subtle muted surface' },
-      { value: 'bg-popover', label: 'bg-popover', hoverText: 'Overlay/dialog surface' },
-      { value: 'bg-sidebar', label: 'bg-sidebar', hoverText: 'Sidebar panel surface' },
-    ]}
-  />
+            title: 'Error State',
+            description: 'Shows destructive styling with error message',
+            code: `<LabeledInput label="Email" icon={Mail} error="Invalid email format">
+  <TextInput value={value} onChange={setValue} />
+</LabeledInput>`,
+            preview: <ErrorPreview />
+        },
+        {
+            title: 'Warning State',
+            description: 'Shows warning styling with message',
+            code: `<LabeledInput label="API Key" icon={Key} warning="This key expires in 7 days">
+  <TextInput value={value} onChange={setValue} />
+</LabeledInput>`,
+            preview: <WarningPreview />
+        },
+        {
+            title: 'Multiple Inputs',
+            description: 'Multiple children with separators',
+            code: `<LabeledInput label="CANVAS">
+  <EnumInput variant="buttons" ... />
+  <EnumInput variant="dropdown" ... />
 </LabeledInput>`,
             preview: <CanvasToolbarPreview />
         },
+    ],
+};
+
+// ============================================================================
+// LabeledInputGroup Component Config
+// ============================================================================
+
+const LABELED_INPUT_GROUP_COMPONENT: ComponentConfig = {
+    id: 'labeled-input-group',
+    name: 'LabeledInputGroup',
+    description: 'Stack multiple LabeledInput components with consistent spacing.',
+    icon: Layers,
+    importPath: '@/spectra/ui/labeled-input/LabeledInputGroup',
+    examples: [
         {
-            title: 'Full Featured',
-            description: 'All options combined: icon, help text, and help URL',
-            code: `<LabeledInput 
-  label="Callback URL"
-  icon={Mail}
-  helpText="Your server endpoint for receiving events"
-  helpUrl="https://docs.example.com/callbacks"
->
-  <TextInput value={value} onChange={setValue} />
-</LabeledInput>`,
-            preview: <BasicPreview
-                label="Callback URL"
-                icon={Mail}
-                helpText="Your server endpoint for receiving events"
-                helpUrl="https://docs.example.com/callbacks"
-                placeholder="https://api.yoursite.com/callback"
-            />
-        }
+            title: 'Basic Form',
+            description: 'Multiple labeled inputs stacked vertically',
+            code: `<LabeledInputGroup>
+  <LabeledInput label="Name" icon={User}>
+    <TextInput value={name} onChange={setName} />
+  </LabeledInput>
+  <LabeledInput label="Email" icon={Mail}>
+    <TextInput value={email} onChange={setEmail} />
+  </LabeledInput>
+  <LabeledInput label="Subscribe">
+    <BooleanInput value={subscribe} onChange={setSubscribe} variant="switch" />
+  </LabeledInput>
+</LabeledInputGroup>`,
+            preview: <FormGroupPreview />
+        },
+        {
+            title: 'With Validation',
+            description: 'Form with error and warning states',
+            code: `<LabeledInputGroup>
+  <LabeledInput label="Name" icon={User}>
+    <TextInput value={name} onChange={setName} />
+  </LabeledInput>
+  <LabeledInput label="Email" icon={Mail} error="Invalid email format">
+    <TextInput value={email} onChange={setEmail} />
+  </LabeledInput>
+  <LabeledInput label="Webhook" icon={Send} warning="No HTTPS detected">
+    <TextInput value={webhook} onChange={setWebhook} />
+  </LabeledInput>
+</LabeledInputGroup>`,
+            preview: <FormWithValidationPreview />
+        },
     ],
 };
 
 // ============================================================================
 // Category Registry Export
 // ============================================================================
+
 export const categoryRegistry: CategoryRegistry = {
     id: 'labeled-input',
     name: 'Labeled Input',
     icon: Tag,
-    // Return the static config object directly
-    getCategory: () => LABELED_INPUT_CONFIG,
+    getComponents: () => [LABELED_INPUT_COMPONENT, LABELED_INPUT_GROUP_COMPONENT],
 };

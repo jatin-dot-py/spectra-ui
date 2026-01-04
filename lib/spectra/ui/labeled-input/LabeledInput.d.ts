@@ -6,5 +6,9 @@ export interface LabeledInputProps {
     children: ReactNode;
     helpText?: string;
     helpUrl?: string;
+    /** Error message - shows destructive styling */
+    error?: string;
+    /** Warning message - shows warning styling (lower priority than error) */
+    warning?: string;
 }
-export declare function LabeledInput({ label, icon: Icon, children, helpText, helpUrl, }: LabeledInputProps): import("react/jsx-runtime").JSX.Element;
+export declare function LabeledInput({ label, icon: Icon, children, helpText, helpUrl, error, warning, }: LabeledInputProps): import("react/jsx-runtime").JSX.Element;

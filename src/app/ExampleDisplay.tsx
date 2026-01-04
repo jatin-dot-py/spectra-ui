@@ -39,7 +39,7 @@ export function CopyButton({ text, label }: { text: string; label?: string }) {
 // ============================================================================
 export function ExampleCard({ example }: { example: ExampleItem }) {
     return (
-        <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+        <div className="rounded-xl border border-border bg-card shadow-sm overflow">
             {/* Title - more prominent */}
             <div className="px-5 py-4 bg-muted/30">
                 <h3 className="text-base font-semibold">{example.title}</h3>

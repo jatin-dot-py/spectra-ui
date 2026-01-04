@@ -7,4 +7,7 @@ export { NumberInput, type NumberInputProps } from './NumberInput';
 export { NumericalInput, type NumericalInputProps } from './NumericalInput';
 export { ObjectInput, type ObjectInputProps } from './ObjectInput';
 export { TextAreaInput, type TextAreaInputProps } from './TextAreaInput';
+export { PythonInput, type PythonInputProps } from './PythonInput';
+export { JsonPathInput, type JsonPathInputProps, type PathSegment } from './JsonPathInput';
+export { UrlInput, type UrlInputProps } from './UrlInput';
 export { TextInput, type TextInputProps } from './TextInput';
