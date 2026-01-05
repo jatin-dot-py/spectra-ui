@@ -104,7 +104,7 @@ export function MultiEnumSelect({
                         <button
                             disabled={disabled}
                             className={cn(
-                                'inline-flex items-center justify-center gap-1 h-8 px-2 rounded-md',
+                                'inline-flex items-center justify-center gap-1 h-8 px-2',
                                 'bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50 transition-colors',
                                 disabled && 'opacity-50 cursor-not-allowed'
                             )}
@@ -144,7 +144,7 @@ export function MultiEnumSelect({
                                         key={option.value}
                                         onClick={() => toggleOption(option.value)}
                                         className={cn(
-                                            'w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded-md transition-colors',
+                                            'w-full flex items-center gap-2 px-2 py-1.5 text-xs transition-colors',
                                             selected
                                                 ? 'bg-primary/10 text-foreground'
                                                 : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -176,7 +176,7 @@ export function MultiEnumSelect({
                     <button
                         disabled={disabled}
                         className={cn(
-                            'inline-flex items-center justify-between gap-2 h-8 px-3 text-xs rounded-md w-full min-w-[180px]',
+                            'inline-flex items-center justify-between gap-2 h-8 px-3 text-xs w-full min-w-[180px]',
                             'bg-muted/30 border border-transparent hover:border-border transition-colors',
                             disabled && 'opacity-50 cursor-not-allowed'
                         )}
@@ -235,7 +235,7 @@ export function MultiEnumSelect({
                                     key={option.value}
                                     onClick={() => toggleOption(option.value)}
                                     className={cn(
-                                        'w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded-md transition-colors',
+                                        'w-full flex items-center gap-2 px-2 py-1.5 text-xs transition-colors',
                                         selected
                                             ? 'bg-primary/10 text-foreground'
                                             : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -341,7 +341,7 @@ export function MultiEnumSelect({
     return (
         <div className={cn(
             'inline-flex',
-            !borderless && 'rounded-md border border-border/40 bg-muted/30 p-0.5 shadow-sm',
+            !borderless && 'border border-border/40 bg-muted/30 p-0.5 shadow-sm',
             disabled && 'opacity-50'
         )}>
             {/* Inline toggle buttons */}

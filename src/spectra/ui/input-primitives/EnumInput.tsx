@@ -90,7 +90,7 @@ export function EnumInput({
                             disabled={disabled}
                             className={cn(
                                 'inline-flex items-center justify-center gap-1 h-8 px-2',
-                                !borderless && 'rounded-md bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50',
+                                !borderless && 'bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50',
                                 borderless && 'hover:bg-muted/30',
                                 'transition-colors',
                                 disabled && 'opacity-50 cursor-not-allowed'
@@ -117,7 +117,7 @@ export function EnumInput({
                                         setIconDropdownOpen(false);
                                     }}
                                     className={cn(
-                                        'w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded-md transition-colors',
+                                        'w-full flex items-center gap-2 px-2 py-1.5 text-xs transition-colors',
                                         isSelected
                                             ? 'bg-accent text-accent-foreground'
                                             : 'hover:bg-muted'
@@ -219,7 +219,7 @@ export function EnumInput({
     return (
         <div className={cn(
             'inline-flex',
-            !borderless && 'rounded-md border border-border/40 bg-muted/30 p-0.5 shadow-sm',
+            !borderless && 'border border-border/40 bg-muted/30 p-0.5 shadow-sm',
             disabled && 'opacity-50'
         )}>
             {/* Inline buttons */}
@@ -269,7 +269,7 @@ export function EnumInput({
                                         setOverflowOpen(false);
                                     }}
                                     className={cn(
-                                        'w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded-md transition-colors',
+                                        'w-full flex items-center gap-2 px-2 py-1.5 text-xs transition-colors',
                                         isSelected
                                             ? 'bg-accent text-accent-foreground'
                                             : 'hover:bg-muted'

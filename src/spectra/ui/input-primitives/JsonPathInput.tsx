@@ -128,7 +128,7 @@ export function JsonPathInput({
         <div className={cn('relative flex-1', className)}>
             <div
                 className={cn(
-                    'flex flex-wrap items-center gap-1.5 min-h-8 px-2 py-1 rounded-md',
+                    'flex flex-wrap items-center gap-1.5 min-h-8 px-2 py-1',
                     'bg-muted/30 border border-transparent transition-colors',
                     'focus-within:border-border',
                     !disabled && 'hover:border-border',

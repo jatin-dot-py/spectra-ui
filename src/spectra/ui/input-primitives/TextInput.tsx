@@ -88,7 +88,7 @@ export function TextInput({
                     <div
                         onClick={handleThaw}
                         className={cn(
-                            'absolute inset-0 z-10 cursor-pointer rounded-md',
+                            'absolute inset-0 z-10 cursor-pointer',
                             'bg-muted/50 border border-border/50',
                             'flex items-center justify-center',
                             'hover:bg-accent/50 hover:border-border transition-colors duration-150'

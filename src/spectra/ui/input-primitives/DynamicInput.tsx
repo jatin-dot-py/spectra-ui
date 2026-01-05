@@ -63,7 +63,7 @@ export function DynamicInput({
         switch (currentType) {
             case 'null':
                 return (
-                    <div className="flex-1 h-8 flex items-center px-3 text-xs text-muted-foreground italic bg-muted/20 rounded-md">
+                    <div className="flex-1 h-8 flex items-center px-3 text-xs text-muted-foreground italic bg-muted/20">
                         null
                     </div>
                 );
@@ -122,7 +122,7 @@ export function DynamicInput({
                     <button
                         disabled={disabled}
                         className={cn(
-                            'inline-flex items-center justify-center gap-1 h-8 px-2 rounded-md',
+                            'inline-flex items-center justify-center gap-1 h-8 px-2',
                             'bg-muted/30 border border-border/50 hover:border-border hover:bg-muted/50 transition-colors',
                             disabled && 'cursor-not-allowed'
                         )}

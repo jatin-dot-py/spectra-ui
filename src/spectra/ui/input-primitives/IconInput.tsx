@@ -84,7 +84,7 @@ export function IconInput({
                                     handleSelect(iconName);
                                 }}
                                 className={cn(
-                                    'w-full h-full flex items-center justify-center rounded-md transition-all',
+                                    'w-full h-full flex items-center justify-center transition-all',
                                     'bg-muted/30 hover:bg-muted border border-transparent hover:border-border'
                                 )}
                             >

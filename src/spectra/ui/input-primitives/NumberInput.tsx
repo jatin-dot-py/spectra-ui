@@ -78,7 +78,7 @@ export function NumberInput({
                 type="button"
                 onClick={handleDecrement}
                 disabled={disabled || (min !== undefined && value <= min)}
-                className="h-8 w-8 flex items-center justify-center rounded-md bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="h-8 w-8 flex items-center justify-center bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
                 <Minus className="h-3 w-3" />
             </button>
@@ -96,7 +96,7 @@ export function NumberInput({
                 type="button"
                 onClick={handleIncrement}
                 disabled={disabled || (max !== undefined && value >= max)}
-                className="h-8 w-8 flex items-center justify-center rounded-md bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="h-8 w-8 flex items-center justify-center bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
                 <Plus className="h-3 w-3" />
             </button>
