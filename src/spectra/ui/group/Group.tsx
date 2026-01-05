@@ -1,4 +1,4 @@
-import { type ReactNode, Children, isValidElement } from 'react';
+import { type ReactNode, Children, isValidElement, Fragment } from 'react';
 import { cn } from '@/lib/utils';
 import { GroupItem, type GroupItemProps } from './GroupItem';
 import { type GroupSize, sizeConfig } from './sizeConfig';
@@ -12,8 +12,19 @@ export interface GroupProps {
     size?: GroupSize;
 }
 
+// Helper to flatten children and unwrap Fragments
+function flattenChildren(children: ReactNode): ReactNode[] {
+    return Children.toArray(children).flatMap((child) => {
+        if (isValidElement(child) && child.type === Fragment) {
+            // @ts-expect-error - we know Fragment has children prop
+            return flattenChildren(child.props.children);
+        }
+        return child;
+    });
+}
+
 export function Group({ children, description, size = 'sm' }: GroupProps) {
-    const childArray = Children.toArray(children).filter(isValidElement);
+    const childArray = flattenChildren(children).filter(isValidElement);
     const s = sizeConfig[size];
 
     return (
