@@ -89,7 +89,7 @@ export function EnumInput({
                         <button
                             disabled={disabled}
                             className={cn(
-                                'inline-flex items-center justify-center gap-1 h-8 px-2',
+                                'inline-flex items-center justify-center gap-1 h-7 px-2',
                                 !borderless && 'bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50',
                                 borderless && 'hover:bg-muted/30',
                                 'transition-colors',
@@ -137,7 +137,7 @@ export function EnumInput({
         // Standard dropdown using Select
         return (
             <Select value={value || ''} onValueChange={handleSelect} disabled={disabled}>
-                <SelectTrigger className="h-8 text-xs bg-muted/30 border-transparent hover:border-border focus:border-border transition-colors">
+                <SelectTrigger className="h-7 text-xs bg-muted/30 border-transparent hover:border-border focus:border-border transition-colors">
                     <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
                 <SelectContent>
@@ -184,7 +184,7 @@ export function EnumInput({
                 disabled={disabled}
                 className={cn(
                     'flex items-center justify-center gap-1.5 font-medium transition-all',
-                    'h-8 px-2.5 text-xs',
+                    'h-7 px-2.5 text-xs',
                     isFirst && 'rounded-l-md',
                     isLast && !needsOverflow && 'rounded-r-md',
                     !isFirst && !isLast && 'rounded-none',
@@ -235,7 +235,7 @@ export function EnumInput({
                             disabled={disabled}
                             className={cn(
                                 'flex items-center justify-center gap-1 font-medium transition-all rounded-r-md',
-                                'h-8 px-2.5 text-xs',
+                                'h-7 px-2.5 text-xs',
                                 selectedInOverflow
                                     ? 'bg-background text-foreground shadow-sm'
                                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',

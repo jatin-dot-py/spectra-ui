@@ -98,7 +98,7 @@ export function NumericalInput({
             placeholder={placeholder}
             disabled={disabled}
             className={cn(
-                'h-8 text-xs flex-1 bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors font-mono',
+                'h-7 text-xs flex-1 bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors font-mono',
                 className
             )}
         />

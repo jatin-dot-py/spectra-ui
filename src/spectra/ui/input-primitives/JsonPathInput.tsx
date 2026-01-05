@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { X, Hash, Type } from 'lucide-react';
+import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover';
 
 export type PathSegment = string | number;
 
@@ -125,87 +126,94 @@ export function JsonPathInput({
     };
 
     return (
-        <div className={cn('relative flex-1', className)}>
-            <div
-                className={cn(
-                    'flex flex-wrap items-center gap-1.5 min-h-8 px-2 py-1',
-                    'bg-muted/30 border border-transparent transition-colors',
-                    'focus-within:border-border',
-                    !disabled && 'hover:border-border',
-                    disabled && 'opacity-50 cursor-not-allowed'
-                )}
-                onClick={() => inputRef.current?.focus()}
-            >
-                {/* Chips */}
-                {value.map((seg, i) => (
-                    <span
-                        key={i}
+        <Popover open={showTypeChoice} onOpenChange={(open) => !open && setShowTypeChoice(false)} modal={false}>
+            <PopoverAnchor asChild>
+                <div className={cn('relative flex-1', className)}>
+                    <div
                         className={cn(
-                            'inline-flex items-center gap-1 h-5 px-1.5 rounded text-xs font-mono',
-                            typeof seg === 'number'
-                                ? 'bg-primary/20 text-primary'
-                                : 'bg-accent text-accent-foreground'
+                            'flex flex-wrap items-center gap-1.5 min-h-7 px-2 py-1',
+                            'bg-muted/30 border border-transparent transition-colors',
+                            'focus-within:border-border',
+                            !disabled && 'hover:border-border',
+                            disabled && 'opacity-50 cursor-not-allowed'
                         )}
+                        onClick={() => inputRef.current?.focus()}
                     >
-                        {typeof seg === 'number' ? (
-                            <Hash className="h-2.5 w-2.5" />
-                        ) : (
-                            <Type className="h-2.5 w-2.5" />
-                        )}
-                        {String(seg)}
-                        {!disabled && (
-                            <button
-                                type="button"
-                                onClick={(e) => { e.stopPropagation(); removeSegment(i); }}
-                                className="opacity-50 hover:opacity-100 hover:text-destructive"
+                        {/* Chips */}
+                        {value.map((seg, i) => (
+                            <span
+                                key={i}
+                                className={cn(
+                                    'inline-flex items-center gap-1 h-5 px-1.5 rounded text-xs font-mono',
+                                    typeof seg === 'number'
+                                        ? 'bg-primary/20 text-primary'
+                                        : 'bg-accent text-accent-foreground'
+                                )}
                             >
-                                <X className="h-2.5 w-2.5" />
-                            </button>
-                        )}
-                    </span>
-                ))}
+                                {typeof seg === 'number' ? (
+                                    <Hash className="h-2.5 w-2.5" />
+                                ) : (
+                                    <Type className="h-2.5 w-2.5" />
+                                )}
+                                {String(seg)}
+                                {!disabled && (
+                                    <button
+                                        type="button"
+                                        onClick={(e) => { e.stopPropagation(); removeSegment(i); }}
+                                        className="opacity-50 hover:opacity-100 hover:text-destructive"
+                                    >
+                                        <X className="h-2.5 w-2.5" />
+                                    </button>
+                                )}
+                            </span>
+                        ))}
 
-                {/* Input */}
-                {!disabled && (
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        onPaste={handlePaste}
-                        placeholder={value.length === 0 ? placeholder : ''}
-                        className="flex-1 min-w-[80px] h-5 bg-transparent text-xs outline-none placeholder:text-muted-foreground/50"
-                    />
-                )}
-            </div>
+                        {/* Input */}
+                        {!disabled && (
+                            <input
+                                ref={inputRef}
+                                type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                onPaste={handlePaste}
+                                placeholder={value.length === 0 ? placeholder : ''}
+                                className="flex-1 min-w-[80px] h-5 bg-transparent text-xs outline-none placeholder:text-muted-foreground/50"
+                            />
+                        )}
+                    </div>
+                </div>
+            </PopoverAnchor>
 
             {/* Type choice dropdown */}
-            {showTypeChoice && (
-                <div className="absolute left-0 top-full mt-1 z-50 bg-popover border border-border rounded-md shadow-lg p-1 min-w-[180px]">
-                    <div className="px-2 py-1 text-[10px] text-muted-foreground border-b border-border mb-1">
-                        "{pendingNumber}" — choose type:
-                    </div>
-                    <button
-                        type="button"
-                        onClick={chooseAsString}
-                        className="w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded hover:bg-accent text-left"
-                    >
-                        <Type className="h-3.5 w-3.5 text-muted-foreground" />
-                        <code className="text-foreground">"{pendingNumber}"</code>
-                        <span className="text-muted-foreground text-[10px] ml-auto">string</span>
-                    </button>
-                    <button
-                        type="button"
-                        onClick={chooseAsNumber}
-                        className="w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded hover:bg-accent text-left"
-                    >
-                        <Hash className="h-3.5 w-3.5 text-primary" />
-                        <code className="text-primary">[{pendingNumber}]</code>
-                        <span className="text-muted-foreground text-[10px] ml-auto">index</span>
-                    </button>
+            <PopoverContent
+                align="start"
+                sideOffset={5}
+                className="p-1 min-w-[180px] bg-popover border border-border rounded-md shadow-lg"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+                <div className="px-2 py-1 text-[10px] text-muted-foreground border-b border-border mb-1">
+                    "{pendingNumber}" — choose type:
                 </div>
-            )}
-        </div>
+                <button
+                    type="button"
+                    onClick={chooseAsString}
+                    className="w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded hover:bg-accent text-left"
+                >
+                    <Type className="h-3.5 w-3.5 text-muted-foreground" />
+                    <code className="text-foreground">"{pendingNumber}"</code>
+                    <span className="text-muted-foreground text-[10px] ml-auto">string</span>
+                </button>
+                <button
+                    type="button"
+                    onClick={chooseAsNumber}
+                    className="w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded hover:bg-accent text-left"
+                >
+                    <Hash className="h-3.5 w-3.5 text-primary" />
+                    <code className="text-primary">[{pendingNumber}]</code>
+                    <span className="text-muted-foreground text-[10px] ml-auto">index</span>
+                </button>
+            </PopoverContent>
+        </Popover>
     );
 }

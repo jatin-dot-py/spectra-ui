@@ -104,7 +104,7 @@ export function MultiEnumSelect({
                         <button
                             disabled={disabled}
                             className={cn(
-                                'inline-flex items-center justify-center gap-1 h-8 px-2',
+                                'inline-flex items-center justify-center gap-1 h-7 px-2',
                                 'bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50 transition-colors',
                                 disabled && 'opacity-50 cursor-not-allowed'
                             )}
@@ -176,7 +176,7 @@ export function MultiEnumSelect({
                     <button
                         disabled={disabled}
                         className={cn(
-                            'inline-flex items-center justify-between gap-2 h-8 px-3 text-xs w-full min-w-[180px]',
+                            'inline-flex items-center justify-between gap-2 h-7 px-3 text-xs w-full min-w-[180px]',
                             'bg-muted/30 border border-transparent hover:border-border transition-colors',
                             disabled && 'opacity-50 cursor-not-allowed'
                         )}
@@ -306,7 +306,7 @@ export function MultiEnumSelect({
                 disabled={disabled}
                 className={cn(
                     'flex items-center justify-center gap-1.5 font-medium transition-all',
-                    'h-8 px-2.5 text-xs',
+                    'h-7 px-2.5 text-xs',
                     isFirst && 'rounded-l-md',
                     isLast && !needsOverflow && 'rounded-r-md',
                     !isFirst && !isLast && 'rounded-none',
@@ -357,7 +357,7 @@ export function MultiEnumSelect({
                             disabled={disabled}
                             className={cn(
                                 'flex items-center justify-center gap-1 font-medium transition-all rounded-r-md',
-                                'h-8 px-2.5 text-xs',
+                                'h-7 px-2.5 text-xs',
                                 selectedInOverflow.length > 0
                                     ? 'bg-primary text-primary-foreground shadow-sm'
                                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',

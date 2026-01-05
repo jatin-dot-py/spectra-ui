@@ -78,7 +78,7 @@ export function NumberInput({
                 type="button"
                 onClick={handleDecrement}
                 disabled={disabled || (min !== undefined && value <= min)}
-                className="h-8 w-8 flex items-center justify-center bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="h-7 w-7 flex items-center justify-center bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
                 <Minus className="h-3 w-3" />
             </button>
@@ -90,13 +90,13 @@ export function NumberInput({
                 step={step}
                 disabled={disabled}
                 onChange={handleInputChange}
-                className="h-8 text-center text-xs bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="h-7 text-center text-xs bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             />
             <button
                 type="button"
                 onClick={handleIncrement}
                 disabled={disabled || (max !== undefined && value >= max)}
-                className="h-8 w-8 flex items-center justify-center bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="h-7 w-7 flex items-center justify-center bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
                 <Plus className="h-3 w-3" />
             </button>

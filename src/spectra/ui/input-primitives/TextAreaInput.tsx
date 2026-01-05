@@ -1,5 +1,6 @@
 import { useState, useRef, type TextareaHTMLAttributes } from 'react';
 import { Textarea } from '@/components/ui/textarea';
+import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -75,50 +76,57 @@ export function TextAreaInput({
     const hasSuggestions = suggestions.length > 0;
 
     return (
-        <div className="relative flex-1">
-            <div className="relative">
-                <Textarea
-                    ref={textareaRef}
-                    value={value}
-                    onChange={handleInputChange}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    className={cn(
-                        'min-h-[60px] text-xs bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors placeholder:text-muted-foreground/50 scrollbar-none',
-                        hasSuggestions && 'pr-6',
-                        noRing && 'focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-border',
-                        noResize ? 'resize-none' : 'resize-y',
-                        !autoGrow && 'field-sizing-fixed',
-                        className
-                    )}
-                    {...props}
-                />
-                {hasSuggestions && (
-                    <ChevronDown className="absolute right-2 top-3 h-3 w-3 text-muted-foreground/50" />
-                )}
-            </div>
-
-            {open && filtered.length > 0 && (
-                <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-popover border border-border rounded-md shadow-md py-1">
-                    <div className="max-h-40 overflow-auto">
-                        {filtered.map((suggestion) => (
-                            <button
-                                key={suggestion}
-                                type="button"
-                                className={cn(
-                                    'w-full px-2 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground',
-                                    suggestion === value && 'bg-accent/50'
-                                )}
-                                onMouseDown={(e) => e.preventDefault()}
-                                onClick={() => handleSelect(suggestion)}
-                                title={suggestion}
-                            >
-                                <span className="block truncate">{suggestion}</span>
-                            </button>
-                        ))}
+        <Popover open={open && filtered.length > 0} onOpenChange={setOpen} modal={false}>
+            <PopoverAnchor asChild>
+                <div className="relative flex-1">
+                    <div className="relative">
+                        <Textarea
+                            ref={textareaRef}
+                            value={value}
+                            onChange={handleInputChange}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            className={cn(
+                                'min-h-[60px] text-xs bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors placeholder:text-muted-foreground/50 scrollbar-none',
+                                hasSuggestions && 'pr-6',
+                                noRing && 'focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-border',
+                                noResize ? 'resize-none' : 'resize-y',
+                                !autoGrow && 'field-sizing-fixed',
+                                className
+                            )}
+                            {...props}
+                        />
+                        {hasSuggestions && (
+                            <ChevronDown className="absolute right-2 top-3 h-3 w-3 text-muted-foreground/50" />
+                        )}
                     </div>
                 </div>
-            )}
-        </div>
+            </PopoverAnchor>
+
+            <PopoverContent
+                align="start"
+                sideOffset={5}
+                className="p-1 min-w-[var(--radix-popover-trigger-width)] bg-popover border border-border rounded-md shadow-lg"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+                <div className="max-h-40 overflow-auto">
+                    {filtered.map((suggestion) => (
+                        <button
+                            key={suggestion}
+                            type="button"
+                            className={cn(
+                                'w-full px-2 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground',
+                                suggestion === value && 'bg-accent/50'
+                            )}
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => handleSelect(suggestion)}
+                            title={suggestion}
+                        >
+                            <span className="block truncate">{suggestion}</span>
+                        </button>
+                    ))}
+                </div>
+            </PopoverContent>
+        </Popover>
     );
 }

@@ -1,5 +1,6 @@
 import { useState, useRef, type InputHTMLAttributes } from 'react';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -81,64 +82,71 @@ export function TextInput({
     const isFrozen = frozen && !isThawed;
 
     return (
-        <div className="relative flex-1">
-            <div className="relative">
-                {/* Frozen overlay */}
-                {isFrozen && (
-                    <div
-                        onClick={handleThaw}
-                        className={cn(
-                            'absolute inset-0 z-10 cursor-pointer',
-                            'bg-muted/50 border border-border/50',
-                            'flex items-center justify-center',
-                            'hover:bg-accent/50 hover:border-border transition-colors duration-150'
-                        )}
-                    >
-                        <span className="text-[10px] text-muted-foreground"></span>
-                    </div>
-                )}
-                <Input
-                    ref={inputRef}
-                    value={value}
-                    onChange={handleInputChange}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    disabled={isFrozen || props.disabled}
-                    className={cn(
-                        'h-7 text-xs bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors placeholder:text-muted-foreground/50',
-                        hasSuggestions && 'pr-6',
-                        noRing && 'focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-border',
-                        isFrozen && 'opacity-60',
-                        className
-                    )}
-                    {...props}
-                />
-                {hasSuggestions && (
-                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground/50" />
-                )}
-            </div>
-
-            {open && filtered.length > 0 && (
-                <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-popover border border-border rounded-md shadow-md py-1">
-                    <div className="max-h-40 overflow-auto">
-                        {filtered.map((suggestion) => (
-                            <button
-                                key={suggestion}
-                                type="button"
+        <Popover open={open && filtered.length > 0} onOpenChange={setOpen} modal={false}>
+            <PopoverAnchor asChild>
+                <div className="relative flex-1">
+                    <div className="relative">
+                        {/* Frozen overlay */}
+                        {isFrozen && (
+                            <div
+                                onClick={handleThaw}
                                 className={cn(
-                                    'w-full px-2 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground',
-                                    suggestion === value && 'bg-accent/50'
+                                    'absolute inset-0 z-10 cursor-pointer',
+                                    'bg-muted/50 border border-border/50',
+                                    'flex items-center justify-center',
+                                    'hover:bg-accent/50 hover:border-border transition-colors duration-150'
                                 )}
-                                onMouseDown={(e) => e.preventDefault()}
-                                onClick={() => handleSelect(suggestion)}
-                                title={suggestion}
                             >
-                                <span className="block truncate">{suggestion}</span>
-                            </button>
-                        ))}
+                                <span className="text-[10px] text-muted-foreground"></span>
+                            </div>
+                        )}
+                        <Input
+                            ref={inputRef}
+                            value={value}
+                            onChange={handleInputChange}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            disabled={isFrozen || props.disabled}
+                            className={cn(
+                                'h-7 text-xs bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors placeholder:text-muted-foreground/50',
+                                hasSuggestions && 'pr-6',
+                                noRing && 'focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-border',
+                                isFrozen && 'opacity-60',
+                                className
+                            )}
+                            {...props}
+                        />
+                        {hasSuggestions && (
+                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground/50" />
+                        )}
                     </div>
                 </div>
-            )}
-        </div>
+            </PopoverAnchor>
+
+            <PopoverContent
+                align="start"
+                sideOffset={5}
+                className="p-1 min-w-[var(--radix-popover-trigger-width)] bg-popover border border-border rounded-md shadow-lg"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+                <div className="max-h-40 overflow-auto">
+                    {filtered.map((suggestion) => (
+                        <button
+                            key={suggestion}
+                            type="button"
+                            className={cn(
+                                'w-full px-2 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground',
+                                suggestion === value && 'bg-accent/50'
+                            )}
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => handleSelect(suggestion)}
+                            title={suggestion}
+                        >
+                            <span className="block truncate">{suggestion}</span>
+                        </button>
+                    ))}
+                </div>
+            </PopoverContent>
+        </Popover>
     );
 }
