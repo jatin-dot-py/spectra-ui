@@ -48,7 +48,7 @@ export function UrlInput({
         : null;
 
     return (
-        <div className={cn('relative flex items-center', className)}>
+        <div className={cn('relative flex items-center flex-1', className)}>
             {/* Favicon or placeholder icon */}
             <div className="absolute left-2 flex items-center justify-center w-4 h-4 pointer-events-none z-10">
                 {faviconUrl ? (
