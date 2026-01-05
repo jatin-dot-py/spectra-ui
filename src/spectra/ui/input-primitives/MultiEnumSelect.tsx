@@ -306,7 +306,7 @@ export function MultiEnumSelect({
                 disabled={disabled}
                 className={cn(
                     'flex items-center justify-center gap-1.5 font-medium transition-all',
-                    'h-7 px-2.5 text-xs',
+                    'h-6 px-2.5 text-xs',
                     isFirst && 'rounded-l-md',
                     isLast && !needsOverflow && 'rounded-r-md',
                     !isFirst && !isLast && 'rounded-none',
@@ -357,7 +357,7 @@ export function MultiEnumSelect({
                             disabled={disabled}
                             className={cn(
                                 'flex items-center justify-center gap-1 font-medium transition-all rounded-r-md',
-                                'h-7 px-2.5 text-xs',
+                                'h-6 px-2.5 text-xs',
                                 selectedInOverflow.length > 0
                                     ? 'bg-primary text-primary-foreground shadow-sm'
                                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',

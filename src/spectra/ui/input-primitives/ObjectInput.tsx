@@ -118,7 +118,7 @@ export function ObjectInput({
             <DialogTrigger asChild>
                 <button
                     disabled={disabled}
-                    className="flex-1 flex items-center justify-between gap-2 h-7 px-2 text-xs bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-transparent disabled:hover:bg-muted/30"
+                    className="w-full flex items-center justify-between gap-2 h-7 px-2 text-xs bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-transparent disabled:hover:bg-muted/30"
                 >
                     <span className="flex items-center gap-1.5 text-muted-foreground">
                         <Code2 className="h-3.5 w-3.5" />
