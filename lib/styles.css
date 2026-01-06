@@ -7,11 +7,11 @@
  * JS:    import 'spectra/styles.css';
  */
 
-/* =============================================================================
-   Scrollbar Theming
-   - Native browser scrollbars with theme support
-   - Responds to .dark class on html/body
-   ============================================================================= */
+/* 
+Scrollbar Theming
+- Native browser scrollbars with theme support
+- Responds to .dark class on html/body
+*/
 
 :root {
     --spectra-scrollbar-size: 10px;
