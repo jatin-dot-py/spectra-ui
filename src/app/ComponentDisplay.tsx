@@ -14,12 +14,14 @@ import { categoryRegistry as groupRegistry } from './group/config';
 import { categoryRegistry as stateRegistry } from './state/config';
 import { categoryRegistry as dialogsRegistry } from './dialogs/config';
 import { categoryRegistry as fragmentsRegistry } from './fragments/config';
+import { categoryRegistry as examplesRegistry } from './examples/config';
 
 
 // ============================================================================
 // Category Registries - Add new categories here
 // ============================================================================
 const registries: CategoryRegistry[] = [
+    examplesRegistry,
     inputPrimitivesRegistry,
     labeledInputRegistry,
     groupRegistry,

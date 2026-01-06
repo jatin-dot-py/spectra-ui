@@ -1,5 +1,5 @@
 export { BooleanInput, type BooleanInputProps } from './BooleanInput';
-export { DynamicInput, type DynamicInputProps } from './DynamicInput';
+export { DynamicInput, type DynamicInputProps, type DynamicValue } from './DynamicInput';
 export { EnumInput, type EnumInputProps, type EnumOption } from './EnumInput';
 export { IconInput, type IconInputProps } from './IconInput';
 export { MultiEnumSelect, type MultiEnumSelectProps, type MultiEnumOption } from './MultiEnumSelect';

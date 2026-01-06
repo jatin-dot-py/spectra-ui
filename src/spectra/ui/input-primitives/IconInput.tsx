@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover';
 import { useIconSearch, AsyncIconLoader, getIconDisplayName, getIconPackName } from './parts/icons';
 import { cn } from '@/lib/utils';
+import { INPUT_TOKENS } from './input-tokens';
 
 const ICON_SIZE = 20;
 const CELL_SIZE = 40;
@@ -92,7 +93,8 @@ export function IconInput({
                                 }}
                                 className={cn(
                                     'w-full h-full flex items-center justify-center transition-all rounded-sm',
-                                    'bg-muted/30 hover:bg-muted border border-transparent hover:border-border'
+                                    INPUT_TOKENS.bg, 'hover:bg-muted',
+                                    INPUT_TOKENS.border, INPUT_TOKENS.borderHover
                                 )}
                             >
                                 <AsyncIconLoader name={iconName} size={ICON_SIZE} className="text-foreground" />
@@ -109,10 +111,10 @@ export function IconInput({
     }, [results, handleSelect]);
 
     return (
-        <div ref={containerRef}>
+        <div ref={containerRef} className="flex-1">
             <Popover open={showSuggestions} modal={false}>
                 <PopoverAnchor asChild>
-                    <div className="relative">
+                    <div className="relative flex-1">
                         {isExactMatch && (
                             <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
                                 <AsyncIconLoader name={inputValue} size={14} className="text-foreground" />
@@ -127,20 +129,23 @@ export function IconInput({
                             placeholder={placeholder}
                             disabled={disabled}
                             className={cn(
-                                'h-7 text-xs font-mono bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors',
+                                INPUT_TOKENS.height, INPUT_TOKENS.text, 'font-mono',
+                                INPUT_TOKENS.bg, 'border-transparent',
+                                INPUT_TOKENS.borderHover, INPUT_TOKENS.borderFocus,
+                                'focus:bg-background', INPUT_TOKENS.transition,
                                 isExactMatch ? 'pl-7 text-foreground' : 'text-muted-foreground'
                             )}
                         />
                     </div>
                 </PopoverAnchor>
                 <PopoverContent
-                    className="p-0 overflow-hidden"
+                    className={cn(INPUT_TOKENS.dropdownPadding, 'overflow-hidden')}
                     align="start"
                     sideOffset={5}
                     onOpenAutoFocus={(e) => e.preventDefault()}
                     style={{ width: gridWidth }}
                 >
-                    <div className="px-2 py-1 text-xs text-muted-foreground border-b border-border bg-muted/30">
+                    <div className={cn(INPUT_TOKENS.dropdownHeader)}>
                         {results.length.toLocaleString()} matches
                     </div>
                     <div

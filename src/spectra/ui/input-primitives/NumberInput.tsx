@@ -2,6 +2,7 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Minus, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { INPUT_TOKENS } from './input-tokens';
 
 export interface NumberInputProps {
     value: number;
@@ -78,9 +79,9 @@ export function NumberInput({
                 type="button"
                 onClick={handleDecrement}
                 disabled={disabled || (min !== undefined && value <= min)}
-                className="h-7 w-7 flex items-center justify-center bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className={cn(INPUT_TOKENS.height, 'w-7 flex items-center justify-center', INPUT_TOKENS.bg, 'hover:bg-muted', INPUT_TOKENS.disabled, INPUT_TOKENS.transition)}
             >
-                <Minus className="h-3 w-3" />
+                <Minus className={INPUT_TOKENS.iconSmall} />
             </button>
             <Input
                 type="number"
@@ -90,15 +91,15 @@ export function NumberInput({
                 step={step}
                 disabled={disabled}
                 onChange={handleInputChange}
-                className="h-7 text-center text-xs bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className={cn(INPUT_TOKENS.height, 'text-center', INPUT_TOKENS.text, INPUT_TOKENS.bg, 'border-transparent', INPUT_TOKENS.borderHover, INPUT_TOKENS.borderFocus, 'focus:bg-background', INPUT_TOKENS.transition, '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none')}
             />
             <button
                 type="button"
                 onClick={handleIncrement}
                 disabled={disabled || (max !== undefined && value >= max)}
-                className="h-7 w-7 flex items-center justify-center bg-muted/30 hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className={cn(INPUT_TOKENS.height, 'w-7 flex items-center justify-center', INPUT_TOKENS.bg, 'hover:bg-muted', INPUT_TOKENS.disabled, INPUT_TOKENS.transition)}
             >
-                <Plus className="h-3 w-3" />
+                <Plus className={INPUT_TOKENS.iconSmall} />
             </button>
         </div>
     );

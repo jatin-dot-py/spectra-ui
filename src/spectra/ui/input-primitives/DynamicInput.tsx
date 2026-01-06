@@ -6,6 +6,7 @@ import { TextInput } from './TextInput';
 import { NumericalInput } from './NumericalInput';
 import { BooleanInput } from './BooleanInput';
 import { ObjectInput } from './ObjectInput';
+import { INPUT_TOKENS } from './input-tokens';
 
 export type ValueType = 'null' | 'string' | 'number' | 'boolean' | 'object';
 export type DynamicValue = null | string | number | boolean | Record<string, unknown>;
@@ -63,7 +64,7 @@ export function DynamicInput({
         switch (currentType) {
             case 'null':
                 return (
-                    <div className="flex-1 h-7 flex items-center px-3 text-xs text-muted-foreground italic bg-muted/20">
+                    <div className={cn('flex-1 flex items-center px-3 italic text-muted-foreground', INPUT_TOKENS.height, INPUT_TOKENS.text, INPUT_TOKENS.bg)}>
                         null
                     </div>
                 );
@@ -113,7 +114,7 @@ export function DynamicInput({
 
     return (
         <div className={cn(
-            'inline-flex items-center gap-2',
+            'flex flex-1 items-center gap-2',
             disabled && 'opacity-50'
         )}>
             {/* Type Selector */}
@@ -122,16 +123,15 @@ export function DynamicInput({
                     <button
                         disabled={disabled}
                         className={cn(
-                            'inline-flex items-center justify-center gap-1 h-7 px-2',
-                            'bg-muted/30 border border-border/50 hover:border-border hover:bg-muted/50 transition-colors',
+                            INPUT_TOKENS.iconTrigger,
                             disabled && 'cursor-not-allowed'
                         )}
                     >
                         <CurrentTypeIcon className="h-4 w-4" />
-                        <ChevronDown className="h-3 w-3 opacity-50" />
+                        <ChevronDown className={INPUT_TOKENS.chevron} />
                     </button>
                 </PopoverTrigger>
-                <PopoverContent align="start" className="w-36 p-1 gap-0">
+                <PopoverContent align="start" className={cn('w-36', INPUT_TOKENS.dropdownPadding, INPUT_TOKENS.dropdownGap)}>
                     {allowedTypes.map((type) => {
                         const Icon = TYPE_CONFIG[type].icon;
                         const isSelected = type === currentType;
@@ -140,13 +140,13 @@ export function DynamicInput({
                                 key={type}
                                 onClick={() => handleTypeChange(type)}
                                 className={cn(
-                                    'w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded-sm transition-colors',
+                                    INPUT_TOKENS.dropdownItem,
                                     isSelected
-                                        ? 'bg-accent text-accent-foreground'
-                                        : 'hover:bg-muted'
+                                        ? INPUT_TOKENS.dropdownSelected
+                                        : INPUT_TOKENS.dropdownUnselected
                                 )}
                             >
-                                <Icon className="h-3.5 w-3.5" />
+                                <Icon className={INPUT_TOKENS.iconSize} />
                                 <span className="flex-1 text-left">{TYPE_CONFIG[type].label}</span>
                             </button>
                         );

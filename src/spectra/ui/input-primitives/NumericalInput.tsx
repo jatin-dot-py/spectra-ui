@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
+import { INPUT_TOKENS } from './input-tokens';
 
 export interface NumericalInputProps {
     /** Current value */
@@ -55,7 +56,7 @@ export function NumericalInput({
                     disabled={disabled}
                     className="flex-1"
                 />
-                <span className="text-xs font-mono text-muted-foreground w-10 text-right">
+                <span className={cn(INPUT_TOKENS.text, 'font-mono text-muted-foreground w-10 text-right')}>
                     {value}
                 </span>
             </div>
@@ -98,7 +99,10 @@ export function NumericalInput({
             placeholder={placeholder}
             disabled={disabled}
             className={cn(
-                'h-7 text-xs flex-1 bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors font-mono',
+                INPUT_TOKENS.height, INPUT_TOKENS.text, 'flex-1',
+                INPUT_TOKENS.bg, 'border-transparent',
+                INPUT_TOKENS.borderHover, INPUT_TOKENS.borderFocus,
+                'focus:bg-background', INPUT_TOKENS.transition, 'font-mono',
                 className
             )}
         />

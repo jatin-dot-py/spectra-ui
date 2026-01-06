@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { X, Hash, Type } from 'lucide-react';
 import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover';
+import { INPUT_TOKENS } from './input-tokens';
 
 export type PathSegment = string | number;
 
@@ -132,10 +133,10 @@ export function JsonPathInput({
                     <div
                         className={cn(
                             'flex flex-wrap items-center gap-1.5 min-h-7 px-2 py-1',
-                            'bg-muted/30 border border-transparent transition-colors',
-                            'focus-within:border-border',
-                            !disabled && 'hover:border-border',
-                            disabled && 'opacity-50 cursor-not-allowed'
+                            INPUT_TOKENS.bg, INPUT_TOKENS.border, INPUT_TOKENS.transition,
+                            INPUT_TOKENS.borderFocusWithin,
+                            !disabled && INPUT_TOKENS.borderHover,
+                            disabled && INPUT_TOKENS.disabledContainer
                         )}
                         onClick={() => inputRef.current?.focus()}
                     >
@@ -178,7 +179,7 @@ export function JsonPathInput({
                                 onKeyDown={handleKeyDown}
                                 onPaste={handlePaste}
                                 placeholder={value.length === 0 ? placeholder : ''}
-                                className="flex-1 min-w-[80px] h-5 bg-transparent text-xs outline-none placeholder:text-muted-foreground/50"
+                                className={cn('flex-1 min-w-[80px] h-5 bg-transparent outline-none', INPUT_TOKENS.text, INPUT_TOKENS.placeholder)}
                             />
                         )}
                     </div>
@@ -189,29 +190,29 @@ export function JsonPathInput({
             <PopoverContent
                 align="start"
                 sideOffset={5}
-                className="p-1 min-w-[180px] bg-popover border border-border rounded-md shadow-lg"
+                className={cn(INPUT_TOKENS.dropdownPadding, INPUT_TOKENS.dropdownGap, 'w-auto min-w-[200px]')}
                 onOpenAutoFocus={(e) => e.preventDefault()}
             >
-                <div className="px-2 py-1 text-[10px] text-muted-foreground border-b border-border mb-1">
-                    "{pendingNumber}" — choose type:
+                <div className={cn(INPUT_TOKENS.dropdownHeader, 'mb-1')}>
+                    Choose type for "{pendingNumber}"
                 </div>
                 <button
                     type="button"
                     onClick={chooseAsString}
-                    className="w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded hover:bg-accent text-left"
+                    className={cn(INPUT_TOKENS.dropdownItem, INPUT_TOKENS.dropdownUnselected)}
                 >
-                    <Type className="h-3.5 w-3.5 text-muted-foreground" />
-                    <code className="text-foreground">"{pendingNumber}"</code>
-                    <span className="text-muted-foreground text-[10px] ml-auto">string</span>
+                    <Type className={INPUT_TOKENS.iconSize} />
+                    <span className="flex-1 text-left">String key</span>
+                    <code className="text-muted-foreground font-mono">"{pendingNumber}"</code>
                 </button>
                 <button
                     type="button"
                     onClick={chooseAsNumber}
-                    className="w-full flex items-center gap-2 px-2 py-1.5 text-xs rounded hover:bg-accent text-left"
+                    className={cn(INPUT_TOKENS.dropdownItem, INPUT_TOKENS.dropdownUnselected)}
                 >
-                    <Hash className="h-3.5 w-3.5 text-primary" />
-                    <code className="text-primary">[{pendingNumber}]</code>
-                    <span className="text-muted-foreground text-[10px] ml-auto">index</span>
+                    <Hash className={cn(INPUT_TOKENS.iconSize, 'text-primary')} />
+                    <span className="flex-1 text-left">Array index</span>
+                    <code className="text-primary font-mono">[{pendingNumber}]</code>
                 </button>
             </PopoverContent>
         </Popover>

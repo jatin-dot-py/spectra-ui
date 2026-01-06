@@ -10,6 +10,8 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Code2, Check } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { INPUT_TOKENS } from './input-tokens';
 
 export interface ObjectInputProps {
     /** Current JSON value (object or string) */
@@ -118,10 +120,13 @@ export function ObjectInput({
             <DialogTrigger asChild>
                 <button
                     disabled={disabled}
-                    className="w-full flex items-center justify-between gap-2 h-7 px-2 text-xs bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-transparent disabled:hover:bg-muted/30"
+                    className={cn(
+                        INPUT_TOKENS.triggerButton,
+                        INPUT_TOKENS.triggerButtonDisabled
+                    )}
                 >
                     <span className="flex items-center gap-1.5 text-muted-foreground">
-                        <Code2 className="h-3.5 w-3.5" />
+                        <Code2 className={INPUT_TOKENS.iconSize} />
                         <span>{label}</span>
                     </span>
                     <span className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground">

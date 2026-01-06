@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { Globe } from 'lucide-react';
 import { TextInput, type TextInputProps } from './TextInput';
 
-export interface UrlInputProps extends Omit<TextInputProps, 'suggestions'> {
+export interface UrlInputProps extends TextInputProps {
     /** Favicon size (16, 32, 64, etc.) */
     faviconSize?: number;
 }

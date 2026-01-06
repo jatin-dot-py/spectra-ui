@@ -3,6 +3,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { INPUT_TOKENS } from './input-tokens';
 
 export interface TextAreaInputProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'value' | 'onChange'> {
     /** Current value */
@@ -87,7 +88,10 @@ export function TextAreaInput({
                             onFocus={handleFocus}
                             onBlur={handleBlur}
                             className={cn(
-                                'min-h-[60px] text-xs bg-muted/30 border-transparent hover:border-border focus:border-border focus:bg-background transition-colors placeholder:text-muted-foreground/50 scrollbar-none',
+                                'min-h-[60px]', INPUT_TOKENS.text, INPUT_TOKENS.bg,
+                                'border-transparent', INPUT_TOKENS.borderHover, INPUT_TOKENS.borderFocus,
+                                'focus:bg-background', INPUT_TOKENS.transition, INPUT_TOKENS.placeholder,
+                                'scrollbar-none',
                                 hasSuggestions && 'pr-6',
                                 noRing && 'focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-border',
                                 noResize ? 'resize-none' : 'resize-y',
@@ -97,7 +101,7 @@ export function TextAreaInput({
                             {...props}
                         />
                         {hasSuggestions && (
-                            <ChevronDown className="absolute right-2 top-3 h-3 w-3 text-muted-foreground/50" />
+                            <ChevronDown className={cn('absolute right-2 top-3', INPUT_TOKENS.iconSmall, 'text-muted-foreground/50')} />
                         )}
                     </div>
                 </div>
@@ -106,7 +110,7 @@ export function TextAreaInput({
             <PopoverContent
                 align="start"
                 sideOffset={5}
-                className="p-1 min-w-[var(--radix-popover-trigger-width)] bg-popover border border-border rounded-md shadow-lg"
+                className={cn(INPUT_TOKENS.dropdownPadding, 'min-w-[var(--radix-popover-trigger-width)] bg-popover border border-border rounded-md shadow-lg')}
                 onOpenAutoFocus={(e) => e.preventDefault()}
             >
                 <div className="max-h-40 overflow-auto">
@@ -115,8 +119,9 @@ export function TextAreaInput({
                             key={suggestion}
                             type="button"
                             className={cn(
-                                'w-full px-2 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground',
-                                suggestion === value && 'bg-accent/50'
+                                INPUT_TOKENS.dropdownItem,
+                                'text-left',
+                                suggestion === value ? INPUT_TOKENS.dropdownSelected : INPUT_TOKENS.dropdownUnselected
                             )}
                             onMouseDown={(e) => e.preventDefault()}
                             onClick={() => handleSelect(suggestion)}

@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select';
 import { ChevronDown, Check, type LucideIcon } from 'lucide-react';
 import { type SpectraIconType } from '@/spectra/types';
+import { INPUT_TOKENS } from './input-tokens';
 
 export interface EnumOption {
     /** The actual value stored */
@@ -89,20 +90,18 @@ export function EnumInput({
                         <button
                             disabled={disabled}
                             className={cn(
-                                'inline-flex items-center justify-center gap-1 h-7 px-2',
-                                !borderless && 'bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50',
-                                borderless && 'hover:bg-muted/30',
-                                'transition-colors',
-                                disabled && 'opacity-50 cursor-not-allowed'
+                                INPUT_TOKENS.iconTrigger,
+                                borderless && 'bg-transparent border-transparent hover:bg-muted/30',
+                                disabled && INPUT_TOKENS.disabledContainer
                             )}
                         >
                             <TriggerIcon className="h-4 w-4" />
-                            <ChevronDown className="h-3 w-3 opacity-50" />
+                            <ChevronDown className={INPUT_TOKENS.chevron} />
                         </button>
                     </PopoverTrigger>
-                    <PopoverContent align="start" className="w-48 p-1 gap-0">
+                    <PopoverContent align="start" className={cn('w-48', INPUT_TOKENS.dropdownPadding, INPUT_TOKENS.dropdownGap)}>
                         {dropdownTitle && (
-                            <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground border-b border-border mb-1">
+                            <div className={cn(INPUT_TOKENS.dropdownHeader, 'mb-1')}>
                                 {dropdownTitle}
                             </div>
                         )}
@@ -117,15 +116,15 @@ export function EnumInput({
                                         setIconDropdownOpen(false);
                                     }}
                                     className={cn(
-                                        'w-full flex items-center gap-2 px-2 py-1.5 text-xs transition-colors',
+                                        INPUT_TOKENS.dropdownItem,
                                         isSelected
-                                            ? 'bg-accent text-accent-foreground'
-                                            : 'hover:bg-muted'
+                                            ? INPUT_TOKENS.dropdownSelected
+                                            : INPUT_TOKENS.dropdownUnselected
                                     )}
                                 >
-                                    {OptIcon && <OptIcon className="h-3.5 w-3.5" />}
+                                    {OptIcon && <OptIcon className={INPUT_TOKENS.iconSize} />}
                                     <span className="flex-1 text-left">{option.label}</span>
-                                    {isSelected && <Check className="h-3.5 w-3.5" />}
+                                    {isSelected && <Check className={INPUT_TOKENS.iconSize} />}
                                 </button>
                             );
                         })}
@@ -137,21 +136,21 @@ export function EnumInput({
         // Standard dropdown using Select
         return (
             <Select value={value || ''} onValueChange={handleSelect} disabled={disabled}>
-                <SelectTrigger className="h-7 text-xs bg-muted/30 border-transparent hover:border-border focus:border-border transition-colors">
+                <SelectTrigger size="sm" className={cn(INPUT_TOKENS.text, INPUT_TOKENS.bg, 'border-transparent', INPUT_TOKENS.borderHover, INPUT_TOKENS.borderFocus, INPUT_TOKENS.transition)}>
                     <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
                 <SelectContent>
                     {dropdownTitle && (
-                        <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground border-b border-border mb-1">
+                        <div className={cn(INPUT_TOKENS.dropdownHeader, 'mb-1')}>
                             {dropdownTitle}
                         </div>
                     )}
                     {options.map((option) => {
                         const OptIcon = option.icon;
                         return (
-                            <SelectItem key={option.value} value={option.value} className="text-xs">
+                            <SelectItem key={option.value} value={option.value} className={INPUT_TOKENS.text}>
                                 <div className="flex items-center gap-2">
-                                    {OptIcon && <OptIcon className="h-3.5 w-3.5" />}
+                                    {OptIcon && <OptIcon className={INPUT_TOKENS.iconSize} />}
                                     {option.label}
                                 </div>
                             </SelectItem>
@@ -183,18 +182,17 @@ export function EnumInput({
                 onClick={() => handleSelect(option.value)}
                 disabled={disabled}
                 className={cn(
-                    'flex items-center justify-center gap-1.5 font-medium transition-all',
-                    'h-full px-2.5 text-xs',
+                    INPUT_TOKENS.buttonGroupItem,
                     isFirst && 'rounded-l-md',
                     isLast && !needsOverflow && 'rounded-r-md',
                     !isFirst && !isLast && 'rounded-none',
                     isSelected
-                        ? 'bg-background text-foreground shadow-sm'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
-                    disabled && 'opacity-50 cursor-not-allowed'
+                        ? INPUT_TOKENS.buttonSelected
+                        : INPUT_TOKENS.buttonUnselected,
+                    disabled && INPUT_TOKENS.disabledContainer
                 )}
             >
-                {showIcon && <Icon className="h-3.5 w-3.5" />}
+                {showIcon && <Icon className={INPUT_TOKENS.iconSize} />}
                 {showText && <span className="truncate">{option.label}</span>}
             </button>
         );
@@ -218,8 +216,8 @@ export function EnumInput({
 
     return (
         <div className={cn(
-            'inline-flex h-7 items-center box-border',
-            !borderless && 'border border-border/40 bg-muted/30 p-0.5 shadow-sm',
+            INPUT_TOKENS.buttonGroupContainer,
+            borderless && 'bg-transparent border-transparent',
             disabled && 'opacity-50'
         )}>
             {/* Inline buttons */}
@@ -234,18 +232,18 @@ export function EnumInput({
                         <button
                             disabled={disabled}
                             className={cn(
-                                'flex items-center justify-center gap-1 font-medium transition-all rounded-r-md',
-                                'h-full px-2.5 text-xs',
+                                INPUT_TOKENS.buttonGroupItem,
+                                'rounded-r-md',
                                 selectedInOverflow
-                                    ? 'bg-background text-foreground shadow-sm'
-                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
+                                    ? INPUT_TOKENS.buttonSelected
+                                    : INPUT_TOKENS.buttonUnselected,
                                 disabled && 'cursor-not-allowed'
                             )}
                         >
                             {selectedInOverflow ? (
                                 <>
                                     {selectedInOverflow.icon && buttonDisplay !== 'text' && (
-                                        <selectedInOverflow.icon className="h-3.5 w-3.5" />
+                                        <selectedInOverflow.icon className={INPUT_TOKENS.iconSize} />
                                     )}
                                     {buttonDisplay !== 'icon' && (
                                         <span className="truncate">{selectedInOverflow.label}</span>
@@ -254,10 +252,10 @@ export function EnumInput({
                             ) : (
                                 <span>More</span>
                             )}
-                            <ChevronDown className="h-3 w-3" />
+                            <ChevronDown className={INPUT_TOKENS.iconSmall} />
                         </button>
                     </PopoverTrigger>
-                    <PopoverContent align="end" className="w-44 p-1 gap-0">
+                    <PopoverContent align="end" className={cn('w-44', INPUT_TOKENS.dropdownPadding, INPUT_TOKENS.dropdownGap)}>
                         {overflowOptions.map((option) => {
                             const Icon = option.icon;
                             const isSelected = value === option.value;
@@ -269,15 +267,15 @@ export function EnumInput({
                                         setOverflowOpen(false);
                                     }}
                                     className={cn(
-                                        'w-full flex items-center gap-2 px-2 py-1.5 text-xs transition-colors',
+                                        INPUT_TOKENS.dropdownItem,
                                         isSelected
-                                            ? 'bg-accent text-accent-foreground'
-                                            : 'hover:bg-muted'
+                                            ? INPUT_TOKENS.dropdownSelected
+                                            : INPUT_TOKENS.dropdownUnselected
                                     )}
                                 >
-                                    {Icon && <Icon className="h-3.5 w-3.5" />}
+                                    {Icon && <Icon className={INPUT_TOKENS.iconSize} />}
                                     <span className="flex-1 text-left truncate">{option.label}</span>
-                                    {isSelected && <Check className="h-3.5 w-3.5" />}
+                                    {isSelected && <Check className={INPUT_TOKENS.iconSize} />}
                                 </button>
                             );
                         })}
