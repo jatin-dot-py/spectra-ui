@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { FolderTree, Columns, Code, FileX2, TableProperties, Globe, Bookmark, FileCode2, FileType2, Braces } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
-import { FileTree, ContentTab, FileCodeView, JsonCodeView, KeyValuePairTable, HttpRequestMetadata } from '@/spectra/ui/fragments';
+import { FileTree, ContentTab, FileCodeView, JsonCodeView, KeyValuePairTable, HttpRequestMetadata, HtmlCodeView } from '@/spectra/ui/fragments';
 import { NoContent } from '@/spectra/ui/state';
 
 // ============================================================================
@@ -982,9 +982,89 @@ const JSON_CODE_VIEW_CONFIG: ComponentConfig = {
 // ============================================================================
 // Category Registry Export
 // ============================================================================
+
+// ============================================================================
+// Preview Components - HtmlCodeView
+// ============================================================================
+
+const SAMPLE_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Preview</title>
+    <style>
+        body { font-family: system-ui, sans-serif; padding: 2rem; background: #f0fdf4; color: #166534; }
+        h1 { margin-top: 0; }
+        .card { background: white; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Hello from HTML!</h1>
+        <p>This is a safely rendered preview using a sandboxed iframe.</p>
+        <button style="padding: 0.5rem 1rem; background: #166534; color: white; border: none; border-radius: 0.25rem;">
+            Static Button
+        </button>
+    </div>
+</body>
+</html>`;
+
+function HtmlCodeViewBasicPreview() {
+    return (
+        <div style={{ height: '400px', width: '500px' }}>
+            <HtmlCodeView
+                filename="index.html"
+                content={SAMPLE_HTML}
+            />
+        </div>
+    );
+}
+
+function HtmlCodeViewPreviewModePreview() {
+    return (
+        <div style={{ height: '400px', width: '500px' }}>
+            <HtmlCodeView
+                filename="preview.html"
+                content={SAMPLE_HTML}
+                initialMode="preview"
+            />
+        </div>
+    );
+}
+
+const HTML_CODE_VIEW_CONFIG: ComponentConfig = {
+    id: 'html-code-view',
+    name: 'HtmlCodeView',
+    description: 'Code viewer for HTML with a secure preview toggle using a sandboxed iframe.',
+    icon: Code,
+    importPath: '@/spectra/ui/fragments',
+    examples: [
+        {
+            title: 'Basic Usage',
+            description: 'Starts in code view, can toggle to preview',
+            code: `<HtmlCodeView
+    filename="index.html"
+    content={htmlContent}
+/>`,
+            preview: <HtmlCodeViewBasicPreview />,
+        },
+        {
+            title: 'Initial Preview Mode',
+            description: 'Starts directly in preview mode',
+            code: `<HtmlCodeView
+    filename="preview.html"
+    content={htmlContent}
+    initialMode="preview"
+/>`,
+            preview: <HtmlCodeViewPreviewModePreview />,
+        },
+    ],
+};
+
 export const categoryRegistry: CategoryRegistry = {
     id: 'fragments',
     name: 'Fragments',
     icon: FolderTree,
-    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, JSON_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG],
+    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, JSON_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG, HTML_CODE_VIEW_CONFIG],
 };

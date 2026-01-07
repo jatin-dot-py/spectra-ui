@@ -4,5 +4,6 @@ export { FileCodeView, type FileCodeViewProps } from './FileCodeView';
 export { JsonCodeView, type JsonCodeViewProps } from './JsonCodeView';
 export { KeyValuePairTable, type KeyValuePairTableProps } from './KeyValuePairTable';
 export { HttpRequestMetadata, type HttpRequestMetadataProps } from './HttpRequestMetadata';
+export { HtmlCodeView, type HtmlCodeViewProps } from './HtmlCodeView';
 
 
