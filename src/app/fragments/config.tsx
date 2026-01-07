@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { FolderTree, Columns, Code, FileX2, TableProperties, Globe, Bookmark, FileCode2, FileType2 } from 'lucide-react';
+import { FolderTree, Columns, Code, FileX2, TableProperties, Globe, Bookmark, FileCode2, FileType2, Braces } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
-import { FileTree, ContentTab, FileCodeView, KeyValuePairTable, HttpRequestMetadata } from '@/spectra/ui/fragments';
+import { FileTree, ContentTab, FileCodeView, JsonCodeView, KeyValuePairTable, HttpRequestMetadata } from '@/spectra/ui/fragments';
 import { NoContent } from '@/spectra/ui/state';
 
 // ============================================================================
@@ -840,6 +840,143 @@ const HTTP_REQUEST_METADATA_CONFIG: ComponentConfig = {
         },
     ],
 };
+// ============================================================================
+// Preview Components - JsonCodeView
+// ============================================================================
+
+const SAMPLE_JSON_SIMPLE = {
+    name: "John Doe",
+    age: 32,
+    email: "john@example.com",
+    isActive: true,
+    role: null,
+};
+
+const SAMPLE_JSON_NESTED = {
+    user: {
+        id: 1,
+        profile: {
+            name: "Jane Smith",
+            avatar: "https://example.com/avatar.jpg",
+            settings: {
+                theme: "dark",
+                notifications: true,
+            },
+        },
+    },
+    posts: [
+        { id: 101, title: "First Post", likes: 42 },
+        { id: 102, title: "Second Post", likes: 128 },
+    ],
+    metadata: {
+        version: "2.0.0",
+        tags: ["api", "user", "data"],
+    },
+};
+
+const SAMPLE_JSON_LARGE_ARRAY = {
+    items: Array.from({ length: 50 }, (_, i) => ({
+        id: i + 1,
+        value: `Item ${i + 1}`,
+        active: i % 2 === 0,
+    })),
+};
+
+function JsonCodeViewBasicPreview() {
+    return (
+        <div style={{ height: '400px', width: '500px' }}>
+            <JsonCodeView
+                filename="user.json"
+                data={SAMPLE_JSON_SIMPLE}
+            />
+        </div>
+    );
+}
+
+function JsonCodeViewNestedPreview() {
+    return (
+        <div style={{ height: '500px', width: '600px' }}>
+            <JsonCodeView
+                filename="response.json"
+                data={SAMPLE_JSON_NESTED}
+                rootLabel="data"
+            />
+        </div>
+    );
+}
+
+function JsonCodeViewExpandedPreview() {
+    return (
+        <div style={{ height: '500px', width: '600px' }}>
+            <JsonCodeView
+                filename="full.json"
+                data={SAMPLE_JSON_NESTED}
+                rootLabel="response"
+            />
+        </div>
+    );
+}
+
+function JsonCodeViewLargeArrayPreview() {
+    return (
+        <div style={{ height: '500px', width: '600px' }}>
+            <JsonCodeView
+                filename="items.json"
+                data={SAMPLE_JSON_LARGE_ARRAY}
+                rootLabel="items"
+            />
+        </div>
+    );
+}
+
+const JSON_CODE_VIEW_CONFIG: ComponentConfig = {
+    id: 'json-code-view',
+    name: 'JsonCodeView',
+    description: 'Interactive JSON explorer with collapsible nodes, type coloring, and copy functionality.',
+    icon: Braces,
+    importPath: '@/spectra/ui/fragments',
+    examples: [
+        {
+            title: 'Basic Usage',
+            description: 'Simple JSON object with type-colored values',
+            code: `<JsonCodeView
+    filename="user.json"
+    data={{ name: "John", age: 32, isActive: true }}
+/>`,
+            preview: <JsonCodeViewBasicPreview />,
+        },
+        {
+            title: 'Nested Structure',
+            description: 'Deep JSON with collapsible nodes, expands to maxDepth=2',
+            code: `<JsonCodeView
+    filename="response.json"
+    data={nestedData}
+    maxDepth={2}
+/>`,
+            preview: <JsonCodeViewNestedPreview />,
+        },
+        {
+            title: 'Default Expanded',
+            description: 'All nodes expanded by default',
+            code: `<JsonCodeView
+    filename="full.json"
+    data={data}
+    defaultExpanded={true}
+/>`,
+            preview: <JsonCodeViewExpandedPreview />,
+        },
+        {
+            title: 'Large Array',
+            description: 'Handle arrays with many items (collapsed for performance)',
+            code: `<JsonCodeView
+    filename="items.json"
+    data={{ items: [...50 items] }}
+    maxDepth={1}
+/>`,
+            preview: <JsonCodeViewLargeArrayPreview />,
+        },
+    ],
+};
 
 
 // ============================================================================
@@ -849,5 +986,5 @@ export const categoryRegistry: CategoryRegistry = {
     id: 'fragments',
     name: 'Fragments',
     icon: FolderTree,
-    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG],
+    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, JSON_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG],
 };

@@ -46,19 +46,19 @@
     "preview": "vite preview"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18",
-    "lucide-react": ">=0.400.0",
-    "react-icons": ">=5.0.0",
-    "radix-ui": ">=1.0.0",
+    "@monaco-editor/react": ">=4.0.0",
     "class-variance-authority": ">=0.7.0",
     "clsx": ">=2.0.0",
-    "tailwind-merge": ">=2.0.0",
     "cmdk": ">=1.0.0",
-    "sonner": ">=1.0.0",
-    "vaul": ">=1.0.0",
+    "lucide-react": ">=0.400.0",
+    "radix-ui": ">=1.0.0",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "react-icons": ">=5.0.0",
     "react-syntax-highlighter": ">=15.0.0",
-    "@monaco-editor/react": ">=4.0.0"
+    "sonner": ">=1.0.0",
+    "tailwind-merge": ">=2.0.0",
+    "vaul": ">=1.0.0"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
