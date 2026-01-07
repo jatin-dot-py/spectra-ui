@@ -17,7 +17,6 @@ import {
     Command,
     CommandEmpty,
     CommandGroup,
-    CommandInput,
     CommandItem,
     CommandList,
 } from '@/components/ui/command';
@@ -57,21 +56,21 @@ function formatSegment(segment: PathSegment): string {
 
 // Get type info for a value
 function getTypeInfo(value: unknown): { type: string; color: string } {
-    if (value === null) return { type: 'null', color: 'secondary' };
-    if (Array.isArray(value)) return { type: `array[${value.length}]`, color: 'default' };
-    if (typeof value === 'object') return { type: `object{${Object.keys(value).length}}`, color: 'default' };
-    if (typeof value === 'number') return { type: 'number', color: 'secondary' };
-    if (typeof value === 'boolean') return { type: 'bool', color: 'secondary' };
-    if (typeof value === 'string') return { type: 'string', color: 'secondary' };
-    return { type: typeof value, color: 'secondary' };
+    if (value === null) return { type: 'null', color: 'text-muted-foreground/60' };
+    if (Array.isArray(value)) return { type: `array[${value.length}]`, color: 'text-muted-foreground' };
+    if (typeof value === 'object') return { type: `object{${Object.keys(value).length}}`, color: 'text-muted-foreground' };
+    if (typeof value === 'number') return { type: 'number', color: 'text-muted-foreground' };
+    if (typeof value === 'boolean') return { type: 'bool', color: 'text-muted-foreground' };
+    if (typeof value === 'string') return { type: 'string', color: 'text-muted-foreground' };
+    return { type: typeof value, color: 'text-muted-foreground' };
 }
 
-export function PathBreadcrumb({ data, path, rootLabel = 'root', onPathChange, onCopyPath, pathCopied }: PathBreadcrumbProps) {
+export function PathBreadcrumb({ data, path, rootLabel, onPathChange, onCopyPath, pathCopied }: PathBreadcrumbProps) {
     const [open, setOpen] = useState(false);
 
     const currentValue = useMemo(() => getValueAtPath(data, path), [data, path]);
     const currentKeys = useMemo(() => getKeys(currentValue), [currentValue]);
-    const isArray = Array.isArray(currentValue);
+    // const isArray = Array.isArray(currentValue); // Unused
     const canDrillDeeper = currentValue !== null && typeof currentValue === 'object' && currentKeys.length > 0;
 
     const handlePathClick = (index: number) => {
@@ -91,39 +90,61 @@ export function PathBreadcrumb({ data, path, rootLabel = 'root', onPathChange, o
         });
     }, [currentKeys, currentValue]);
 
+    const displayRootLabel = rootLabel || 'root';
+
     return (
-        <div className="px-3 py-2 flex-shrink-0 flex items-center gap-2">
-            <Breadcrumb className="flex-1 min-w-0">
-                <BreadcrumbList>
+        <div className="px-3 py-2 flex-shrink-0 flex items-center gap-2 overflow-hidden">
+            <Breadcrumb className="whitespace-nowrap overflow-hidden text-ellipsis">
+                <BreadcrumbList className="flex-nowrap">
                     {/* Root */}
                     <BreadcrumbItem>
-                        {path.length === 0 && !canDrillDeeper ? (
-                            <BreadcrumbPage className="font-mono">{rootLabel}</BreadcrumbPage>
+                        {path.length === 0 ? (
+                            <BreadcrumbPage className="font-mono font-medium text-secondary-foreground bg-secondary px-1.5 py-0.5 rounded-sm flex items-center gap-1.5">
+                                {rootLabel && (
+                                    <button
+                                        onClick={onCopyPath}
+                                        className="p-0.5 hover:bg-background/20 rounded-sm transition-colors text-secondary-foreground/80 hover:text-secondary-foreground"
+                                        title="Copy path"
+                                    >
+                                        {pathCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                                    </button>
+                                )}
+                                {displayRootLabel}
+                            </BreadcrumbPage>
                         ) : (
                             <BreadcrumbLink
                                 href="#"
                                 onClick={(e) => { e.preventDefault(); handlePathClick(0); }}
-                                className="font-mono"
+                                className="font-mono hover:text-foreground transition-colors"
                             >
-                                {rootLabel}
+                                {displayRootLabel}
                             </BreadcrumbLink>
                         )}
                     </BreadcrumbItem>
 
                     {/* Path segments */}
                     {path.map((segment, index) => {
-                        const isLast = index === path.length - 1 && !canDrillDeeper;
+                        const isLast = index === path.length - 1;
                         return (
                             <span key={index} className="contents">
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
                                     {isLast ? (
-                                        <BreadcrumbPage className="font-mono">{formatSegment(segment)}</BreadcrumbPage>
+                                        <BreadcrumbPage className="font-mono font-medium text-secondary-foreground bg-secondary px-1.5 py-0.5 rounded-sm flex items-center gap-1.5">
+                                            <button
+                                                onClick={onCopyPath}
+                                                className="p-0.5 hover:bg-background/20 rounded-sm transition-colors text-secondary-foreground/80 hover:text-secondary-foreground"
+                                                title="Copy path"
+                                            >
+                                                {pathCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                                            </button>
+                                            {formatSegment(segment)}
+                                        </BreadcrumbPage>
                                     ) : (
                                         <BreadcrumbLink
                                             href="#"
                                             onClick={(e) => { e.preventDefault(); handlePathClick(index + 1); }}
-                                            className="font-mono"
+                                            className="font-mono hover:text-foreground transition-colors"
                                         >
                                             {formatSegment(segment)}
                                         </BreadcrumbLink>
@@ -139,24 +160,23 @@ export function PathBreadcrumb({ data, path, rootLabel = 'root', onPathChange, o
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
                                 <Popover open={open} onOpenChange={setOpen}>
-                                    <PopoverTrigger className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-                                        <span className="font-mono text-xs">...</span>
+                                    <PopoverTrigger className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer group">
+                                        <span className="font-mono text-xs group-hover:underline decoration-border/50 underline-offset-2">...</span>
                                     </PopoverTrigger>
-                                    <PopoverContent align="start" className="w-48 p-0">
+                                    <PopoverContent align="start" className="w-56 p-1">
                                         <Command>
-                                            <CommandInput placeholder={isArray ? "Index..." : "Key..."} className="h-7 text-xs" />
-                                            <CommandList className="max-h-48">
-                                                <CommandEmpty className="py-2 text-xs">No results.</CommandEmpty>
-                                                <CommandGroup heading={isArray ? `${currentKeys.length} items` : `${currentKeys.length} keys`}>
-                                                    {keysWithTypes.map(({ key, type }) => (
+                                            <CommandList className="max-h-[240px] overflow-y-auto">
+                                                <CommandEmpty className="py-2 text-center text-xs text-muted-foreground">No items.</CommandEmpty>
+                                                <CommandGroup>
+                                                    {keysWithTypes.map(({ key, type, color }) => (
                                                         <CommandItem
                                                             key={String(key)}
-                                                            value={formatSegment(key)}
+                                                            value={String(key)}
                                                             onSelect={() => handleDrillDown(key)}
-                                                            className="flex items-center justify-between py-1 text-xs"
+                                                            className="flex items-center justify-between py-1.5 px-2 text-xs rounded-sm aria-selected:bg-accent aria-selected:text-accent-foreground cursor-pointer"
                                                         >
-                                                            <span className="font-mono">{formatSegment(key)}</span>
-                                                            <span className="text-[9px] text-muted-foreground/70">{type}</span>
+                                                            <span className="font-mono truncate">{formatSegment(key)}</span>
+                                                            <span className={`text-[10px] ${color} opacity-80 flex-shrink-0 ml-2`}>{type}</span>
                                                         </CommandItem>
                                                     ))}
                                                 </CommandGroup>
@@ -169,15 +189,6 @@ export function PathBreadcrumb({ data, path, rootLabel = 'root', onPathChange, o
                     )}
                 </BreadcrumbList>
             </Breadcrumb>
-
-            {/* Copy path button - integrated in breadcrumb row */}
-            <button
-                onClick={onCopyPath}
-                className="flex-shrink-0 p-1 text-muted-foreground/50 hover:text-foreground transition-colors"
-                title="Copy path"
-            >
-                {pathCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-            </button>
         </div>
     );
 }

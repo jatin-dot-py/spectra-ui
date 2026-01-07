@@ -24,5 +24,11 @@ export interface GroupItemProps {
     alwaysShowAction?: boolean;
     /** Size variant */
     size?: GroupSize;
+    /** Optional info popover with description and reference link */
+    info?: {
+        description: string;
+        referenceUrl?: string;
+        referenceLabel?: string;
+    };
 }
-export declare function GroupItem({ title, icon: Icon, children, collapsible, defaultExpanded, indentChildren, actionIcon: ActionIcon, onActionIconClick, badgeText, alwaysShowAction, size, }: GroupItemProps): import("react/jsx-runtime").JSX.Element;
+export declare function GroupItem({ title, icon: Icon, children, collapsible, defaultExpanded, indentChildren, actionIcon: ActionIcon, onActionIconClick, badgeText, alwaysShowAction, size, info, }: GroupItemProps): import("react/jsx-runtime").JSX.Element;

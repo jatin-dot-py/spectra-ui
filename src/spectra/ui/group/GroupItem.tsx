@@ -3,6 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
 import { type GroupSize, sizeConfig } from './sizeConfig';
+import { InfoPopover } from '@/spectra/ui/_shared/InfoPopover';
 
 export interface GroupItemProps {
     /** Group item title */
@@ -27,6 +28,12 @@ export interface GroupItemProps {
     alwaysShowAction?: boolean;
     /** Size variant */
     size?: GroupSize;
+    /** Optional info popover with description and reference link */
+    info?: {
+        description: string;
+        referenceUrl?: string;
+        referenceLabel?: string;
+    };
 }
 
 export function GroupItem({
@@ -41,6 +48,7 @@ export function GroupItem({
     badgeText,
     alwaysShowAction = false,
     size = 'sm',
+    info,
 }: GroupItemProps) {
     const [expanded, setExpanded] = useState(defaultExpanded);
     const s = sizeConfig[size];
@@ -94,6 +102,16 @@ export function GroupItem({
                     {badgeText && (
                         <span className={cn('font-normal normal-case rounded-sm bg-muted text-muted-foreground/70', s.badgeText, s.badgePx, s.badgePy)}>
                             {badgeText}
+                        </span>
+                    )}
+                    {/* Info Popover */}
+                    {info && (
+                        <span onClick={(e) => e.stopPropagation()}>
+                            <InfoPopover
+                                description={info.description}
+                                referenceUrl={info.referenceUrl}
+                                referenceLabel={info.referenceLabel}
+                            />
                         </span>
                     )}
                 </div>

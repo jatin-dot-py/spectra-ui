@@ -87,7 +87,7 @@ export function JsonCodeView({
                 <PathBreadcrumb
                     data={data}
                     path={path}
-                    rootLabel={rootLabel || 'root'}
+                    rootLabel={rootLabel}
                     onPathChange={handlePathChange}
                     onCopyPath={handleCopyPath}
                     pathCopied={pathCopied}

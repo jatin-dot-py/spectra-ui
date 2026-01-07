@@ -171,7 +171,17 @@ function APIEndpointConfigPanel() {
     const GeneralTab = (
         <Group>
             {/* Basic Info */}
-            <GroupItem title="Endpoint" icon={Globe} defaultExpanded indentChildren>
+            <GroupItem
+                title="Endpoint"
+                icon={Globe}
+                defaultExpanded
+                indentChildren
+                info={{
+                    description: "Configure the basic endpoint settings including the URL, HTTP method, and content type. Use ${variable} syntax for dynamic path parameters.",
+                    referenceUrl: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
+                    referenceLabel: "HTTP Methods Docs"
+                }}
+            >
                 <LabeledInputGroup>
                     <LabeledInput label="Name" helpText="Human-readable name for this endpoint">
                         <TextInput
@@ -246,7 +256,15 @@ function APIEndpointConfigPanel() {
             </GroupItem>
 
             {/* Timeouts & Retries */}
-            <GroupItem title="Timeouts & Retries" icon={Clock} indentChildren>
+            <GroupItem
+                title="Timeouts & Retries"
+                icon={Clock}
+                indentChildren
+                info={{
+                    description: "Control how long to wait for responses and how to handle failures. Proper timeout configuration prevents hanging requests and improves reliability.",
+                    referenceUrl: "https://developer.mozilla.org/en-US/docs/Web/API/AbortController"
+                }}
+            >
                 <LabeledInputGroup>
                     <LabeledInput label="Connect Timeout" helpText="Milliseconds to wait for connection">
                         <NumberInput
@@ -290,7 +308,14 @@ function APIEndpointConfigPanel() {
             </GroupItem>
 
             {/* Options */}
-            <GroupItem title="Options" icon={Shield} indentChildren>
+            <GroupItem
+                title="Options"
+                icon={Shield}
+                indentChildren
+                info={{
+                    description: "Security and caching options for the request. SSL validation should only be disabled in development environments."
+                }}
+            >
                 <LabeledInputGroup>
                     <LabeledInput label="Follow Redirects">
                         <BooleanInput
@@ -328,7 +353,16 @@ function APIEndpointConfigPanel() {
             </GroupItem>
 
             {/* Dependencies */}
-            <GroupItem title="Dependencies" icon={Variable} indentChildren>
+            <GroupItem
+                title="Dependencies"
+                icon={Variable}
+                indentChildren
+                info={{
+                    description: "Declare which variables must be available before this endpoint can be called. The system will ensure dependencies are resolved in the correct order.",
+                    referenceUrl: "https://en.wikipedia.org/wiki/Dependency_injection",
+                    referenceLabel: "About Dependencies"
+                }}
+            >
                 <LabeledInputGroup>
                     <LabeledInput label="Required Variables" helpText="Variables this endpoint depends on">
                         <MultiEnumSelect

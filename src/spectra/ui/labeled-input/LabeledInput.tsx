@@ -1,13 +1,8 @@
 import { type ReactNode, Children } from 'react';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
-import { ExternalLink, AlertCircle, AlertTriangle, HelpCircle } from 'lucide-react';
+import { AlertCircle, AlertTriangle } from 'lucide-react';
+import { InfoPopover } from '@/spectra/ui/_shared/InfoPopover';
 
 export interface LabeledInputProps {
     label: string;
@@ -54,27 +49,12 @@ export function LabeledInput({
                 {/* Bind last word and icon together to prevent orphan icon wrapping */}
                 <span className="whitespace-nowrap inline-flex items-center gap-1">
                     {lastWord}
-                    {(helpText || helpUrl) && (
-                        <TooltipProvider delayDuration={200}>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground/50 hover:text-muted-foreground transition-colors flex-shrink-0" />
-                                </TooltipTrigger>
-                                <TooltipContent side="top" className="max-w-64 text-xs space-y-1.5">
-                                    {helpText && <p>{helpText}</p>}
-                                    {helpUrl && (
-                                        <a
-                                            href={helpUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1 text-chart-1 hover:underline"
-                                        >
-                                            Learn more <ExternalLink className="h-3 w-3" />
-                                        </a>
-                                    )}
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                    {helpText && (
+                        <InfoPopover
+                            description={helpText}
+                            referenceUrl={helpUrl}
+                            className="flex-shrink-0"
+                        />
                     )}
                 </span>
             </span>

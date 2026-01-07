@@ -29,6 +29,8 @@ export interface GroupItemConfig {
     onActionIconClick?: () => void;
     /** Optional badge text */
     badgeText?: string;
+    /** Optional info popover with description and reference link */
+    info?: GroupItemProps['info'];
 }
 export interface GroupConfigProps {
     /** Array of group item configurations */

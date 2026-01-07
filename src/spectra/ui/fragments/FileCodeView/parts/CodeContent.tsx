@@ -49,7 +49,7 @@ export function CodeContent({ content, language, showLineNumbers, wrapLines = fa
                 customStyle={{
                     margin: 0,
                     padding: '12px',
-                    background: 'hsl(var(--muted))',
+                    background: 'transparent',
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-all',
                     overflowWrap: 'break-word',
@@ -60,12 +60,13 @@ export function CodeContent({ content, language, showLineNumbers, wrapLines = fa
                         display: 'block',
                         whiteSpace: 'pre-wrap',
                         wordBreak: 'break-all',
+                        background: 'transparent',
                     }
                 }}
                 lineNumberStyle={{
                     minWidth: '2.5em',
                     paddingRight: '1em',
-                    color: 'hsl(var(--muted-foreground))',
+                    color: 'var(--muted-foreground)',
                     userSelect: 'none',
                     display: 'inline-block',
                     textAlign: 'right',
@@ -88,16 +89,19 @@ export function CodeContent({ content, language, showLineNumbers, wrapLines = fa
             customStyle={{
                 margin: 0,
                 padding: '12px',
-                background: 'hsl(var(--muted))',
+                background: 'transparent',
                 minWidth: 'max-content',
             }}
             codeTagProps={{
                 className: 'text-xs font-mono',
+                style: {
+                    background: 'transparent',
+                }
             }}
             lineNumberStyle={{
                 minWidth: '2.5em',
                 paddingRight: '1em',
-                color: 'hsl(var(--muted-foreground))',
+                color: 'var(--muted-foreground)',
                 userSelect: 'none',
             }}
         >

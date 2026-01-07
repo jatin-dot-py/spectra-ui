@@ -11,5 +11,6 @@ export interface FileCodeViewProps {
     wrapLines?: boolean;
     maxHeight?: string;
     maxWidth?: string;
+    className?: string;
 }
-export declare function FileCodeView({ filename, content, mimeType, showLineNumbers, showFooter, footer, wrapLines, maxHeight, maxWidth, }: FileCodeViewProps): import("react/jsx-runtime").JSX.Element;
+export declare function FileCodeView({ filename, content, mimeType, showLineNumbers, showFooter, footer, wrapLines, maxHeight, maxWidth, className, }: FileCodeViewProps): import("react/jsx-runtime").JSX.Element;

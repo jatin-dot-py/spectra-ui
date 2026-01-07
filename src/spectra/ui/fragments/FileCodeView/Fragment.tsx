@@ -13,6 +13,7 @@ export interface FileCodeViewProps {
     wrapLines?: boolean;
     maxHeight?: string;
     maxWidth?: string;
+    className?: string;
 }
 
 function tryPrettifyJson(content: string): { content: string; isJson: boolean } {
@@ -34,6 +35,7 @@ export function FileCodeView({
     wrapLines = false,
     maxHeight,
     maxWidth,
+    className,
 }: FileCodeViewProps) {
     const [copied, setCopied] = useState(false);
 
@@ -56,7 +58,7 @@ export function FileCodeView({
 
     return (
         <div
-            className="relative bg-background group"
+            className={`relative bg-background group ${className || ''}`}
             style={{ maxHeight, maxWidth, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
         >
             {/* Copy button - top right corner */}

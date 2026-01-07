@@ -65,6 +65,8 @@ export interface GroupItemConfig {
     onActionIconClick?: () => void;
     /** Optional badge text */
     badgeText?: string;
+    /** Optional info popover with description and reference link */
+    info?: GroupItemProps['info'];
 }
 
 export interface GroupConfigProps {
@@ -90,6 +92,7 @@ export function GroupConfig({ items, description, size = 'sm' }: GroupConfigProp
                     actionIcon={item.actionIcon}
                     onActionIconClick={item.onActionIconClick}
                     badgeText={item.badgeText}
+                    info={item.info}
                     size={size}
                 >
                     {item.children}
