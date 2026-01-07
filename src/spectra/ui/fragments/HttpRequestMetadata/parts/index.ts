@@ -1,1 +1,8 @@
-export { parseUrl, getStatusVariant, formatStatus } from './utils';
+export {
+    parseUrl,
+    getStatusVariant,
+    formatStatus,
+    hasValidStatus,
+    formatResponseTime,
+    formatBytes
+} from './utils';

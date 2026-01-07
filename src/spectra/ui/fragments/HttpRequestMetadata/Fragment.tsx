@@ -1,21 +1,32 @@
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Globe, Copy, Check } from 'lucide-react';
+import { Globe, Copy, Check, Clock, ArrowRightLeft, AlertCircle, Package } from 'lucide-react';
 import { type SpectraIconType } from '@/spectra/types';
-import { parseUrl, getStatusVariant, formatStatus } from './parts';
+import { parseUrl, getStatusVariant, formatStatus, hasValidStatus, formatResponseTime, formatBytes } from './parts';
 
 export interface HttpRequestMetadataProps {
     /** HTTP Method (e.g., GET, POST) */
     method: string;
     /** Full request URL */
     url: string;
-    /** Response status code (e.g., 200, 404) or string (e.g. "200 OK") */
-    status: number | string;
+    /** Response status code (optional - badge hidden when undefined/0) */
+    status?: number | string;
     /** Optional status text if not included in status string */
     statusText?: string;
     /** Response MIME type */
     mimeType?: string;
+
+    /** Whether a redirect occurred */
+    isRedirect?: boolean;
+    /** Response time in milliseconds */
+    responseTimeMs?: number;
+    /** Content size in bytes */
+    contentSizeBytes?: number;
+    /** Whether the request failed */
+    failed?: boolean;
+    /** Failure reason if failed: true */
+    failureReason?: string;
 
     // Action Button Props
     showActionButton?: boolean;
@@ -32,6 +43,11 @@ export function HttpRequestMetadata({
     status,
     statusText,
     mimeType,
+    isRedirect,
+    responseTimeMs,
+    contentSizeBytes,
+    failed,
+    failureReason,
     showActionButton = false,
     actionButtonText = 'Action',
     actionButtonIcon: ActionIcon,
@@ -53,28 +69,80 @@ export function HttpRequestMetadata({
         onActionButtonClick?.();
     };
 
-    const statusVariant = getStatusVariant(status);
+    const showStatus = hasValidStatus(status);
+    const statusVariant = showStatus ? getStatusVariant(status!) : 'secondary';
 
     return (
-        <div className="space-y-3">
-            <div className="flex items-center gap-2">
+        <div className="space-y-2">
+            {/* Failure Alert Banner */}
+            {failed && failureReason && (
+                <div className="flex items-center gap-2 p-2.5 rounded-md bg-destructive/10 border border-destructive/20 text-destructive">
+                    <AlertCircle className="h-4 w-4 shrink-0" />
+                    <span className="text-sm font-medium truncate">{failureReason}</span>
+                </div>
+            )}
+
+            {/* Method, Status, and Metadata Badges Row */}
+            <div className="flex items-center gap-2 flex-wrap">
+                {/* Method Badge */}
                 <Badge
                     variant="secondary"
                     className="font-mono font-bold text-xs px-2 py-0.5"
                 >
                     {method}
                 </Badge>
-                <Badge
-                    variant={statusVariant}
-                    className="font-mono text-xs px-2 py-0.5"
-                >
-                    {formatStatus(status, statusText)}
-                </Badge>
+
+                {/* Status Badge - only show if valid */}
+                {showStatus && (
+                    <Badge
+                        variant={statusVariant}
+                        className="font-mono text-xs px-2 py-0.5"
+                    >
+                        {formatStatus(status!, statusText)}
+                    </Badge>
+                )}
+
+                {/* Failed Badge - show when failed but no valid status */}
+                {failed && !showStatus && (
+                    <Badge
+                        variant="destructive"
+                        className="font-mono text-xs px-2 py-0.5"
+                    >
+                        Failed
+                    </Badge>
+                )}
+
+                {/* Response Time Badge */}
+                {responseTimeMs !== undefined && responseTimeMs > 0 && (
+                    <Badge variant="outline" className="text-xs gap-1 text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {formatResponseTime(responseTimeMs)}
+                    </Badge>
+                )}
+
+                {/* Content Size Badge */}
+                {contentSizeBytes !== undefined && contentSizeBytes > 0 && (
+                    <Badge variant="outline" className="text-xs gap-1 text-muted-foreground">
+                        <Package className="h-3 w-3" />
+                        {formatBytes(contentSizeBytes)}
+                    </Badge>
+                )}
+
+                {/* Redirect Indicator */}
+                {isRedirect && (
+                    <Badge variant="outline" className="text-xs gap-1 text-amber-600 dark:text-amber-400 border-amber-300 dark:border-amber-700">
+                        <ArrowRightLeft className="h-3 w-3" />
+                        Redirect
+                    </Badge>
+                )}
+
+                {/* MIME Type Badge */}
                 {mimeType && (
                     <Badge variant="outline" className="text-xs hidden sm:inline-flex">
                         {mimeType}
                     </Badge>
                 )}
+
                 <div className="flex-1" />
 
                 {showActionButton && (
@@ -91,6 +159,7 @@ export function HttpRequestMetadata({
                 )}
             </div>
 
+            {/* URL Display Row */}
             <div className="flex items-center gap-2 min-w-0 bg-muted/40 p-2 rounded-md border border-border/50">
                 <Globe className="h-4 w-4 shrink-0 text-primary" />
                 <p className="font-mono text-xs text-foreground/80 truncate flex-1 leading-none" title={url}>

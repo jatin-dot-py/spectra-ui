@@ -655,20 +655,21 @@ const KEY_VALUE_PAIR_TABLE_CONFIG: ComponentConfig = {
         },
     ],
 };
-
 // ============================================================================
 // Preview Components - HttpRequestMetadata
 // ============================================================================
 
 function HttpRequestMetadataDefaultPreview() {
     return (
-        <div style={{ width: '450px' }}>
+        <div style={{ width: '500px' }}>
             <HttpRequestMetadata
                 method="GET"
                 url="https://api.example.com/v1/users/123"
                 status={200}
                 statusText="OK"
                 mimeType="application/json"
+                responseTimeMs={345}
+                contentSizeBytes={2456}
                 showActionButton={true}
                 actionButtonText="Save"
                 actionButtonIcon={Bookmark}
@@ -680,13 +681,57 @@ function HttpRequestMetadataDefaultPreview() {
 
 function HttpRequestMetadataErrorPreview() {
     return (
-        <div style={{ width: '450px' }}>
+        <div style={{ width: '500px' }}>
             <HttpRequestMetadata
                 method="POST"
                 url="https://api.example.com/v1/auth/login"
                 status={401}
                 statusText="Unauthorized"
                 mimeType="application/json"
+                responseTimeMs={156}
+                contentSizeBytes={89}
+            />
+        </div>
+    );
+}
+
+function HttpRequestMetadataFailedPreview() {
+    return (
+        <div style={{ width: '500px' }}>
+            <HttpRequestMetadata
+                method="POST"
+                url="https://api.example.com/v1/webhooks/send"
+                failed={true}
+                failureReason="Connection Timeout - Server did not respond"
+                responseTimeMs={30000}
+            />
+        </div>
+    );
+}
+
+function HttpRequestMetadataRedirectPreview() {
+    return (
+        <div style={{ width: '500px' }}>
+            <HttpRequestMetadata
+                method="GET"
+                url="https://api.example.com/v2/users/me"
+                isRedirect={true}
+                status={301}
+                statusText="Moved Permanently"
+                responseTimeMs={89}
+            />
+        </div>
+    );
+}
+
+function HttpRequestMetadataNoStatusPreview() {
+    return (
+        <div style={{ width: '500px' }}>
+            <HttpRequestMetadata
+                method="GET"
+                url="https://api.example.com/v1/stream/events"
+                mimeType="text/event-stream"
+                responseTimeMs={12}
             />
         </div>
     );
@@ -694,13 +739,14 @@ function HttpRequestMetadataErrorPreview() {
 
 function HttpRequestMetadataDataUrlPreview() {
     return (
-        <div style={{ width: '450px' }}>
+        <div style={{ width: '500px' }}>
             <HttpRequestMetadata
                 method="GET"
                 url="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
                 status={200}
                 statusText="OK"
                 mimeType="image/png"
+                contentSizeBytes={68}
             />
         </div>
     );
@@ -709,37 +755,75 @@ function HttpRequestMetadataDataUrlPreview() {
 const HTTP_REQUEST_METADATA_CONFIG: ComponentConfig = {
     id: 'http-request-metadata',
     name: 'HttpRequestMetadata',
-    description: 'Displays HTTP request details with status badges and smart URL formatting.',
+    description: 'Displays HTTP request details with status badges, response time, content size, failure alerts, and redirect indicators.',
     icon: Globe,
     importPath: '@/spectra/ui/fragments',
     examples: [
         {
             title: 'Basic Usage',
-            description: 'Standard GET request with success status',
+            description: 'GET request with response time and content size',
             code: `<HttpRequestMetadata
     method="GET"
     url="https://api.example.com/v1/users/123"
     status={200}
     statusText="OK"
     mimeType="application/json"
+    responseTimeMs={345}
+    contentSizeBytes={2456}
     showActionButton={true}
     actionButtonText="Save"
     actionButtonIcon={Bookmark}
-    onActionButtonClick={() => {}}
 />`,
             preview: <HttpRequestMetadataDefaultPreview />,
         },
         {
             title: 'Error State',
-            description: 'Failed request with 4xx status',
+            description: 'Failed request with 4xx status code',
             code: `<HttpRequestMetadata
     method="POST"
     url="https://api.example.com/v1/auth/login"
     status={401}
     statusText="Unauthorized"
-    mimeType="application/json"
+    responseTimeMs={156}
+    contentSizeBytes={89}
 />`,
             preview: <HttpRequestMetadataErrorPreview />,
+        },
+        {
+            title: 'Failed Request',
+            description: 'Request failure with prominent error banner',
+            code: `<HttpRequestMetadata
+    method="POST"
+    url="https://api.example.com/v1/webhooks/send"
+    failed={true}
+    failureReason="Connection Timeout - Server did not respond"
+    responseTimeMs={30000}
+/>`,
+            preview: <HttpRequestMetadataFailedPreview />,
+        },
+        {
+            title: 'Redirect',
+            description: 'Shows redirect indicator',
+            code: `<HttpRequestMetadata
+    method="GET"
+    url="https://api.example.com/v2/users/me"
+    isRedirect={true}
+    status={301}
+    statusText="Moved Permanently"
+    responseTimeMs={89}
+/>`,
+            preview: <HttpRequestMetadataRedirectPreview />,
+        },
+        {
+            title: 'No Status',
+            description: 'Status badge hidden when not provided',
+            code: `<HttpRequestMetadata
+    method="GET"
+    url="https://api.example.com/v1/stream/events"
+    mimeType="text/event-stream"
+    responseTimeMs={12}
+/>`,
+            preview: <HttpRequestMetadataNoStatusPreview />,
         },
         {
             title: 'Data URL',
@@ -750,11 +834,13 @@ const HTTP_REQUEST_METADATA_CONFIG: ComponentConfig = {
     status={200}
     statusText="OK"
     mimeType="image/png"
+    contentSizeBytes={68}
 />`,
             preview: <HttpRequestMetadataDataUrlPreview />,
         },
     ],
 };
+
 
 // ============================================================================
 // Category Registry Export

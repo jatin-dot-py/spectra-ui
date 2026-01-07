@@ -60,3 +60,50 @@ export function formatStatus(status: number | string, statusText?: string): stri
     if (statusText) return `${status} ${statusText}`;
     return status.toString();
 }
+
+/**
+ * Check if status is valid and should be displayed
+ */
+export function hasValidStatus(status: number | string | undefined): boolean {
+    if (status === undefined || status === null) return false;
+    if (typeof status === 'number') return status > 0;
+    if (typeof status === 'string') {
+        const match = status.match(/^\d+/);
+        return match ? parseInt(match[0], 10) > 0 : status.length > 0;
+    }
+    return false;
+}
+
+/**
+ * Format response time for display (e.g., "345ms", "1.2s", "2.5min")
+ */
+export function formatResponseTime(ms: number): string {
+    if (ms < 1000) return `${Math.round(ms)}ms`;
+    if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
+    return `${(ms / 60000).toFixed(1)}min`;
+}
+
+/**
+ * Format byte size for display (e.g., "1.2 KB", "3.5 MB")
+ */
+export function formatBytes(bytes: number): string {
+    if (bytes === 0) return '0 B';
+    const units = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+    const value = bytes / Math.pow(1024, i);
+    return `${value < 10 ? value.toFixed(1) : Math.round(value)} ${units[i]}`;
+}
+
+/**
+ * Check if a redirect occurred by comparing request and response URLs
+ */
+export function isRedirect(requestUrl: string, responseUrl?: string): boolean {
+    if (!responseUrl) return false;
+    try {
+        const reqUrl = new URL(requestUrl);
+        const resUrl = new URL(responseUrl);
+        return reqUrl.href !== resUrl.href;
+    } catch {
+        return requestUrl !== responseUrl;
+    }
+}
