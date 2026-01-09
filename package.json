@@ -36,6 +36,11 @@
       "import": "./lib/labeled-input.js",
       "require": "./lib/labeled-input.cjs"
     },
+    "./actions": {
+      "types": "./lib/spectra/ui/actions/index.d.ts",
+      "import": "./lib/actions.js",
+      "require": "./lib/actions.cjs"
+    },
     "./styles.css": "./lib/styles.css"
   },
   "scripts": {

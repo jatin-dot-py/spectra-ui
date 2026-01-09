@@ -62,6 +62,7 @@ export default defineConfig({
                 "group": path.resolve(__dirname, "src/spectra/ui/group/index.ts"),
                 "state": path.resolve(__dirname, "src/spectra/ui/state/index.ts"),
                 "labeled-input": path.resolve(__dirname, "src/spectra/ui/labeled-input/index.ts"),
+                "actions": path.resolve(__dirname, "src/spectra/ui/actions/index.ts"),
             },
             formats: ["es", "cjs"],
             fileName: (format, entryName) => {

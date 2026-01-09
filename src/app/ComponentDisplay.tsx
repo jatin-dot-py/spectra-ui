@@ -15,6 +15,7 @@ import { categoryRegistry as stateRegistry } from './state/config';
 import { categoryRegistry as dialogsRegistry } from './dialogs/config';
 import { categoryRegistry as fragmentsRegistry } from './fragments/config';
 import { categoryRegistry as examplesRegistry } from './examples/config';
+import { categoryRegistry as actionsRegistry } from './actions/config';
 
 
 // ============================================================================
@@ -25,6 +26,7 @@ const registries: CategoryRegistry[] = [
     inputPrimitivesRegistry,
     labeledInputRegistry,
     groupRegistry,
+    actionsRegistry,
     stateRegistry,
     dialogsRegistry,
     fragmentsRegistry,
