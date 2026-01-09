@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { CircleCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -11,6 +12,7 @@ export interface ConfirmDialogProps {
 
     title: string;
     description?: string;
+    children?: React.ReactNode;
 
     confirmText?: string;
     cancelText?: string;
@@ -26,6 +28,7 @@ export function ConfirmDialog({
     onCancel,
     title,
     description,
+    children,
     confirmText = 'Confirm',
     cancelText = 'Cancel',
     variant = 'default',
@@ -71,6 +74,8 @@ export function ConfirmDialog({
                     </Button>
                 </>
             }
-        />
+        >
+            {children}
+        </DialogBase>
     );
 }

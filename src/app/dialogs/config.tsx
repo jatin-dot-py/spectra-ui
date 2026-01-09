@@ -8,6 +8,9 @@ import {
     ErrorDialog,
     InfoDialog,
 } from '@/spectra/ui/dialogs';
+import { GroupItem } from '@/spectra/ui/group';
+import { LabeledInput, LabeledInputGroup } from '@/spectra/ui/labeled-input';
+import { TextInput, BooleanInput } from '@/spectra/ui/input-primitives';
 
 // ============================================================================
 // Preview Components
@@ -79,6 +82,58 @@ function ConfirmLoadingPreview() {
                 confirmText="Save"
                 loading={loading}
             />
+        </div>
+    );
+}
+
+function ConfirmWithFormPreview() {
+    const [open, setOpen] = useState(false);
+    const [projectName, setProjectName] = useState('');
+    const [makePublic, setMakePublic] = useState(false);
+
+    const handleConfirm = () => {
+        console.log('Creating project:', { projectName, makePublic });
+        setProjectName('');
+        setMakePublic(false);
+    };
+
+    return (
+        <div className="space-y-2">
+            <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+                Create Project
+            </Button>
+            <ConfirmDialog
+                open={open}
+                onOpenChange={setOpen}
+                onConfirm={handleConfirm}
+                title="Create New Project"
+                description="Enter the details for your new project."
+                confirmText="Create"
+            >
+                <GroupItem
+                    title="Project Details"
+                    defaultExpanded
+                    collapsible={false}
+                    indentChildren
+                >
+                    <LabeledInputGroup>
+                        <LabeledInput label="Project Name" helpText="A unique name for your project">
+                            <TextInput
+                                value={projectName}
+                                onChange={setProjectName}
+                                placeholder="my-awesome-project"
+                            />
+                        </LabeledInput>
+                        <LabeledInput label="Make Public" helpText="Allow others to view this project">
+                            <BooleanInput
+                                value={makePublic}
+                                onChange={setMakePublic}
+                                variant="switch"
+                            />
+                        </LabeledInput>
+                    </LabeledInputGroup>
+                </GroupItem>
+            </ConfirmDialog>
         </div>
     );
 }
@@ -206,6 +261,30 @@ const CONFIRM_DIALOG_CONFIG: ComponentConfig = {
   loading={loading}
 />`,
             preview: <ConfirmLoadingPreview />,
+        },
+        {
+            title: 'With Form Content',
+            description: 'Custom form inputs using GroupItem and LabeledInputGroup as children',
+            code: `<ConfirmDialog
+  open={open}
+  onOpenChange={setOpen}
+  onConfirm={handleCreate}
+  title="Create New Project"
+  description="Enter the details for your new project."
+  confirmText="Create"
+>
+  <GroupItem title="Project Details" defaultExpanded collapsible={false} indentChildren>
+    <LabeledInputGroup>
+      <LabeledInput label="Project Name" helpText="A unique name">
+        <TextInput value={name} onChange={setName} />
+      </LabeledInput>
+      <LabeledInput label="Make Public">
+        <BooleanInput value={isPublic} onChange={setIsPublic} variant="switch" />
+      </LabeledInput>
+    </LabeledInputGroup>
+  </GroupItem>
+</ConfirmDialog>`,
+            preview: <ConfirmWithFormPreview />,
         },
     ],
 };
