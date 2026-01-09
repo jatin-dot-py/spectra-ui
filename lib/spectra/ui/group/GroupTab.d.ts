@@ -10,11 +10,11 @@ export interface GroupTabItem {
     badgeText?: string;
     /** Tab panel content */
     children: ReactNode;
-    /** Show warning indicator (amber triangle icon) */
+    /** Show warning indicator (amber dot) */
     warning?: boolean;
-    /** Show error indicator (red circle icon) - takes priority over warning */
+    /** Show error indicator (red dot) - takes priority over warning */
     error?: boolean;
-    /** Show notification indicator (accent bell icon), or pass a number to show count */
+    /** Show notification indicator (accent dot), or pass a number to show count */
     notification?: boolean | number;
 }
 export interface GroupTabProps {

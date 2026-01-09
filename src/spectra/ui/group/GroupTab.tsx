@@ -1,5 +1,4 @@
 import { type ReactNode, useState } from 'react';
-import { AlertCircle, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
 import { type GroupSize, sizeConfig } from './sizeConfig';
@@ -13,11 +12,11 @@ export interface GroupTabItem {
     badgeText?: string;
     /** Tab panel content */
     children: ReactNode;
-    /** Show warning indicator (amber triangle icon) */
+    /** Show warning indicator (amber dot) */
     warning?: boolean;
-    /** Show error indicator (red circle icon) - takes priority over warning */
+    /** Show error indicator (red dot) - takes priority over warning */
     error?: boolean;
-    /** Show notification indicator (accent bell icon), or pass a number to show count */
+    /** Show notification indicator (accent dot), or pass a number to show count */
     notification?: boolean | number;
 }
 
@@ -33,13 +32,13 @@ function TabStatusIndicator({
     notification?: boolean | number;
     size: GroupSize;
 }) {
-    const iconSize = size === 'sm' ? 'h-3 w-3' : size === 'md' ? 'h-3.5 w-3.5' : 'h-4 w-4';
+    const dotSize = size === 'sm' ? 'h-2 w-2' : 'h-2.5 w-2.5';
 
     // Error takes priority, then warning, then notification
     if (error) {
         return (
-            <AlertCircle
-                className={cn(iconSize, 'text-destructive')}
+            <span
+                className={cn('rounded-full bg-destructive', dotSize)}
                 aria-label="Error"
             />
         );
@@ -47,8 +46,8 @@ function TabStatusIndicator({
 
     if (warning) {
         return (
-            <AlertTriangle
-                className={cn(iconSize, 'text-amber-500')}
+            <span
+                className={cn('rounded-full bg-amber-500', dotSize)}
                 aria-label="Warning"
             />
         );
