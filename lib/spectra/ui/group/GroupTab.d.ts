@@ -10,10 +10,8 @@ export interface GroupTabItem {
     badgeText?: string;
     /** Tab panel content */
     children: ReactNode;
-    /** Show warning indicator (amber dot) */
+    /** Show warning indicator (alert icon) */
     warning?: boolean;
-    /** Show error indicator (red dot) - takes priority over warning */
-    error?: boolean;
     /** Show notification indicator (accent dot), or pass a number to show count */
     notification?: boolean | number;
 }

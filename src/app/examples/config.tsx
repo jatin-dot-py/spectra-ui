@@ -643,7 +643,7 @@ function APIEndpointConfigPanel() {
                     { title: 'Headers', children: HeadersTab, notification: 3 },
                     { title: 'Body', children: BodyTab },
                     { title: 'Extractors', children: ExtractorsTab, warning: true },
-                    { title: 'Advanced', children: AdvancedTab, error: true },
+                    { title: 'Advanced', children: AdvancedTab, notification: true },
                 ]}
             />
         </div>

@@ -1,4 +1,5 @@
 import { type ReactNode, useState } from 'react';
+import { AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
 import { type GroupSize, sizeConfig } from './sizeConfig';
@@ -12,10 +13,8 @@ export interface GroupTabItem {
     badgeText?: string;
     /** Tab panel content */
     children: ReactNode;
-    /** Show warning indicator (amber dot) */
+    /** Show warning indicator (alert icon) */
     warning?: boolean;
-    /** Show error indicator (red dot) - takes priority over warning */
-    error?: boolean;
     /** Show notification indicator (accent dot), or pass a number to show count */
     notification?: boolean | number;
 }
@@ -23,31 +22,20 @@ export interface GroupTabItem {
 /** Status indicator component for tab headers */
 function TabStatusIndicator({
     warning,
-    error,
     notification,
     size,
 }: {
     warning?: boolean;
-    error?: boolean;
     notification?: boolean | number;
     size: GroupSize;
 }) {
-    const dotSize = size === 'sm' ? 'h-2 w-2' : 'h-2.5 w-2.5';
+    const iconSize = size === 'sm' ? 'h-3.5 w-3.5' : size === 'md' ? 'h-4 w-4' : 'h-[18px] w-[18px]';
 
-    // Error takes priority, then warning, then notification
-    if (error) {
-        return (
-            <span
-                className={cn('rounded-full bg-destructive', dotSize)}
-                aria-label="Error"
-            />
-        );
-    }
-
+    // Warning takes priority over notification
     if (warning) {
         return (
-            <span
-                className={cn('rounded-full bg-amber-500', dotSize)}
+            <AlertTriangle
+                className={cn(iconSize, 'text-amber-500')}
                 aria-label="Warning"
             />
         );
@@ -157,7 +145,6 @@ export function GroupTab({
                                 )}
                                 <TabStatusIndicator
                                     warning={item.warning}
-                                    error={item.error}
                                     notification={item.notification}
                                     size={size}
                                 />
@@ -212,7 +199,6 @@ export function GroupTab({
                                 )}
                                 <TabStatusIndicator
                                     warning={item.warning}
-                                    error={item.error}
                                     notification={item.notification}
                                     size={size}
                                 />
