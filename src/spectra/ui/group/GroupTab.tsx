@@ -1,4 +1,5 @@
 import { type ReactNode, useState } from 'react';
+import { AlertCircle, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
 import { type GroupSize, sizeConfig } from './sizeConfig';
@@ -12,6 +13,80 @@ export interface GroupTabItem {
     badgeText?: string;
     /** Tab panel content */
     children: ReactNode;
+    /** Show warning indicator (amber triangle icon) */
+    warning?: boolean;
+    /** Show error indicator (red circle icon) - takes priority over warning */
+    error?: boolean;
+    /** Show notification indicator (accent bell icon), or pass a number to show count */
+    notification?: boolean | number;
+}
+
+/** Status indicator component for tab headers */
+function TabStatusIndicator({
+    warning,
+    error,
+    notification,
+    size,
+}: {
+    warning?: boolean;
+    error?: boolean;
+    notification?: boolean | number;
+    size: GroupSize;
+}) {
+    const iconSize = size === 'sm' ? 'h-3 w-3' : size === 'md' ? 'h-3.5 w-3.5' : 'h-4 w-4';
+
+    // Error takes priority, then warning, then notification
+    if (error) {
+        return (
+            <AlertCircle
+                className={cn(iconSize, 'text-destructive')}
+                aria-label="Error"
+            />
+        );
+    }
+
+    if (warning) {
+        return (
+            <AlertTriangle
+                className={cn(iconSize, 'text-amber-500')}
+                aria-label="Warning"
+            />
+        );
+    }
+
+    if (notification !== undefined && notification !== false) {
+        const count = typeof notification === 'number' ? notification : null;
+        const displayCount = count !== null ? (count > 99 ? '99+' : count.toString()) : null;
+
+        if (displayCount) {
+            return (
+                <span
+                    className={cn(
+                        'inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground font-medium',
+                        size === 'sm'
+                            ? 'min-w-[16px] h-4 px-1 text-[10px]'
+                            : 'min-w-[18px] h-[18px] px-1.5 text-[11px]'
+                    )}
+                    aria-label={`${count} notifications`}
+                >
+                    {displayCount}
+                </span>
+            );
+        }
+
+        // Simple dot for boolean notification
+        return (
+            <span
+                className={cn(
+                    'rounded-full bg-primary',
+                    size === 'sm' ? 'h-2 w-2' : 'h-2.5 w-2.5'
+                )}
+                aria-label="New notification"
+            />
+        );
+    }
+
+    return null;
 }
 
 export interface GroupTabProps {
@@ -81,6 +156,12 @@ export function GroupTab({
                                         {item.badgeText}
                                     </span>
                                 )}
+                                <TabStatusIndicator
+                                    warning={item.warning}
+                                    error={item.error}
+                                    notification={item.notification}
+                                    size={size}
+                                />
                             </button>
                         );
                     })}
@@ -124,11 +205,19 @@ export function GroupTab({
                         >
                             {Icon && <Icon className={s.icon} />}
                             <span>{item.title}</span>
-                            {item.badgeText && (
-                                <span className={cn('font-normal rounded-sm bg-muted text-muted-foreground/70 ml-auto', s.badgeText, s.badgePx, s.badgePy)}>
-                                    {item.badgeText}
-                                </span>
-                            )}
+                            <div className="flex items-center gap-1.5 ml-auto">
+                                {item.badgeText && (
+                                    <span className={cn('font-normal rounded-sm bg-muted text-muted-foreground/70', s.badgeText, s.badgePx, s.badgePy)}>
+                                        {item.badgeText}
+                                    </span>
+                                )}
+                                <TabStatusIndicator
+                                    warning={item.warning}
+                                    error={item.error}
+                                    notification={item.notification}
+                                    size={size}
+                                />
+                            </div>
                         </button>
                     );
                 })}

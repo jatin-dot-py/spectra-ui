@@ -640,10 +640,10 @@ function APIEndpointConfigPanel() {
                 orientation="horizontal"
                 items={[
                     { title: 'General', children: GeneralTab },
-                    { title: 'Headers', children: HeadersTab },
+                    { title: 'Headers', children: HeadersTab, notification: 3 },
                     { title: 'Body', children: BodyTab },
-                    { title: 'Extractors', children: ExtractorsTab },
-                    { title: 'Advanced', children: AdvancedTab },
+                    { title: 'Extractors', children: ExtractorsTab, warning: true },
+                    { title: 'Advanced', children: AdvancedTab, error: true },
                 ]}
             />
         </div>
