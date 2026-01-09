@@ -156,7 +156,7 @@ export function MultiEnumSelect({
                                                 ? 'bg-primary border-primary'
                                                 : 'border-border bg-background'
                                         )}>
-                                            {selected && <Check className={INPUT_TOKENS.iconSmall} />}
+                                            {selected && <Check className={cn(INPUT_TOKENS.iconSmall, 'text-primary-foreground')} />}
                                         </div>
                                         {Icon && <Icon className={INPUT_TOKENS.iconSize} />}
                                         <span className="flex-1 text-left truncate">{option.label}</span>
@@ -248,7 +248,7 @@ export function MultiEnumSelect({
                                             ? 'bg-primary border-primary'
                                             : 'border-border bg-background'
                                     )}>
-                                        {selected && <Check className={INPUT_TOKENS.iconSmall} />}
+                                        {selected && <Check className={cn(INPUT_TOKENS.iconSmall, 'text-primary-foreground')} />}
                                     </div>
                                     {Icon && <Icon className={INPUT_TOKENS.iconSize} />}
                                     <span className="flex-1 text-left truncate">{option.label}</span>
