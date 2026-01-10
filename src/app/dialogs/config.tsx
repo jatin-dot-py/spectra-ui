@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Settings } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
 import { Button } from '@/components/ui/button';
 import {
@@ -7,10 +7,11 @@ import {
     WarningDialog,
     ErrorDialog,
     InfoDialog,
+    PanelDialog,
 } from '@/spectra/ui/dialogs';
-import { GroupItem } from '@/spectra/ui/group';
+import { Group, GroupItem } from '@/spectra/ui/group';
 import { LabeledInput, LabeledInputGroup } from '@/spectra/ui/labeled-input';
-import { TextInput, BooleanInput } from '@/spectra/ui/input-primitives';
+import { TextInput, BooleanInput, NumberInput } from '@/spectra/ui/input-primitives';
 
 // ============================================================================
 // Preview Components
@@ -260,6 +261,64 @@ function InfoDialogPreview() {
     );
 }
 
+function PanelDialogPreview() {
+    const [open, setOpen] = useState(false);
+    const [appName, setAppName] = useState('My Application');
+    const [theme, setTheme] = useState('dark');
+    const [maxItems, setMaxItems] = useState(100);
+    const [autoSave, setAutoSave] = useState(true);
+    const [apiUrl, setApiUrl] = useState('https://api.example.com');
+    const [debugMode, setDebugMode] = useState(false);
+
+    return (
+        <div className="space-y-2">
+            <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+                Open Full Settings Panel
+            </Button>
+            <PanelDialog
+                open={open}
+                onOpenChange={setOpen}
+                title="Application Settings"
+                description="Configure all aspects of your application."
+                icon={Settings}
+            >
+                <Group>
+                    <GroupItem title="General" defaultExpanded indentChildren>
+                        <LabeledInputGroup>
+                            <LabeledInput label="Application Name">
+                                <TextInput value={appName} onChange={setAppName} />
+                            </LabeledInput>
+                            <LabeledInput label="Theme">
+                                <TextInput value={theme} onChange={setTheme} />
+                            </LabeledInput>
+                            <LabeledInput label="Auto-Save" helpText="Automatically save changes">
+                                <BooleanInput value={autoSave} onChange={setAutoSave} variant="switch" />
+                            </LabeledInput>
+                        </LabeledInputGroup>
+                    </GroupItem>
+                    <GroupItem title="Performance" indentChildren>
+                        <LabeledInputGroup>
+                            <LabeledInput label="Max Items" helpText="Maximum items to load">
+                                <NumberInput value={maxItems} onChange={setMaxItems} min={10} max={1000} />
+                            </LabeledInput>
+                        </LabeledInputGroup>
+                    </GroupItem>
+                    <GroupItem title="Developer" indentChildren>
+                        <LabeledInputGroup>
+                            <LabeledInput label="API URL">
+                                <TextInput value={apiUrl} onChange={setApiUrl} />
+                            </LabeledInput>
+                            <LabeledInput label="Debug Mode" helpText="Enable verbose logging">
+                                <BooleanInput value={debugMode} onChange={setDebugMode} variant="switch" />
+                            </LabeledInput>
+                        </LabeledInputGroup>
+                    </GroupItem>
+                </Group>
+            </PanelDialog>
+        </div>
+    );
+}
+
 // ============================================================================
 // Component Configurations
 // ============================================================================
@@ -431,6 +490,33 @@ const INFO_DIALOG_CONFIG: ComponentConfig = {
     ],
 };
 
+const PANEL_DIALOG_CONFIG: ComponentConfig = {
+    id: 'panel-dialog',
+    name: 'PanelDialog',
+    description: 'Full-screen panel for settings, dashboards, and complex forms.',
+    icon: Settings,
+    importPath: '@/spectra/ui/dialogs',
+    examples: [
+        {
+            title: 'Settings Panel',
+            description: 'Near full-screen dialog with scrollable content',
+            code: `<PanelDialog
+  open={open}
+  onOpenChange={setOpen}
+  title="Application Settings"
+  description="Configure your application."
+  icon={Settings}
+>
+  <Group>
+    <GroupItem title="General" defaultExpanded>...</GroupItem>
+    <GroupItem title="Advanced">...</GroupItem>
+  </Group>
+</PanelDialog>`,
+            preview: <PanelDialogPreview />,
+        },
+    ],
+};
+
 // ============================================================================
 // Category Registry Export
 // ============================================================================
@@ -443,5 +529,7 @@ export const categoryRegistry: CategoryRegistry = {
         WARNING_DIALOG_CONFIG,
         ERROR_DIALOG_CONFIG,
         INFO_DIALOG_CONFIG,
+        PANEL_DIALOG_CONFIG,
     ],
 };
+
