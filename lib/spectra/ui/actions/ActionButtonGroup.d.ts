@@ -6,7 +6,9 @@ export interface ActionButtonGroupProps {
     orientation?: 'horizontal' | 'vertical';
     /** Gap size between buttons */
     gap?: 'none' | 'sm' | 'md' | 'lg';
-    /** Alignment of buttons */
+    /** Main axis alignment (justify) */
     align?: 'start' | 'center' | 'end';
+    /** Cross axis alignment - how buttons align perpendicular to orientation */
+    itemsAlign?: 'start' | 'center' | 'end' | 'stretch';
 }
-export declare function ActionButtonGroup({ children, orientation, gap, align, }: ActionButtonGroupProps): import("react/jsx-runtime").JSX.Element;
+export declare function ActionButtonGroup({ children, orientation, gap, align, itemsAlign, }: ActionButtonGroupProps): import("react/jsx-runtime").JSX.Element;

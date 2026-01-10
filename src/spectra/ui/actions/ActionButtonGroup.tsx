@@ -8,8 +8,10 @@ export interface ActionButtonGroupProps {
     orientation?: 'horizontal' | 'vertical';
     /** Gap size between buttons */
     gap?: 'none' | 'sm' | 'md' | 'lg';
-    /** Alignment of buttons */
+    /** Main axis alignment (justify) */
     align?: 'start' | 'center' | 'end';
+    /** Cross axis alignment - how buttons align perpendicular to orientation */
+    itemsAlign?: 'start' | 'center' | 'end' | 'stretch';
 }
 
 const gapStyles = {
@@ -25,22 +27,32 @@ const alignStyles = {
     end: 'justify-end',
 };
 
+const itemsAlignStyles = {
+    start: 'items-start',
+    center: 'items-center',
+    end: 'items-end',
+    stretch: 'items-stretch',
+};
+
 export function ActionButtonGroup({
     children,
     orientation = 'horizontal',
     gap = 'sm',
     align = 'start',
+    itemsAlign = 'start',
 }: ActionButtonGroupProps) {
     return (
         <div
             className={cn(
-                'flex flex-wrap',
-                orientation === 'vertical' ? 'flex-col' : 'flex-row',
+                'flex',
+                orientation === 'vertical' ? 'flex-col' : 'flex-row flex-wrap',
                 gapStyles[gap],
-                alignStyles[align]
+                alignStyles[align],
+                itemsAlignStyles[itemsAlign]
             )}
         >
             {children}
         </div>
     );
 }
+
