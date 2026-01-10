@@ -1,3 +1,4 @@
+import { DialogSize } from './DialogBase';
 export interface ErrorDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -9,5 +10,7 @@ export interface ErrorDialogProps {
     retryText?: string;
     dismissText?: string;
     showRetry?: boolean;
+    /** Dialog size */
+    size?: DialogSize;
 }
-export declare function ErrorDialog({ open, onOpenChange, onRetry, onDismiss, title, description, error, retryText, dismissText, showRetry, }: ErrorDialogProps): import("react/jsx-runtime").JSX.Element;
+export declare function ErrorDialog({ open, onOpenChange, onRetry, onDismiss, title, description, error, retryText, dismissText, showRetry, size, }: ErrorDialogProps): import("react/jsx-runtime").JSX.Element;

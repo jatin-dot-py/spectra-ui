@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CircleCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { DialogBase } from './DialogBase';
+import { DialogBase, type DialogSize } from './DialogBase';
 
 export interface ConfirmDialogProps {
     open: boolean;
@@ -19,6 +19,9 @@ export interface ConfirmDialogProps {
     variant?: 'default' | 'destructive';
 
     loading?: boolean;
+
+    /** Dialog size */
+    size?: DialogSize;
 }
 
 export function ConfirmDialog({
@@ -33,6 +36,7 @@ export function ConfirmDialog({
     cancelText = 'Cancel',
     variant = 'default',
     loading = false,
+    size,
 }: ConfirmDialogProps) {
     const handleOpenChange = (newOpen: boolean) => {
         if (!newOpen && onCancel) {
@@ -59,6 +63,7 @@ export function ConfirmDialog({
             iconVariant={variant === 'destructive' ? 'error' : 'default'}
             title={title}
             description={description}
+            size={size}
             footer={
                 <>
                     <Button variant="outline" onClick={handleCancel} disabled={loading}>

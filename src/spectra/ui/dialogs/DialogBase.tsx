@@ -9,6 +9,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+export type DialogSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+
 export interface DialogBaseProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -18,6 +20,8 @@ export interface DialogBaseProps {
     description?: string;
     children?: React.ReactNode;
     footer: React.ReactNode;
+    /** Dialog size - controls max width */
+    size?: DialogSize;
 }
 
 const iconVariantStyles = {
@@ -25,6 +29,14 @@ const iconVariantStyles = {
     warning: 'bg-amber-500/10 text-amber-500',
     error: 'bg-destructive/10 text-destructive',
     info: 'bg-blue-500/10 text-blue-500',
+};
+
+const sizeStyles: Record<DialogSize, string> = {
+    sm: 'sm:max-w-sm',      // 384px
+    md: 'sm:max-w-md',      // 448px
+    lg: 'sm:max-w-lg',      // 512px
+    xl: 'sm:max-w-xl',      // 576px
+    full: 'sm:max-w-[90vw]', // 90% viewport width
 };
 
 export function DialogBase({
@@ -36,10 +48,11 @@ export function DialogBase({
     description,
     children,
     footer,
+    size = 'sm',
 }: DialogBaseProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent showCloseButton>
+            <DialogContent showCloseButton className={sizeStyles[size]}>
                 <DialogHeader>
                     <div className="flex items-start gap-3">
                         {icon && (
@@ -66,3 +79,4 @@ export function DialogBase({
         </Dialog>
     );
 }
+

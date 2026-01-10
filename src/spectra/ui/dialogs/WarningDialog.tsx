@@ -1,6 +1,6 @@
 import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DialogBase } from './DialogBase';
+import { DialogBase, type DialogSize } from './DialogBase';
 
 export interface WarningDialogProps {
     open: boolean;
@@ -14,6 +14,9 @@ export interface WarningDialogProps {
 
     proceedText?: string;
     cancelText?: string;
+
+    /** Dialog size */
+    size?: DialogSize;
 }
 
 export function WarningDialog({
@@ -26,6 +29,7 @@ export function WarningDialog({
     details,
     proceedText = 'Proceed Anyway',
     cancelText = 'Go Back',
+    size,
 }: WarningDialogProps) {
     const handleOpenChange = (newOpen: boolean) => {
         if (!newOpen && onCancel) {
@@ -52,6 +56,7 @@ export function WarningDialog({
             iconVariant="warning"
             title={title}
             description={description}
+            size={size}
             footer={
                 <>
                     <Button variant="outline" onClick={handleCancel}>

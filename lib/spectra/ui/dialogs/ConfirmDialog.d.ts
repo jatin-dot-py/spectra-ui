@@ -1,3 +1,4 @@
+import { DialogSize } from './DialogBase';
 import * as React from 'react';
 export interface ConfirmDialogProps {
     open: boolean;
@@ -11,5 +12,7 @@ export interface ConfirmDialogProps {
     cancelText?: string;
     variant?: 'default' | 'destructive';
     loading?: boolean;
+    /** Dialog size */
+    size?: DialogSize;
 }
-export declare function ConfirmDialog({ open, onOpenChange, onConfirm, onCancel, title, description, children, confirmText, cancelText, variant, loading, }: ConfirmDialogProps): import("react/jsx-runtime").JSX.Element;
+export declare function ConfirmDialog({ open, onOpenChange, onConfirm, onCancel, title, description, children, confirmText, cancelText, variant, loading, size, }: ConfirmDialogProps): import("react/jsx-runtime").JSX.Element;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CircleX, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DialogBase } from './DialogBase';
+import { DialogBase, type DialogSize } from './DialogBase';
 import { cn } from '@/lib/utils';
 
 export interface ErrorDialogProps {
@@ -17,6 +17,9 @@ export interface ErrorDialogProps {
     retryText?: string;
     dismissText?: string;
     showRetry?: boolean;
+
+    /** Dialog size */
+    size?: DialogSize;
 }
 
 export function ErrorDialog({
@@ -30,6 +33,7 @@ export function ErrorDialog({
     retryText = 'Try Again',
     dismissText = 'Dismiss',
     showRetry,
+    size,
 }: ErrorDialogProps) {
     const [detailsOpen, setDetailsOpen] = useState(false);
 
@@ -63,6 +67,7 @@ export function ErrorDialog({
             iconVariant="error"
             title={title}
             description={description}
+            size={size}
             footer={
                 <>
                     {shouldShowRetry && (

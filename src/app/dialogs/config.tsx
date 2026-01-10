@@ -138,6 +138,54 @@ function ConfirmWithFormPreview() {
     );
 }
 
+function LargeSizeDialogPreview() {
+    const [open, setOpen] = useState(false);
+    const [appName, setAppName] = useState('My Application');
+    const [debugMode, setDebugMode] = useState(false);
+    const [apiUrl, setApiUrl] = useState('https://api.example.com');
+    const [autoSave, setAutoSave] = useState(true);
+
+    return (
+        <div className="space-y-2">
+            <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+                Open Large Settings Dialog
+            </Button>
+            <ConfirmDialog
+                open={open}
+                onOpenChange={setOpen}
+                onConfirm={() => console.log('Settings saved!', { appName, debugMode, apiUrl, autoSave })}
+                title="Application Settings"
+                description="Configure your application preferences."
+                confirmText="Save Settings"
+                size="lg"
+            >
+                <div className="space-y-4">
+                    <GroupItem title="General" defaultExpanded collapsible={false} indentChildren>
+                        <LabeledInputGroup>
+                            <LabeledInput label="Application Name">
+                                <TextInput value={appName} onChange={setAppName} placeholder="Enter app name" />
+                            </LabeledInput>
+                            <LabeledInput label="Auto-Save" helpText="Automatically save changes">
+                                <BooleanInput value={autoSave} onChange={setAutoSave} variant="switch" />
+                            </LabeledInput>
+                        </LabeledInputGroup>
+                    </GroupItem>
+                    <GroupItem title="Developer" defaultExpanded collapsible={false} indentChildren>
+                        <LabeledInputGroup>
+                            <LabeledInput label="API URL">
+                                <TextInput value={apiUrl} onChange={setApiUrl} placeholder="https://..." />
+                            </LabeledInput>
+                            <LabeledInput label="Debug Mode" helpText="Enable verbose logging">
+                                <BooleanInput value={debugMode} onChange={setDebugMode} variant="switch" />
+                            </LabeledInput>
+                        </LabeledInputGroup>
+                    </GroupItem>
+                </div>
+            </ConfirmDialog>
+        </div>
+    );
+}
+
 function WarningDialogPreview() {
     const [open, setOpen] = useState(false);
 
@@ -285,6 +333,28 @@ const CONFIRM_DIALOG_CONFIG: ComponentConfig = {
   </GroupItem>
 </ConfirmDialog>`,
             preview: <ConfirmWithFormPreview />,
+        },
+        {
+            title: 'Large Size',
+            description: 'Use size="lg" or "xl" for settings dialogs with more content',
+            code: `<ConfirmDialog
+  open={open}
+  onOpenChange={setOpen}
+  onConfirm={handleSave}
+  title="Application Settings"
+  description="Configure your application preferences."
+  confirmText="Save Settings"
+  size="lg"
+>
+  <GroupItem title="General" defaultExpanded collapsible={false} indentChildren>
+    <LabeledInputGroup>
+      <LabeledInput label="Application Name">
+        <TextInput value={name} onChange={setName} />
+      </LabeledInput>
+    </LabeledInputGroup>
+  </GroupItem>
+</ConfirmDialog>`,
+            preview: <LargeSizeDialogPreview />,
         },
     ],
 };

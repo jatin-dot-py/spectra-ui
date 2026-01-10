@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DialogBase } from './DialogBase';
+import { DialogBase, type DialogSize } from './DialogBase';
 
 export interface InfoDialogProps {
     open: boolean;
@@ -12,6 +12,9 @@ export interface InfoDialogProps {
     children?: React.ReactNode;
 
     dismissText?: string;
+
+    /** Dialog size */
+    size?: DialogSize;
 }
 
 export function InfoDialog({
@@ -21,6 +24,7 @@ export function InfoDialog({
     description,
     children,
     dismissText = 'Got it',
+    size,
 }: InfoDialogProps) {
     const handleDismiss = () => {
         onOpenChange(false);
@@ -34,6 +38,7 @@ export function InfoDialog({
             iconVariant="info"
             title={title}
             description={description}
+            size={size}
             footer={
                 <Button variant="default" onClick={handleDismiss}>
                     {dismissText}

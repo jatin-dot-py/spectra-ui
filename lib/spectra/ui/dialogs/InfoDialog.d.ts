@@ -1,3 +1,4 @@
+import { DialogSize } from './DialogBase';
 import * as React from 'react';
 export interface InfoDialogProps {
     open: boolean;
@@ -6,5 +7,7 @@ export interface InfoDialogProps {
     description?: string;
     children?: React.ReactNode;
     dismissText?: string;
+    /** Dialog size */
+    size?: DialogSize;
 }
-export declare function InfoDialog({ open, onOpenChange, title, description, children, dismissText, }: InfoDialogProps): import("react/jsx-runtime").JSX.Element;
+export declare function InfoDialog({ open, onOpenChange, title, description, children, dismissText, size, }: InfoDialogProps): import("react/jsx-runtime").JSX.Element;
