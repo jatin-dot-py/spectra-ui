@@ -69,6 +69,10 @@ export function TextInput({
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         setTimeout(() => setOpen(false), 150);
+        // Re-freeze on blur if frozen prop is set
+        if (frozen) {
+            setIsThawed(false);
+        }
         props.onBlur?.(e);
     };
 
