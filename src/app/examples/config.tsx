@@ -631,6 +631,31 @@ function APIEndpointConfigPanel() {
                     </LabeledInput>
                 </LabeledInputGroup>
             </GroupItem>
+
+            <GroupItem
+                title="Deprecated Settings"
+                icon={Trash2}
+                disabled
+                disabledReason="These settings are no longer available in the current API version."
+                indentChildren
+            >
+                <LabeledInputGroup>
+                    <LabeledInput label="Legacy Mode">
+                        <BooleanInput
+                            value={true}
+                            onChange={() => { }}
+                            variant="switch"
+                        />
+                    </LabeledInput>
+                    <LabeledInput label="XML Support">
+                        <BooleanInput
+                            value={false}
+                            onChange={() => { }}
+                            variant="switch"
+                        />
+                    </LabeledInput>
+                </LabeledInputGroup>
+            </GroupItem>
         </Group>
     );
 

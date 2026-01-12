@@ -34,6 +34,10 @@ export interface GroupItemProps {
         referenceUrl?: string;
         referenceLabel?: string;
     };
+    /** Whether the group item is disabled (frozen) */
+    disabled?: boolean;
+    /** Reason for disabling the group item (shown on hover) */
+    disabledReason?: string;
 }
 
 export function GroupItem({
@@ -49,6 +53,8 @@ export function GroupItem({
     alwaysShowAction = false,
     size = 'sm',
     info,
+    disabled = false,
+    disabledReason,
 }: GroupItemProps) {
     const [expanded, setExpanded] = useState(defaultExpanded);
     const s = sizeConfig[size];
@@ -136,8 +142,18 @@ export function GroupItem({
 
             {/* Content */}
             {isExpanded && (
-                <div className={cn(s.contentPb, s.contentPt, indentChildren && s.indent)}>
-                    {children}
+                <div className={cn('relative', s.contentPb, s.contentPt, indentChildren && s.indent)}>
+                    <div className={cn('transition-opacity duration-200', disabled && 'opacity-50 pointer-events-none select-none')}>
+                        {children}
+                    </div>
+                    {disabled && (
+                        <div
+                            className="absolute inset-0 z-10 cursor-not-allowed"
+                            title={disabledReason || 'Content is disabled'}
+                            role="alert"
+                            aria-label={disabledReason || 'Content is disabled'}
+                        />
+                    )}
                 </div>
             )}
         </div>

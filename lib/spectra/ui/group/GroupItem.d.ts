@@ -30,5 +30,9 @@ export interface GroupItemProps {
         referenceUrl?: string;
         referenceLabel?: string;
     };
+    /** Whether the group item is disabled (frozen) */
+    disabled?: boolean;
+    /** Reason for disabling the group item (shown on hover) */
+    disabledReason?: string;
 }
-export declare function GroupItem({ title, icon: Icon, children, collapsible, defaultExpanded, indentChildren, actionIcon: ActionIcon, onActionIconClick, badgeText, alwaysShowAction, size, info, }: GroupItemProps): import("react/jsx-runtime").JSX.Element;
+export declare function GroupItem({ title, icon: Icon, children, collapsible, defaultExpanded, indentChildren, actionIcon: ActionIcon, onActionIconClick, badgeText, alwaysShowAction, size, info, disabled, disabledReason, }: GroupItemProps): import("react/jsx-runtime").JSX.Element;
