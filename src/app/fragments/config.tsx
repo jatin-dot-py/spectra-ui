@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { FolderTree, Columns, Code, FileX2, TableProperties, Globe, Bookmark, FileCode2, FileType2, Braces } from 'lucide-react';
+import { FolderTree, Columns, Code, FileX2, TableProperties, Globe, Bookmark, FileCode2, FileType2, Braces, Check, Info, AlertTriangle } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
 import { FileTree, ContentTab, FileCodeView, JsonCodeView, KeyValuePairTable, HttpRequestMetadata, HtmlCodeView } from '@/spectra/ui/fragments';
+import { StatusDisplay } from '@/spectra/ui/fragments/StatusDisplay/Fragment';
 import { NoContent } from '@/spectra/ui/state';
 
 // ============================================================================
@@ -1062,9 +1063,121 @@ const HTML_CODE_VIEW_CONFIG: ComponentConfig = {
     ],
 };
 
+
+
+// ============================================================================
+// Preview Components - StatusDisplay
+// ============================================================================
+
+function StatusDisplaySuccessPreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <StatusDisplay
+                variant="success"
+                icon={Check}
+                title="Operation Successful"
+                description="The data has been successfully synchronized."
+            />
+        </div>
+    );
+}
+
+function StatusDisplayWarningPreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <StatusDisplay
+                variant="warning"
+                icon={AlertTriangle}
+                title="Performance Warning"
+                description="Response time exceeded 500ms threshold."
+            />
+        </div>
+    );
+}
+
+function StatusDisplayDestructivePreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <StatusDisplay
+                variant="destructive"
+                icon={AlertTriangle}
+                title="Connection Failed"
+                description="Could not establish connection to the remote server."
+            />
+        </div>
+    );
+}
+
+function StatusDisplayNeutralPreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <StatusDisplay
+                variant="neutral"
+                icon={Info}
+                title="System Idle"
+                description="Waiting for incoming requests."
+            />
+        </div>
+    );
+}
+
+const STATUS_DISPLAY_CONFIG: ComponentConfig = {
+    id: 'status-display',
+    name: 'StatusDisplay',
+    description: 'Displays status information with variant-based styling (success, warning, destructive, neutral) and consistent layout.',
+    icon: Info,
+    importPath: '@/spectra/ui/fragments/Status/Fragment',
+    examples: [
+        {
+            title: 'Success',
+            description: 'Success state with green styling',
+            code: `<StatusDisplay
+    variant="success"
+    icon={Check}
+    title="Operation Successful"
+    description="The data has been successfully synchronized."
+/>`,
+            preview: <StatusDisplaySuccessPreview />,
+        },
+        {
+            title: 'Warning',
+            description: 'Warning state with amber styling',
+            code: `<StatusDisplay
+    variant="warning"
+    icon={AlertTriangle}
+    title="Performance Warning"
+    description="Response time exceeded 500ms threshold."
+/>`,
+            preview: <StatusDisplayWarningPreview />,
+        },
+        {
+            title: 'Destructive',
+            description: 'Error state with destructive styling',
+            code: `<StatusDisplay
+    variant="destructive"
+    icon={AlertTriangle}
+    title="Connection Failed"
+    description="Could not establish connection to the remote server."
+/>`,
+            preview: <StatusDisplayDestructivePreview />,
+        },
+        {
+            title: 'Neutral',
+            description: 'Neutral state for general information',
+            code: `<StatusDisplay
+    variant="neutral"
+    icon={Info}
+    title="System Idle"
+    description="Waiting for incoming requests."
+/>`,
+            preview: <StatusDisplayNeutralPreview />,
+        },
+    ],
+};
+
 export const categoryRegistry: CategoryRegistry = {
     id: 'fragments',
     name: 'Fragments',
     icon: FolderTree,
-    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, JSON_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG, HTML_CODE_VIEW_CONFIG],
+    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, JSON_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG, HTML_CODE_VIEW_CONFIG, STATUS_DISPLAY_CONFIG],
 };

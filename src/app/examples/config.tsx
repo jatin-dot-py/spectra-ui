@@ -17,6 +17,8 @@ import {
     FileJson,
     Variable,
     Layers,
+    Check,
+    Info,
 } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
 import { Group, GroupItem, GroupTab } from '@/spectra/ui/group';
@@ -38,6 +40,7 @@ import {
     type PathSegment,
     type DynamicValue,
 } from '@/spectra/ui/input-primitives';
+import { StatusDisplay } from '@/spectra/ui/fragments/StatusDisplay/Fragment';
 import { NoContent } from '@/spectra/ui/state';
 
 // ============================================================================
@@ -644,6 +647,41 @@ function APIEndpointConfigPanel() {
                     { title: 'Body', children: BodyTab },
                     { title: 'Extractors', children: ExtractorsTab, warning: true },
                     { title: 'Advanced', children: AdvancedTab, notification: true },
+                    {
+                        title: 'Status',
+                        children: (
+                            <Group>
+                                <GroupItem title="Status Examples" defaultExpanded>
+                                    <div className="space-y-4 p-4">
+                                        <StatusDisplay
+                                            variant="success"
+                                            icon={Check}
+                                            title="Operation Successful"
+                                            description="The data has been successfully synchronized."
+                                        />
+                                        <StatusDisplay
+                                            variant="warning"
+                                            icon={AlertTriangle}
+                                            title="Performance Warning"
+                                            description="Response time exceeded 500ms threshold."
+                                        />
+                                        <StatusDisplay
+                                            variant="destructive"
+                                            icon={AlertTriangle}
+                                            title="Connection Failed"
+                                            description="Could not establish connection to the remote server."
+                                        />
+                                        <StatusDisplay
+                                            variant="neutral"
+                                            icon={Info}
+                                            title="System Idle"
+                                            description="Waiting for incoming requests."
+                                        />
+                                    </div>
+                                </GroupItem>
+                            </Group>
+                        )
+                    }
                 ]}
             />
         </div>
