@@ -671,12 +671,6 @@ function APIEndpointConfigPanel() {
                                             title="Connection Failed"
                                             description="Could not establish connection to the remote server."
                                         />
-                                        <StatusDisplay
-                                            variant="neutral"
-                                            icon={Info}
-                                            title="System Idle"
-                                            description="Waiting for incoming requests."
-                                        />
                                     </div>
                                 </GroupItem>
                             </Group>

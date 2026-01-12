@@ -3,7 +3,7 @@ import { type SpectraIconType } from '@/spectra/types';
 
 export interface StatusDisplayProps {
     /** Visual style variant */
-    variant: 'success' | 'warning' | 'destructive' | 'neutral';
+    variant: 'success' | 'warning' | 'destructive';
     /** Icon to display */
     icon: SpectraIconType;
     /** Main status title */
@@ -22,17 +22,15 @@ export function StatusDisplay({
     className,
 }: StatusDisplayProps) {
     const variantStyles = {
-        success: 'text-green-600 dark:text-green-500',
+        success: 'text-primary',
         warning: 'text-amber-600 dark:text-amber-500',
         destructive: 'text-destructive',
-        neutral: 'text-muted-foreground',
     };
 
     const bgStyles = {
-        success: 'bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/20',
+        success: 'bg-card border-border',
         warning: 'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20',
         destructive: 'bg-destructive/10 border-destructive/20',
-        neutral: 'bg-muted/50 border-border',
     };
 
     return (

@@ -1,7 +1,7 @@
 import { SpectraIconType } from '../../../types';
 export interface StatusDisplayProps {
     /** Visual style variant */
-    variant: 'success' | 'warning' | 'destructive' | 'neutral';
+    variant: 'success' | 'warning' | 'destructive';
     /** Icon to display */
     icon: SpectraIconType;
     /** Main status title */
