@@ -1108,6 +1108,19 @@ function StatusDisplayDestructivePreview() {
     );
 }
 
+function StatusDisplayNeutralPreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <StatusDisplay
+                variant="neutral"
+                icon={Info}
+                title="System Idle"
+                description="Waiting for incoming requests."
+            />
+        </div>
+    );
+}
+
 const STATUS_DISPLAY_CONFIG: ComponentConfig = {
     id: 'status-display',
     name: 'StatusDisplay',
@@ -1147,6 +1160,17 @@ const STATUS_DISPLAY_CONFIG: ComponentConfig = {
     description="Could not establish connection to the remote server."
 />`,
             preview: <StatusDisplayDestructivePreview />,
+        },
+        {
+            title: 'Neutral',
+            description: 'Neutral state for general information',
+            code: `<StatusDisplay
+    variant="neutral"
+    icon={Info}
+    title="System Idle"
+    description="Waiting for incoming requests."
+/>`,
+            preview: <StatusDisplayNeutralPreview />,
         },
     ],
 };
