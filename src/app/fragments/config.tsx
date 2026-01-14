@@ -1121,6 +1121,21 @@ function StatusDisplayNeutralPreview() {
     );
 }
 
+function StatusDisplayWithCtaPreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <StatusDisplay
+                variant="success"
+                icon={Check}
+                title="Sync Complete"
+                description="Your data has been synchronized."
+                ctaText="Learn more"
+                ctaOnClick={() => console.log('Learn more clicked')}
+            />
+        </div>
+    );
+}
+
 const STATUS_DISPLAY_CONFIG: ComponentConfig = {
     id: 'status-display',
     name: 'StatusDisplay',
@@ -1171,6 +1186,19 @@ const STATUS_DISPLAY_CONFIG: ComponentConfig = {
     description="Waiting for incoming requests."
 />`,
             preview: <StatusDisplayNeutralPreview />,
+        },
+        {
+            title: 'With CTA Link',
+            description: 'Status with an inline "Learn more" style link',
+            code: `<StatusDisplay
+    variant="success"
+    icon={Check}
+    title="Sync Complete"
+    description="Your data has been synchronized."
+    ctaText="Learn more"
+    ctaOnClick={() => {}}
+/>`,
+            preview: <StatusDisplayWithCtaPreview />,
         },
     ],
 };

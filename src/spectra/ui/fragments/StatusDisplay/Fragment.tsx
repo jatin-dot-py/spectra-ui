@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { type SpectraIconType } from '@/spectra/types';
 
 export interface StatusDisplayProps {
@@ -10,6 +11,10 @@ export interface StatusDisplayProps {
     title: string;
     /** Optional detailed description */
     description?: string;
+    /** Optional CTA link text (e.g., "Learn more") */
+    ctaText?: string;
+    /** Optional CTA click handler */
+    ctaOnClick?: () => void;
     /** Optional className */
     className?: string;
 }
@@ -19,6 +24,8 @@ export function StatusDisplay({
     icon: Icon,
     title,
     description,
+    ctaText,
+    ctaOnClick,
     className,
 }: StatusDisplayProps) {
     const variantStyles = {
@@ -48,9 +55,22 @@ export function StatusDisplay({
                 <h4 className="font-medium text-sm leading-5 text-foreground">
                     {title}
                 </h4>
-                {description && (
+                {(description || (ctaText && ctaOnClick)) && (
                     <p className="text-sm text-muted-foreground">
                         {description}
+                        {ctaText && ctaOnClick && (
+                            <>
+                                {description && ' '}
+                                <Button
+                                    variant="link"
+                                    size="sm"
+                                    onClick={ctaOnClick}
+                                    className="h-auto p-0 text-sm text-primary hover:text-primary/80"
+                                >
+                                    {ctaText}
+                                </Button>
+                            </>
+                        )}
                     </p>
                 )}
             </div>
