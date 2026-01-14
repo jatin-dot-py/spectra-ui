@@ -73,7 +73,7 @@ export function DialogBase({
                         </div>
                     </div>
                 </DialogHeader>
-                {children && <div className="py-2">{children}</div>}
+                {children && <div className="py-2 min-w-0 overflow-hidden">{children}</div>}
                 <DialogFooter>{footer}</DialogFooter>
             </DialogContent>
         </Dialog>

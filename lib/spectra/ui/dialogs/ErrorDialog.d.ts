@@ -6,7 +6,8 @@ export interface ErrorDialogProps {
     onDismiss?: () => void;
     title?: string;
     description?: string;
-    error?: Error | string;
+    /** Technical error details (shown in collapsible section) */
+    error?: string;
     retryText?: string;
     dismissText?: string;
     showRetry?: boolean;

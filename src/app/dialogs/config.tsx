@@ -211,6 +211,18 @@ function WarningDialogPreview() {
 function ErrorDialogPreview() {
     const [open, setOpen] = useState(false);
 
+    // Realistic traceback with long file paths
+    const errorDetails = `Unhandled exception in step execution: 'code' object has no attribute 'errors'
+
+Traceback (most recent call last):
+  File "C:\\Users\\jatin\\OneDrive\\Desktop\\projects\\httpchain\\backend\\src\\httpchain\\step\\executor\\_executor.py", line 91, in execute
+    condition_result = await evaluate_condition(self.step.condition, self.variables)
+  File "C:\\Users\\jatin\\OneDrive\\Desktop\\projects\\httpchain\\backend\\src\\httpchain\\step\\condition\\__init__.py", line 43, in evaluate_condition
+    return await evaluate_condition_function(condition, variables)
+  File "C:\\Users\\jatin\\OneDrive\\Desktop\\projects\\httpchain\\backend\\src\\httpchain\\step\\condition\\evaluator.py", line 78, in evaluate_condition_function
+    result = code.errors
+AttributeError: 'code' object has no attribute 'errors'`;
+
     return (
         <div className="space-y-2">
             <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
@@ -220,9 +232,9 @@ function ErrorDialogPreview() {
                 open={open}
                 onOpenChange={setOpen}
                 onRetry={() => console.log('Retrying...')}
-                title="Failed to save"
-                description="Your changes could not be saved. Please try again."
-                error={new Error('Network request failed: Connection timeout after 30000ms')}
+                title="Step Execution Failed"
+                description="An error occurred while executing this step."
+                error={errorDetails}
             />
         </div>
     );

@@ -12,7 +12,8 @@ export interface ErrorDialogProps {
 
     title?: string;
     description?: string;
-    error?: Error | string;
+    /** Technical error details (shown in collapsible section) */
+    error?: string;
 
     retryText?: string;
     dismissText?: string;
@@ -56,9 +57,6 @@ export function ErrorDialog({
         onOpenChange(false);
     };
 
-    const errorMessage = error instanceof Error ? error.message : error;
-    const errorStack = error instanceof Error ? error.stack : undefined;
-
     return (
         <DialogBase
             open={open}
@@ -81,7 +79,7 @@ export function ErrorDialog({
                 </>
             }
         >
-            {errorMessage && (
+            {error && (
                 <div className="space-y-2">
                     <button
                         type="button"
@@ -97,13 +95,8 @@ export function ErrorDialog({
                         <span>Technical Details</span>
                     </button>
                     {detailsOpen && (
-                        <div className="rounded-md bg-muted p-3 font-mono text-xs text-muted-foreground overflow-auto max-h-32">
-                            <p>{errorMessage}</p>
-                            {errorStack && (
-                                <pre className="mt-2 text-[10px] opacity-70 whitespace-pre-wrap">
-                                    {errorStack}
-                                </pre>
-                            )}
+                        <div className="rounded-md bg-muted p-3 font-mono text-xs text-muted-foreground overflow-auto max-h-32 break-all">
+                            <pre className="whitespace-pre-wrap">{error}</pre>
                         </div>
                     )}
                 </div>
