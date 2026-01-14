@@ -1136,6 +1136,20 @@ function StatusDisplayWithCtaPreview() {
     );
 }
 
+function StatusDisplayInlinePreview() {
+    return (
+        <div style={{ width: '500px' }}>
+            <StatusDisplay
+                variant="neutral"
+                icon={Info}
+                description="You are editing the request template before variable substitution."
+                ctaText="Read Docs"
+                ctaOnClick={() => console.log('Read docs clicked')}
+            />
+        </div>
+    );
+}
+
 const STATUS_DISPLAY_CONFIG: ComponentConfig = {
     id: 'status-display',
     name: 'StatusDisplay',
@@ -1199,6 +1213,18 @@ const STATUS_DISPLAY_CONFIG: ComponentConfig = {
     ctaOnClick={() => {}}
 />`,
             preview: <StatusDisplayWithCtaPreview />,
+        },
+        {
+            title: 'Inline (No Title)',
+            description: 'Subtle inline message without title - great for contextual hints',
+            code: `<StatusDisplay
+    variant="neutral"
+    icon={Info}
+    description="You are editing the request template before variable substitution."
+    ctaText="Read Docs"
+    ctaOnClick={() => {}}
+/>`,
+            preview: <StatusDisplayInlinePreview />,
         },
     ],
 };

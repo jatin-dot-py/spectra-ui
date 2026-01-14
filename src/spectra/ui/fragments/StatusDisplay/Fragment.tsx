@@ -7,8 +7,8 @@ export interface StatusDisplayProps {
     variant: 'success' | 'warning' | 'destructive' | 'neutral';
     /** Icon to display */
     icon: SpectraIconType;
-    /** Main status title */
-    title: string;
+    /** Optional main status title */
+    title?: string;
     /** Optional detailed description */
     description?: string;
     /** Optional CTA link text (e.g., "Learn more") */
@@ -52,9 +52,11 @@ export function StatusDisplay({
         >
             <Icon className={cn('h-4 w-4 shrink-0 mt-0.5', variantStyles[variant])} />
             <div className="space-y-1 min-w-0 flex-1">
-                <h4 className="font-medium text-sm leading-5 text-foreground">
-                    {title}
-                </h4>
+                {title && (
+                    <h4 className="font-medium text-sm leading-5 text-foreground">
+                        {title}
+                    </h4>
+                )}
                 {(description || (ctaText && ctaOnClick)) && (
                     <p className="text-sm text-muted-foreground">
                         {description}

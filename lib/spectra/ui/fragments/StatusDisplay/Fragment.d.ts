@@ -4,8 +4,8 @@ export interface StatusDisplayProps {
     variant: 'success' | 'warning' | 'destructive' | 'neutral';
     /** Icon to display */
     icon: SpectraIconType;
-    /** Main status title */
-    title: string;
+    /** Optional main status title */
+    title?: string;
     /** Optional detailed description */
     description?: string;
     /** Optional CTA link text (e.g., "Learn more") */
