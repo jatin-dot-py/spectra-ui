@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { FolderTree, Columns, Code, FileX2, TableProperties, Globe, Bookmark, FileCode2, FileType2, Braces, Check, Info, AlertTriangle } from 'lucide-react';
+import { FolderTree, Columns, Code, FileX2, TableProperties, Globe, Bookmark, FileCode2, FileType2, Braces, Check, Info, AlertTriangle, Clock, Zap, XCircle, List } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
-import { FileTree, ContentTab, FileCodeView, JsonCodeView, KeyValuePairTable, HttpRequestMetadata, HtmlCodeView } from '@/spectra/ui/fragments';
+import { FileTree, ContentTab, FileCodeView, JsonCodeView, KeyValuePairTable, HttpRequestMetadata, HtmlCodeView, BasicTimeline, type TimelineItem } from '@/spectra/ui/fragments';
 import { StatusDisplay } from '@/spectra/ui/fragments/StatusDisplay/Fragment';
 import { NoContent } from '@/spectra/ui/state';
 
@@ -1175,9 +1175,175 @@ const STATUS_DISPLAY_CONFIG: ComponentConfig = {
     ],
 };
 
+// ============================================================================
+// Preview Components - BasicTimeline
+// ============================================================================
+
+const SAMPLE_TIMELINE_ITEMS: TimelineItem[] = [
+    {
+        icon: Check,
+        iconVariant: 'primary',
+        title: 'Request Initiated',
+        description: 'API call started at 14:32:05 UTC',
+    },
+    {
+        icon: Zap,
+        iconVariant: 'primary',
+        title: 'Processing Complete',
+        description: 'Server processed the request in 245ms',
+        ctaText: 'View Logs',
+        ctaOnClick: () => console.log('View logs clicked'),
+    },
+    {
+        icon: Check,
+        iconVariant: 'primary',
+        title: 'Response Delivered',
+        description: 'Response successfully sent to client',
+    },
+];
+
+const SAMPLE_TIMELINE_WITH_ERROR: TimelineItem[] = [
+    {
+        icon: Clock,
+        iconVariant: 'primary',
+        title: 'Step 1: Validation',
+        description: 'Input data validated successfully',
+    },
+    {
+        icon: XCircle,
+        iconVariant: 'destructive',
+        title: 'Step 2: Authentication Failed',
+        description: 'Invalid API key provided',
+        ctaText: 'Retry',
+        ctaOnClick: () => console.log('Retry clicked'),
+    },
+];
+
+function BasicTimelineDefaultPreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <BasicTimeline items={SAMPLE_TIMELINE_ITEMS} />
+        </div>
+    );
+}
+
+function BasicTimelineWithErrorPreview() {
+    return (
+        <div style={{ width: '400px' }}>
+            <BasicTimeline items={SAMPLE_TIMELINE_WITH_ERROR} />
+        </div>
+    );
+}
+
+function BasicTimelineWithChildrenPreview() {
+    const items: TimelineItem[] = [
+        {
+            icon: Check,
+            iconVariant: 'primary',
+            title: 'Data Extracted',
+            description: 'Successfully extracted 3 values',
+            children: (
+                <div className="text-xs text-muted-foreground bg-muted/50 rounded p-2 font-mono">
+                    user_id: 12345<br />
+                    session: abc-xyz<br />
+                    token: eyJhbG...
+                </div>
+            ),
+        },
+        {
+            icon: Clock,
+            title: 'Pending Review',
+            description: 'Awaiting manual approval',
+        },
+    ];
+
+    return (
+        <div style={{ width: '400px' }}>
+            <BasicTimeline items={items} />
+        </div>
+    );
+}
+
+const BASIC_TIMELINE_CONFIG: ComponentConfig = {
+    id: 'basic-timeline',
+    name: 'BasicTimeline',
+    description: 'Vertical timeline with customizable icons, variants, and optional CTAs for each step.',
+    icon: List,
+    importPath: '@/spectra/ui/fragments',
+    examples: [
+        {
+            title: 'Default',
+            description: 'Basic timeline with primary variant icons',
+            code: `const items: TimelineItem[] = [
+    {
+        icon: Check,
+        iconVariant: 'primary',
+        title: 'Request Initiated',
+        description: 'API call started',
+    },
+    {
+        icon: Zap,
+        iconVariant: 'primary',
+        title: 'Processing Complete',
+        description: 'Server processed the request',
+        ctaText: 'View Logs',
+        ctaOnClick: () => {},
+    },
+];
+
+<BasicTimeline items={items} />`,
+            preview: <BasicTimelineDefaultPreview />,
+        },
+        {
+            title: 'With Error State',
+            description: 'Timeline showing a destructive/error step',
+            code: `const items: TimelineItem[] = [
+    {
+        icon: Clock,
+        iconVariant: 'primary',
+        title: 'Step 1: Validation',
+        description: 'Input validated',
+    },
+    {
+        icon: XCircle,
+        iconVariant: 'destructive',
+        title: 'Step 2: Authentication Failed',
+        description: 'Invalid API key',
+        ctaText: 'Retry',
+        ctaOnClick: () => {},
+    },
+];
+
+<BasicTimeline items={items} />`,
+            preview: <BasicTimelineWithErrorPreview />,
+        },
+        {
+            title: 'With Custom Children',
+            description: 'Timeline items with custom content',
+            code: `const items: TimelineItem[] = [
+    {
+        icon: Check,
+        iconVariant: 'primary',
+        title: 'Data Extracted',
+        description: 'Successfully extracted 3 values',
+        children: (
+            <div className="text-xs bg-muted/50 rounded p-2">
+                user_id: 12345<br />
+                session: abc-xyz
+            </div>
+        ),
+    },
+];
+
+<BasicTimeline items={items} />`,
+            preview: <BasicTimelineWithChildrenPreview />,
+        },
+    ],
+};
+
 export const categoryRegistry: CategoryRegistry = {
     id: 'fragments',
     name: 'Fragments',
     icon: FolderTree,
-    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, JSON_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG, HTML_CODE_VIEW_CONFIG, STATUS_DISPLAY_CONFIG],
+    getComponents: () => [FILE_TREE_CONFIG, CONTENT_TAB_CONFIG, FILE_CODE_VIEW_CONFIG, JSON_CODE_VIEW_CONFIG, KEY_VALUE_PAIR_TABLE_CONFIG, HTTP_REQUEST_METADATA_CONFIG, HTML_CODE_VIEW_CONFIG, STATUS_DISPLAY_CONFIG, BASIC_TIMELINE_CONFIG],
 };

@@ -38,14 +38,14 @@ export function StatusDisplay({
     return (
         <div
             className={cn(
-                'flex items-start gap-3 p-3 rounded-md border',
+                'flex items-start gap-2 p-2 rounded-md border',
                 bgStyles[variant],
                 className
             )}
         >
-            <Icon className={cn('h-5 w-5 shrink-0 mt-0.5', variantStyles[variant])} />
+            <Icon className={cn('h-4 w-4 shrink-0 mt-0.5', variantStyles[variant])} />
             <div className="space-y-1 min-w-0 flex-1">
-                <h4 className="font-medium text-sm leading-6 text-foreground">
+                <h4 className="font-medium text-sm leading-5 text-foreground">
                     {title}
                 </h4>
                 {description && (
