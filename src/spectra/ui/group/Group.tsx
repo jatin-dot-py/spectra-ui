@@ -1,15 +1,13 @@
 import React, { type ReactNode, Children, isValidElement } from 'react';
 import { cn } from '@/lib/utils';
 import { GroupItem, type GroupItemProps } from './GroupItem';
-import { type GroupSize, sizeConfig } from './sizeConfig';
+import { groupStyles } from './sizeConfig';
 
 export interface GroupProps {
     /** Group content - should be GroupItem components */
     children: ReactNode;
     /** Optional description text for the group */
     description?: string;
-    /** Size variant */
-    size?: GroupSize;
 }
 
 function flattenChildren(children: ReactNode): ReactNode[] {
@@ -21,9 +19,9 @@ function flattenChildren(children: ReactNode): ReactNode[] {
     });
 }
 
-export function Group({ children, description, size = 'sm' }: GroupProps) {
+export function Group({ children, description }: GroupProps) {
     const childArray = flattenChildren(children).filter(isValidElement);
-    const s = sizeConfig[size];
+    const s = groupStyles;
 
     return (
         <div className="space-y-1">
@@ -74,13 +72,11 @@ export interface GroupConfigProps {
     items: GroupItemConfig[];
     /** Optional description text for the group */
     description?: string;
-    /** Size variant */
-    size?: GroupSize;
 }
 
-export function GroupConfig({ items, description, size = 'sm' }: GroupConfigProps) {
+export function GroupConfig({ items, description }: GroupConfigProps) {
     return (
-        <Group description={description} size={size}>
+        <Group description={description}>
             {items.map((item, index) => (
                 <GroupItem
                     key={item.title + index}
@@ -93,7 +89,6 @@ export function GroupConfig({ items, description, size = 'sm' }: GroupConfigProp
                     onActionIconClick={item.onActionIconClick}
                     badgeText={item.badgeText}
                     info={item.info}
-                    size={size}
                 >
                     {item.children}
                 </GroupItem>

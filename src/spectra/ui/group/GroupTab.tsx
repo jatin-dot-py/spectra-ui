@@ -2,7 +2,7 @@ import { type ReactNode, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
-import { type GroupSize, sizeConfig } from './sizeConfig';
+import { groupStyles } from './sizeConfig';
 
 export interface GroupTabItem {
     /** Tab title */
@@ -23,13 +23,11 @@ export interface GroupTabItem {
 function TabStatusIndicator({
     warning,
     notification,
-    size,
 }: {
     warning?: boolean;
     notification?: boolean | number;
-    size: GroupSize;
 }) {
-    const iconSize = size === 'sm' ? 'h-3.5 w-3.5' : size === 'md' ? 'h-4 w-4' : 'h-[18px] w-[18px]';
+    const iconSize = 'h-3.5 w-3.5';
 
     // Warning takes priority over notification
     if (warning) {
@@ -48,12 +46,7 @@ function TabStatusIndicator({
         if (displayCount) {
             return (
                 <span
-                    className={cn(
-                        'inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground font-medium',
-                        size === 'sm'
-                            ? 'min-w-[16px] h-4 px-1 text-[10px]'
-                            : 'min-w-[18px] h-[18px] px-1.5 text-[11px]'
-                    )}
+                    className="inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground font-medium min-w-[16px] h-4 px-1 text-[10px]"
                     aria-label={`${count} notifications`}
                 >
                     {displayCount}
@@ -64,10 +57,7 @@ function TabStatusIndicator({
         // Simple dot for boolean notification
         return (
             <span
-                className={cn(
-                    'rounded-full bg-primary',
-                    size === 'sm' ? 'h-2 w-2' : 'h-2.5 w-2.5'
-                )}
+                className="rounded-full bg-primary h-2 w-2"
                 aria-label="New notification"
             />
         );
@@ -87,8 +77,6 @@ export interface GroupTabProps {
     description?: string;
     /** Optional className for the root element */
     className?: string;
-    /** Size variant */
-    size?: GroupSize;
 }
 
 export function GroupTab({
@@ -97,12 +85,11 @@ export function GroupTab({
     defaultTab,
     description,
     className,
-    size = 'sm',
 }: GroupTabProps) {
     const [activeTab, setActiveTab] = useState(
         defaultTab || (items.length > 0 ? items[0].title : '')
     );
-    const s = sizeConfig[size];
+    const s = groupStyles;
 
     const activeItem = items.find((item) => item.title === activeTab);
 
@@ -146,7 +133,6 @@ export function GroupTab({
                                 <TabStatusIndicator
                                     warning={item.warning}
                                     notification={item.notification}
-                                    size={size}
                                 />
                             </button>
                         );
@@ -200,7 +186,6 @@ export function GroupTab({
                                 <TabStatusIndicator
                                     warning={item.warning}
                                     notification={item.notification}
-                                    size={size}
                                 />
                             </div>
                         </button>

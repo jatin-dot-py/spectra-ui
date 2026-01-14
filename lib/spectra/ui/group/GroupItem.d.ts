@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { SpectraIconType } from '../../types';
-import { GroupSize } from './sizeConfig';
 export interface GroupItemProps {
     /** Group item title */
     title: string;
@@ -22,8 +21,6 @@ export interface GroupItemProps {
     badgeText?: string;
     /** If true, action icon is always visible (not just on hover) */
     alwaysShowAction?: boolean;
-    /** Size variant */
-    size?: GroupSize;
     /** Optional info popover with description and reference link */
     info?: {
         description: string;
@@ -35,4 +32,4 @@ export interface GroupItemProps {
     /** Reason for disabling the group item (shown on hover) */
     disabledReason?: string;
 }
-export declare function GroupItem({ title, icon: Icon, children, collapsible, defaultExpanded, indentChildren, actionIcon: ActionIcon, onActionIconClick, badgeText, alwaysShowAction, size, info, disabled, disabledReason, }: GroupItemProps): import("react/jsx-runtime").JSX.Element;
+export declare function GroupItem({ title, icon: Icon, children, collapsible, defaultExpanded, indentChildren, actionIcon: ActionIcon, onActionIconClick, badgeText, alwaysShowAction, info, disabled, disabledReason, }: GroupItemProps): import("react/jsx-runtime").JSX.Element;

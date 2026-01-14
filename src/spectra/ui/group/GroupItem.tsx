@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
-import { type GroupSize, sizeConfig } from './sizeConfig';
+import { groupStyles } from './sizeConfig';
 import { InfoPopover } from '@/spectra/ui/_shared/InfoPopover';
 
 export interface GroupItemProps {
@@ -26,8 +26,6 @@ export interface GroupItemProps {
     badgeText?: string;
     /** If true, action icon is always visible (not just on hover) */
     alwaysShowAction?: boolean;
-    /** Size variant */
-    size?: GroupSize;
     /** Optional info popover with description and reference link */
     info?: {
         description: string;
@@ -51,13 +49,12 @@ export function GroupItem({
     onActionIconClick,
     badgeText,
     alwaysShowAction = false,
-    size = 'sm',
     info,
     disabled = false,
     disabledReason,
 }: GroupItemProps) {
     const [expanded, setExpanded] = useState(defaultExpanded);
-    const s = sizeConfig[size];
+    const s = groupStyles;
 
     // When not collapsible, always show content
     const isExpanded = collapsible ? expanded : true;

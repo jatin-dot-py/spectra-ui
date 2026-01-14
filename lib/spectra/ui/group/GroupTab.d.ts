@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { SpectraIconType } from '../../types';
-import { GroupSize } from './sizeConfig';
 export interface GroupTabItem {
     /** Tab title */
     title: string;
@@ -26,7 +25,5 @@ export interface GroupTabProps {
     description?: string;
     /** Optional className for the root element */
     className?: string;
-    /** Size variant */
-    size?: GroupSize;
 }
-export declare function GroupTab({ items, orientation, defaultTab, description, className, size, }: GroupTabProps): import("react/jsx-runtime").JSX.Element;
+export declare function GroupTab({ items, orientation, defaultTab, description, className, }: GroupTabProps): import("react/jsx-runtime").JSX.Element;
