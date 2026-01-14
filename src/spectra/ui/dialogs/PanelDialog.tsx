@@ -37,7 +37,7 @@ export function PanelDialog({
                 showCloseButton
                 className={cn(
                     // Near full-screen dimensions
-                    'sm:max-w-[90vw] sm:max-h-[90vh] h-[90vh]',
+                    'sm:max-w-[98vw] sm:max-h-[98vh] h-[98vh]',
                     // Fixed layout - no content wrapping
                     'flex flex-col',
                     // Remove default gap since we handle our own spacing
