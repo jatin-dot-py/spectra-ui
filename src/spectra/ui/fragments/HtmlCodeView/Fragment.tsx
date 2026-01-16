@@ -14,6 +14,10 @@ export interface HtmlCodeViewProps {
     showFooter?: boolean;
     /** Custom footer text */
     footer?: { left?: string; right?: string };
+    /** Exact height of the container */
+    height?: string;
+    /** Exact width of the container */
+    width?: string;
     /** Maximum height of the container */
     maxHeight?: string;
     /** Maximum width of the container */
@@ -27,6 +31,8 @@ export function HtmlCodeView({
     className,
     showFooter = true,
     footer,
+    height,
+    width,
     maxHeight,
     maxWidth,
 }: HtmlCodeViewProps) {
@@ -35,12 +41,10 @@ export function HtmlCodeView({
     return (
         <div
             className={`flex flex-col bg-background border border-border rounded-md overflow-hidden ${className || ''}`}
-            style={{ maxHeight, maxWidth, height: '100%' }}
+            style={{ height: height || '100%', width, maxHeight, maxWidth }}
         >
             {/* Header / Tabs */}
             <div className="flex items-center justify-between border-b border-border px-3 py-1.5 text-sm">
-
-
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => setMode('code')}

@@ -12,9 +12,15 @@ export interface JsonCodeViewProps {
         left?: string;
         right?: string;
     };
+    /** Exact height of the container */
+    height?: string;
+    /** Exact width of the container */
+    width?: string;
     /** Maximum height of the container */
     maxHeight?: string;
     /** Maximum width of the container */
     maxWidth?: string;
+    /** Custom class name for styling overrides */
+    className?: string;
 }
-export declare function JsonCodeView({ filename, data, rootLabel, showFooter, footer, maxHeight, maxWidth, }: JsonCodeViewProps): import("react/jsx-runtime").JSX.Element;
+export declare function JsonCodeView({ filename, data, rootLabel, showFooter, footer, height, width, maxHeight, maxWidth, className, }: JsonCodeViewProps): import("react/jsx-runtime").JSX.Element;

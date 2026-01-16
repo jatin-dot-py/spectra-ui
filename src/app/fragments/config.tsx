@@ -566,24 +566,28 @@ const FILE_CODE_VIEW_CONFIG: ComponentConfig = {
 // Preview Components - KeyValuePairTable
 // ============================================================================
 
+// Mixed types to demonstrate type-based coloring
 const SAMPLE_ENV_VARS = {
     'NODE_ENV': 'production',
     'API_URL': 'https://api.example.com/v1',
-    'DATABASE_URL': 'postgresql://user:pass@localhost:5432/mydb',
+    'DEBUG_MODE': true,
+    'MAX_CONNECTIONS': 100,
+    'CACHE_TTL': null,
     'SECRET_KEY': 'sk_live_xxxxxxxxxxxxxxxxxxxxx',
 };
 
 const SAMPLE_HEADERS = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     'X-Request-ID': 'req_abc123xyz',
-    'Cache-Control': 'no-cache',
+    'X-Rate-Limit': 1000,
+    'X-Cached': false,
 };
 
 function KeyValuePairTableDefaultPreview() {
     return (
         <div style={{ width: '400px' }}>
-            <KeyValuePairTable data={SAMPLE_ENV_VARS} />
+            <KeyValuePairTable data={SAMPLE_ENV_VARS} hideHeader={true} showCopy={true} showCopyJson={true} />
         </div>
     );
 }
@@ -1013,22 +1017,43 @@ const SAMPLE_HTML = `<!DOCTYPE html>
 
 function HtmlCodeViewBasicPreview() {
     return (
-        <div style={{ height: '400px', width: '500px' }}>
-            <HtmlCodeView
-                filename="index.html"
-                content={SAMPLE_HTML}
-            />
-        </div>
+        <HtmlCodeView
+            filename="index.html"
+            content={SAMPLE_HTML}
+            height="400px"
+            width="500px"
+        />
     );
 }
 
 function HtmlCodeViewPreviewModePreview() {
     return (
-        <div style={{ height: '400px', width: '500px' }}>
+        <HtmlCodeView
+            filename="preview.html"
+            content={SAMPLE_HTML}
+            initialMode="preview"
+            height="400px"
+            width="500px"
+        />
+    );
+}
+
+function HtmlCodeViewEditablePreview() {
+    const [html, setHtml] = useState(SAMPLE_HTML);
+
+    return (
+        <div className="space-y-3" style={{ width: '600px' }}>
+            <textarea
+                value={html}
+                onChange={(e) => setHtml(e.target.value)}
+                placeholder="Paste your HTML here..."
+                className="w-full h-32 p-2 text-xs font-mono bg-muted border border-border rounded-md resize-none"
+            />
             <HtmlCodeView
-                filename="preview.html"
-                content={SAMPLE_HTML}
+                filename="custom.html"
+                content={html}
                 initialMode="preview"
+                height="400px"
             />
         </div>
     );
@@ -1059,6 +1084,19 @@ const HTML_CODE_VIEW_CONFIG: ComponentConfig = {
     initialMode="preview"
 />`,
             preview: <HtmlCodeViewPreviewModePreview />,
+        },
+        {
+            title: 'Editable (Paste Custom HTML)',
+            description: 'Paste your own HTML in the textarea to test the preview',
+            code: `const [html, setHtml] = useState(defaultHtml);
+
+<textarea value={html} onChange={(e) => setHtml(e.target.value)} />
+<HtmlCodeView
+    filename="custom.html"
+    content={html}
+    initialMode="preview"
+/>`,
+            preview: <HtmlCodeViewEditablePreview />,
         },
     ],
 };

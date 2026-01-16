@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Zap, Plus, Trash2, Download, RefreshCw, Save, Send, Copy, Settings, Layers } from 'lucide-react';
+import { Zap, Plus, Trash2, Download, RefreshCw, Save, Send, Copy, Settings, Layers, ChevronDown } from 'lucide-react';
 import type { CategoryRegistry, ComponentConfig } from '../types';
-import { ActionButton, ActionButtonGroup } from '@/spectra/ui/actions';
+import { ActionButton, ActionButtonGroup, ActionDropdown } from '@/spectra/ui/actions';
 
 // ============================================================================
 // Preview Components - ActionButton
@@ -238,6 +238,35 @@ function AlignedGroupPreview() {
 }
 
 // ============================================================================
+// Preview Components - ActionDropdown
+// ============================================================================
+
+function BasicDropdownPreview() {
+    return (
+        <ActionDropdown
+            label="Actions"
+            items={[
+                { label: 'Save', icon: Save, onClick: () => console.log('Save') },
+                { label: 'Download', icon: Download, onClick: () => console.log('Download') },
+                { label: 'Delete', icon: Trash2, onClick: () => console.log('Delete') },
+            ]}
+        />
+    );
+}
+
+function DropdownNoLabelPreview() {
+    return (
+        <ActionDropdown
+            items={[
+                { label: 'Copy', icon: Copy, onClick: () => { } },
+                { label: 'Refresh', icon: RefreshCw, onClick: () => { } },
+                { label: 'Settings', icon: Settings, onClick: () => { } },
+            ]}
+        />
+    );
+}
+
+// ============================================================================
 // Component Configurations
 // ============================================================================
 
@@ -362,6 +391,40 @@ const ACTION_BUTTON_GROUP_CONFIG: ComponentConfig = {
     ],
 };
 
+const ACTION_DROPDOWN_CONFIG: ComponentConfig = {
+    id: 'action-dropdown',
+    name: 'ActionDropdown',
+    description: 'A dropdown menu for grouping actions into a compact trigger.',
+    icon: ChevronDown,
+    importPath: '@/spectra/ui/actions',
+    examples: [
+        {
+            title: 'Basic Usage',
+            description: 'A labeled dropdown with action items',
+            code: `<ActionDropdown
+    label="Actions"
+    items={[
+        { label: 'Save', icon: Save, onClick: handleSave },
+        { label: 'Download', icon: Download, onClick: handleDownload },
+        { label: 'Delete', icon: Trash2, onClick: handleDelete },
+    ]}
+/>`,
+            preview: <BasicDropdownPreview />,
+        },
+        {
+            title: 'No Label',
+            description: 'Just a chevron trigger for minimal UI',
+            code: `<ActionDropdown
+    items={[
+        { label: 'Copy', icon: Copy, onClick: handleCopy },
+        { label: 'Refresh', icon: RefreshCw, onClick: handleRefresh },
+    ]}
+/>`,
+            preview: <DropdownNoLabelPreview />,
+        },
+    ],
+};
+
 // ============================================================================
 // Category Registry Export
 // ============================================================================
@@ -370,6 +433,6 @@ export const categoryRegistry: CategoryRegistry = {
     id: 'actions',
     name: 'Actions',
     icon: Zap,
-    getComponents: () => [ACTION_BUTTON_CONFIG, ACTION_BUTTON_GROUP_CONFIG],
+    getComponents: () => [ACTION_BUTTON_CONFIG, ACTION_BUTTON_GROUP_CONFIG, ACTION_DROPDOWN_CONFIG],
 };
 

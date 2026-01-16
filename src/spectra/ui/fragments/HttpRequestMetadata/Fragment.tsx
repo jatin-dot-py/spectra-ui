@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Globe, Copy, Check, Clock, ArrowRightLeft, AlertCircle, Package } from 'lucide-react';
+import { Globe, Copy, Check, Clock, ArrowRightLeft, Package, AlertCircle } from 'lucide-react';
 import { type SpectraIconType } from '@/spectra/types';
 import { parseUrl, getStatusVariant, formatStatus, hasValidStatus, formatResponseTime, formatBytes } from './parts';
+import { StatusDisplay } from '../StatusDisplay';
 
 export interface HttpRequestMetadataProps {
     /** HTTP Method (e.g., GET, POST) */
@@ -76,10 +77,7 @@ export function HttpRequestMetadata({
         <div className="space-y-2">
             {/* Failure Alert Banner */}
             {failed && failureReason && (
-                <div className="flex items-center gap-2 p-2.5 rounded-md bg-destructive/10 border border-destructive/20 text-destructive">
-                    <AlertCircle className="h-4 w-4 shrink-0" />
-                    <span className="text-sm font-medium truncate">{failureReason}</span>
-                </div>
+                <StatusDisplay variant="destructive" icon={AlertCircle} description={failureReason} />
             )}
 
             {/* Method, Status, and Metadata Badges Row */}

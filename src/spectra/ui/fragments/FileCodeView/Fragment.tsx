@@ -11,8 +11,15 @@ export interface FileCodeViewProps {
     showFooter?: boolean;
     footer?: { left?: string; right?: string };
     wrapLines?: boolean;
+    /** Exact height of the container */
+    height?: string;
+    /** Exact width of the container */
+    width?: string;
+    /** Maximum height of the container */
     maxHeight?: string;
+    /** Maximum width of the container */
     maxWidth?: string;
+    /** Custom class name for styling overrides */
     className?: string;
 }
 
@@ -33,6 +40,8 @@ export function FileCodeView({
     showFooter = true,
     footer,
     wrapLines = false,
+    height,
+    width,
     maxHeight,
     maxWidth,
     className,
@@ -59,7 +68,7 @@ export function FileCodeView({
     return (
         <div
             className={`relative bg-background group ${className || ''}`}
-            style={{ maxHeight, maxWidth, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+            style={{ height: height || '100%', width, maxHeight, maxWidth, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
         >
             {/* Copy button - top right corner */}
             <button

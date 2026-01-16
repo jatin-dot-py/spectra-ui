@@ -13,10 +13,16 @@ export interface JsonCodeViewProps {
     showFooter?: boolean;
     /** Custom footer text */
     footer?: { left?: string; right?: string };
+    /** Exact height of the container */
+    height?: string;
+    /** Exact width of the container */
+    width?: string;
     /** Maximum height of the container */
     maxHeight?: string;
     /** Maximum width of the container */
     maxWidth?: string;
+    /** Custom class name for styling overrides */
+    className?: string;
 }
 
 /** Get value at a path in JSON data */
@@ -47,8 +53,11 @@ export function JsonCodeView({
     rootLabel,
     showFooter = true,
     footer,
+    height,
+    width,
     maxHeight,
     maxWidth,
+    className,
 }: JsonCodeViewProps) {
     const [path, setPath] = useState<PathSegment[]>([]);
     const [pathCopied, setPathCopied] = useState(false);
@@ -79,8 +88,8 @@ export function JsonCodeView({
 
     return (
         <div
-            className="flex flex-col bg-background overflow-hidden"
-            style={{ maxHeight, maxWidth, height: '100%' }}
+            className={`flex flex-col bg-background overflow-hidden ${className || ''}`}
+            style={{ height: height || '100%', width, maxHeight, maxWidth }}
         >
             {/* Path breadcrumb with copy button */}
             <div className="border-b border-border flex-shrink-0">

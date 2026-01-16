@@ -14,9 +14,13 @@ export interface HtmlCodeViewProps {
         left?: string;
         right?: string;
     };
+    /** Exact height of the container */
+    height?: string;
+    /** Exact width of the container */
+    width?: string;
     /** Maximum height of the container */
     maxHeight?: string;
     /** Maximum width of the container */
     maxWidth?: string;
 }
-export declare function HtmlCodeView({ content, filename, initialMode, className, showFooter, footer, maxHeight, maxWidth, }: HtmlCodeViewProps): import("react/jsx-runtime").JSX.Element;
+export declare function HtmlCodeView({ content, filename, initialMode, className, showFooter, footer, height, width, maxHeight, maxWidth, }: HtmlCodeViewProps): import("react/jsx-runtime").JSX.Element;
