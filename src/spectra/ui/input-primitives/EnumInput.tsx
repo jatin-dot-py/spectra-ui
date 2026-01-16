@@ -85,7 +85,7 @@ export function EnumInput({
         // Icon-only trigger mode - use Popover instead of Select
         if (TriggerIcon) {
             return (
-                <Popover open={iconDropdownOpen} onOpenChange={setIconDropdownOpen}>
+                <Popover open={iconDropdownOpen} onOpenChange={setIconDropdownOpen} modal={true}>
                     <PopoverTrigger asChild>
                         <button
                             disabled={disabled}
@@ -227,7 +227,7 @@ export function EnumInput({
 
             {/* Overflow dropdown */}
             {needsOverflow && (
-                <Popover open={overflowOpen} onOpenChange={setOverflowOpen}>
+                <Popover open={overflowOpen} onOpenChange={setOverflowOpen} modal={true}>
                     <PopoverTrigger asChild>
                         <button
                             disabled={disabled}

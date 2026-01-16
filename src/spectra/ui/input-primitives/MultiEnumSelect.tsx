@@ -100,7 +100,7 @@ export function MultiEnumSelect({
         // Icon trigger mode
         if (TriggerIcon) {
             return (
-                <Popover open={dropdownOpen} onOpenChange={setDropdownOpen}>
+                <Popover open={dropdownOpen} onOpenChange={setDropdownOpen} modal={true}>
                     <PopoverTrigger asChild>
                         <button
                             disabled={disabled}
@@ -171,7 +171,7 @@ export function MultiEnumSelect({
 
         // Standard dropdown
         return (
-            <Popover open={dropdownOpen} onOpenChange={setDropdownOpen}>
+            <Popover open={dropdownOpen} onOpenChange={setDropdownOpen} modal={true}>
                 <PopoverTrigger asChild>
                     <button
                         disabled={disabled}
@@ -351,7 +351,7 @@ export function MultiEnumSelect({
 
             {/* Overflow dropdown */}
             {needsOverflow && (
-                <Popover open={overflowOpen} onOpenChange={setOverflowOpen}>
+                <Popover open={overflowOpen} onOpenChange={setOverflowOpen} modal={true}>
                     <PopoverTrigger asChild>
                         <button
                             disabled={disabled}

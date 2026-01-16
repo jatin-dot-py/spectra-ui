@@ -29,7 +29,7 @@ export function InfoPopover({
     className,
 }: InfoPopoverProps) {
     return (
-        <Popover>
+        <Popover modal={true}>
             <PopoverTrigger asChild>
                 <button
                     type="button"

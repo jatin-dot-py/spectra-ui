@@ -118,7 +118,7 @@ export function DynamicInput({
             disabled && 'opacity-50'
         )}>
             {/* Type Selector */}
-            <Popover open={typeDropdownOpen} onOpenChange={setTypeDropdownOpen}>
+            <Popover open={typeDropdownOpen} onOpenChange={setTypeDropdownOpen} modal={true}>
                 <PopoverTrigger asChild>
                     <button
                         disabled={disabled}

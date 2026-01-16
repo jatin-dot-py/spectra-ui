@@ -159,7 +159,7 @@ export function PathBreadcrumb({ data, path, rootLabel, onPathChange, onCopyPath
                         <>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <Popover open={open} onOpenChange={setOpen}>
+                                <Popover open={open} onOpenChange={setOpen} modal={true}>
                                     <PopoverTrigger className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer group">
                                         <span className="font-mono text-xs group-hover:underline decoration-border/50 underline-offset-2">...</span>
                                     </PopoverTrigger>
