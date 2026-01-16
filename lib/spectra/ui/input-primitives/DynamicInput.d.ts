@@ -9,5 +9,7 @@ export interface DynamicInputProps {
     allowedTypes?: ValueType[];
     /** Disabled state */
     disabled?: boolean;
+    /** Optional suggestions for autocomplete (used by string and object types) */
+    suggestions?: string[];
 }
-export declare function DynamicInput({ value, onChange, allowedTypes, disabled, }: DynamicInputProps): import("react/jsx-runtime").JSX.Element;
+export declare function DynamicInput({ value, onChange, allowedTypes, disabled, suggestions, }: DynamicInputProps): import("react/jsx-runtime").JSX.Element;

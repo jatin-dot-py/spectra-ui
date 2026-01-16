@@ -28,6 +28,8 @@ export interface DynamicInputProps {
     allowedTypes?: ValueType[];
     /** Disabled state */
     disabled?: boolean;
+    /** Optional suggestions for autocomplete (used by string and object types) */
+    suggestions?: string[];
 }
 
 function detectValueType(value: DynamicValue): ValueType {
@@ -44,6 +46,7 @@ export function DynamicInput({
     onChange,
     allowedTypes = ['null', 'string', 'number', 'boolean', 'object'],
     disabled = false,
+    suggestions = [],
 }: DynamicInputProps) {
     const [typeDropdownOpen, setTypeDropdownOpen] = useState(false);
 
@@ -75,6 +78,7 @@ export function DynamicInput({
                         onChange={onChange}
                         placeholder="Enter text..."
                         disabled={disabled}
+                        suggestions={suggestions}
                         className="flex-1"
                     />
                 );
@@ -105,6 +109,7 @@ export function DynamicInput({
                         onChange={(v) => onChange(v as DynamicValue)}
                         disabled={disabled}
                         label="Edit Object"
+                        suggestions={suggestions}
                     />
                 );
             default:
