@@ -31,5 +31,7 @@ export interface GroupItemProps {
     disabled?: boolean;
     /** Reason for disabling the group item (shown on hover) */
     disabledReason?: string;
+    /** Show warning indicator next to title/badge */
+    warning?: boolean;
 }
-export declare function GroupItem({ title, icon: Icon, children, collapsible, defaultExpanded, indentChildren, actionIcon: ActionIcon, onActionIconClick, badgeText, alwaysShowAction, info, disabled, disabledReason, }: GroupItemProps): import("react/jsx-runtime").JSX.Element;
+export declare function GroupItem({ title, icon: Icon, children, collapsible, defaultExpanded, indentChildren, actionIcon: ActionIcon, onActionIconClick, badgeText, alwaysShowAction, info, disabled, disabledReason, warning, }: GroupItemProps): import("react/jsx-runtime").JSX.Element;

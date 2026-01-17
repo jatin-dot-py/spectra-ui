@@ -263,6 +263,7 @@ function APIEndpointConfigPanel() {
                 title="Timeouts & Retries"
                 icon={Clock}
                 indentChildren
+                warning={true}
                 info={{
                     description: "Control how long to wait for responses and how to handle failures. Proper timeout configuration prevents hanging requests and improves reliability.",
                     referenceUrl: "https://developer.mozilla.org/en-US/docs/Web/API/AbortController"

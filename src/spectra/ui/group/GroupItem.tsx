@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { AlertTriangle, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type SpectraIconType } from '@/spectra/types';
 import { groupStyles } from './sizeConfig';
@@ -36,6 +36,8 @@ export interface GroupItemProps {
     disabled?: boolean;
     /** Reason for disabling the group item (shown on hover) */
     disabledReason?: string;
+    /** Show warning indicator next to title/badge */
+    warning?: boolean;
 }
 
 export function GroupItem({
@@ -52,6 +54,7 @@ export function GroupItem({
     info,
     disabled = false,
     disabledReason,
+    warning = false,
 }: GroupItemProps) {
     const [expanded, setExpanded] = useState(defaultExpanded);
     const s = groupStyles;
@@ -106,6 +109,13 @@ export function GroupItem({
                         <span className={cn('font-normal normal-case rounded-sm bg-muted text-muted-foreground/70', s.badgeText, s.badgePx, s.badgePy)}>
                             {badgeText}
                         </span>
+                    )}
+                    {/* Warning Indicator */}
+                    {warning && (
+                        <AlertTriangle
+                            className="h-3.5 w-3.5 text-amber-500"
+                            aria-label="Warning"
+                        />
                     )}
                     {/* Info Popover */}
                     {info && (
