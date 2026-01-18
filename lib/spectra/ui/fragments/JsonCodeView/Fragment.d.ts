@@ -12,6 +12,8 @@ export interface JsonCodeViewProps {
         left?: string;
         right?: string;
     };
+    /** Wrap long lines instead of horizontal scroll (default: false) */
+    wrapLines?: boolean;
     /** Exact height of the container */
     height?: string;
     /** Exact width of the container */
@@ -23,4 +25,4 @@ export interface JsonCodeViewProps {
     /** Custom class name for styling overrides */
     className?: string;
 }
-export declare function JsonCodeView({ filename, data, rootLabel, showFooter, footer, height, width, maxHeight, maxWidth, className, }: JsonCodeViewProps): import("react/jsx-runtime").JSX.Element;
+export declare function JsonCodeView({ filename, data, rootLabel, showFooter, footer, wrapLines, height, width, maxHeight, maxWidth, className, }: JsonCodeViewProps): import("react/jsx-runtime").JSX.Element;

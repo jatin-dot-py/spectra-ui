@@ -13,6 +13,8 @@ export interface JsonCodeViewProps {
     showFooter?: boolean;
     /** Custom footer text */
     footer?: { left?: string; right?: string };
+    /** Wrap long lines instead of horizontal scroll (default: false) */
+    wrapLines?: boolean;
     /** Exact height of the container */
     height?: string;
     /** Exact width of the container */
@@ -47,12 +49,27 @@ function formatPathForCopy(path: PathSegment[], rootLabel?: string): string {
     return `[${formatted.join(', ')}]`;
 }
 
+/** Calculate container height based on JSON content */
+function calculateAutoHeight(jsonString: string): number {
+    const lineCount = jsonString.split('\n').length;
+    const lineHeight = 19; // Monaco default line height
+    const breadcrumbHeight = 40; // Breadcrumb bar height
+    const footerHeight = 28;
+    const padding = 16;
+    const minHeight = 150;
+    const maxHeight = 500;
+
+    const contentHeight = lineCount * lineHeight + breadcrumbHeight + footerHeight + padding;
+    return Math.max(minHeight, Math.min(contentHeight, maxHeight));
+}
+
 export function JsonCodeView({
     filename,
     data,
     rootLabel,
     showFooter = true,
     footer,
+    wrapLines = false,
     height,
     width,
     maxHeight,
@@ -74,6 +91,10 @@ export function JsonCodeView({
         }
     }, [currentValue]);
 
+    // Auto-calculate height when not provided
+    const autoHeight = useMemo(() => calculateAutoHeight(jsonString), [jsonString]);
+    const containerHeight = height || `${autoHeight}px`;
+
     // Path change handler
     const handlePathChange = useCallback((newPath: PathSegment[]) => {
         setPath(newPath);
@@ -89,7 +110,7 @@ export function JsonCodeView({
     return (
         <div
             className={`flex flex-col bg-background overflow-hidden ${className || ''}`}
-            style={{ height: height || '100%', width, maxHeight, maxWidth }}
+            style={{ height: containerHeight, width, maxHeight, maxWidth }}
         >
             {/* Path breadcrumb with copy button */}
             <div className="border-b border-border flex-shrink-0">
@@ -112,7 +133,8 @@ export function JsonCodeView({
                     showLineNumbers={true}
                     showFooter={showFooter}
                     footer={footer}
-                    maxHeight="100%"
+                    wrapLines={wrapLines}
+                    height="100%"
                 />
             </div>
         </div>

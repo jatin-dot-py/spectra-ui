@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Check, Copy, FileText, FileCode2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { FileCodeView, ContentTab } from '@/spectra/ui/fragments';
+import { ContentTab } from '@/spectra/ui/fragments';
+import { ShikiCodeBlock } from './ShikiCodeBlock';
 import type { ExampleItem } from './types';
 
 // ============================================================================
@@ -48,7 +49,7 @@ export function ExampleCard({ example }: { example: ExampleItem }) {
                 )}
             </div>
 
-            {/* Code section */}
+            {/* Code section - using Shiki for dev/showcase */}
             <div className="border-t border-border">
                 <div className="flex bg-muted/50">
                     <ContentTab
@@ -58,12 +59,7 @@ export function ExampleCard({ example }: { example: ExampleItem }) {
                         isActive={true}
                     />
                 </div>
-                <FileCodeView
-                    filename="example.tsx"
-                    content={example.code}
-                    showLineNumbers={true}
-                    showFooter={false}
-                />
+                <ShikiCodeBlock code={example.code} language="tsx" />
             </div>
 
             {/* Preview section - clearly separated */}
@@ -130,12 +126,7 @@ export function ImportSection({ importCode }: ImportProps) {
                         isActive={true}
                     />
                 </div>
-                <FileCodeView
-                    filename="import.tsx"
-                    content={importCode}
-                    showLineNumbers={false}
-                    showFooter={false}
-                />
+                <ShikiCodeBlock code={importCode} language="tsx" showLineNumbers={false} />
             </div>
         </section>
     );

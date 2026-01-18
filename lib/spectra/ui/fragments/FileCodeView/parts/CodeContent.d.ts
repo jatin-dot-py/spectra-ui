@@ -1,4 +1,4 @@
-export declare const MAX_HIGHLIGHT_CHARS = 15000;
+export declare const MAX_HIGHLIGHT_CHARS = 500000;
 interface CodeContentProps {
     content: string;
     language: string;

@@ -14,6 +14,8 @@ export interface HtmlCodeViewProps {
         left?: string;
         right?: string;
     };
+    /** Wrap long lines instead of horizontal scroll (default: false) */
+    wrapLines?: boolean;
     /** Exact height of the container */
     height?: string;
     /** Exact width of the container */
@@ -23,4 +25,4 @@ export interface HtmlCodeViewProps {
     /** Maximum width of the container */
     maxWidth?: string;
 }
-export declare function HtmlCodeView({ content, filename, initialMode, className, showFooter, footer, height, width, maxHeight, maxWidth, }: HtmlCodeViewProps): import("react/jsx-runtime").JSX.Element;
+export declare function HtmlCodeView({ content, filename, initialMode, className, showFooter, footer, wrapLines, height, width, maxHeight, maxWidth, }: HtmlCodeViewProps): import("react/jsx-runtime").JSX.Element;

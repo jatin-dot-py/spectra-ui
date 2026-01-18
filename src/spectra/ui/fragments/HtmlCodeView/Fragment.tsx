@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { FileCodeView } from '../FileCodeView';
 
 export interface HtmlCodeViewProps {
@@ -14,6 +14,8 @@ export interface HtmlCodeViewProps {
     showFooter?: boolean;
     /** Custom footer text */
     footer?: { left?: string; right?: string };
+    /** Wrap long lines instead of horizontal scroll (default: false) */
+    wrapLines?: boolean;
     /** Exact height of the container */
     height?: string;
     /** Exact width of the container */
@@ -24,6 +26,20 @@ export interface HtmlCodeViewProps {
     maxWidth?: string;
 }
 
+/** Calculate container height based on content line count */
+function calculateAutoHeight(content: string): number {
+    const lineCount = content.split('\n').length;
+    const lineHeight = 19; // Monaco default line height
+    const headerHeight = 36; // Header tabs height
+    const footerHeight = 28;
+    const padding = 16;
+    const minHeight = 150;
+    const maxHeight = 500;
+
+    const contentHeight = lineCount * lineHeight + headerHeight + footerHeight + padding;
+    return Math.max(minHeight, Math.min(contentHeight, maxHeight));
+}
+
 export function HtmlCodeView({
     content,
     filename = 'index.html',
@@ -31,6 +47,7 @@ export function HtmlCodeView({
     className,
     showFooter = true,
     footer,
+    wrapLines = false,
     height,
     width,
     maxHeight,
@@ -38,13 +55,17 @@ export function HtmlCodeView({
 }: HtmlCodeViewProps) {
     const [mode, setMode] = useState<'code' | 'preview'>(initialMode);
 
+    // Auto-calculate height when not provided
+    const autoHeight = useMemo(() => calculateAutoHeight(content), [content]);
+    const containerHeight = height || `${autoHeight}px`;
+
     return (
         <div
             className={`flex flex-col bg-background border border-border rounded-md overflow-hidden ${className || ''}`}
-            style={{ height: height || '100%', width, maxHeight, maxWidth }}
+            style={{ height: containerHeight, width, maxHeight, maxWidth }}
         >
             {/* Header / Tabs */}
-            <div className="flex items-center justify-between border-b border-border px-3 py-1.5 text-sm">
+            <div className="flex items-center justify-between border-b border-border px-3 py-1.5 text-sm flex-shrink-0">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => setMode('code')}
@@ -71,7 +92,7 @@ export function HtmlCodeView({
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 min-h-0">
+            <div className="flex-1 min-h-0 overflow-hidden">
                 {mode === 'code' ? (
                     <FileCodeView
                         filename={filename}
@@ -80,7 +101,8 @@ export function HtmlCodeView({
                         showLineNumbers={true}
                         showFooter={showFooter}
                         footer={footer}
-                        maxHeight="100%"
+                        wrapLines={wrapLines}
+                        height="100%"
                     />
                 ) : (
                     <div className="w-full h-full bg-white">

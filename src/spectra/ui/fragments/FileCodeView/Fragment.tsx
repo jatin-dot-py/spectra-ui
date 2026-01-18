@@ -32,6 +32,19 @@ function tryPrettifyJson(content: string): { content: string; isJson: boolean } 
     }
 }
 
+/** Calculate editor height based on content line count */
+function calculateAutoHeight(content: string, showFooter: boolean): number {
+    const lineCount = content.split('\n').length;
+    const lineHeight = 19; // Monaco default line height at fontSize 12
+    const padding = 16; // top + bottom padding
+    const footerHeight = showFooter ? 28 : 0;
+    const minHeight = 80;
+    const maxHeight = 500;
+
+    const contentHeight = lineCount * lineHeight + padding + footerHeight;
+    return Math.max(minHeight, Math.min(contentHeight, maxHeight));
+}
+
 export function FileCodeView({
     filename,
     content,
@@ -56,6 +69,12 @@ export function FileCodeView({
     const { content: displayContent, isJson } = useMemo(() => tryPrettifyJson(content), [content]);
     const finalLanguage = isJson ? 'json' : language;
 
+    // When no height is provided, auto-calculate based on content
+    const autoHeight = useMemo(
+        () => calculateAutoHeight(displayContent, showFooter),
+        [displayContent, showFooter]
+    );
+
     const handleCopy = () => {
         navigator.clipboard.writeText(content);
         setCopied(true);
@@ -65,10 +84,21 @@ export function FileCodeView({
     const footerLeft = footer?.left ?? filename;
     const footerRight = footer?.right ?? (isJson ? 'JSON' : label);
 
+    // Use explicit height if provided, otherwise use auto-calculated height
+    const containerHeight = height || `${autoHeight}px`;
+
     return (
         <div
             className={`relative bg-background group ${className || ''}`}
-            style={{ height: height || '100%', width, maxHeight, maxWidth, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+            style={{
+                height: containerHeight,
+                width,
+                maxHeight,
+                maxWidth,
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column'
+            }}
         >
             {/* Copy button - top right corner */}
             <button
@@ -78,8 +108,8 @@ export function FileCodeView({
                 {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
             </button>
 
-            {/* Scrollable code area */}
-            <div style={{ flex: 1, minHeight: 0, overflow: wrapLines ? 'hidden auto' : 'auto' }}>
+            {/* Code area - Monaco handles its own scrolling */}
+            <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
                 <CodeContent
                     content={displayContent}
                     language={finalLanguage}

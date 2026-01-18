@@ -1,9 +1,7 @@
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import Editor, { type BeforeMount } from '@monaco-editor/react';
+import { useEffect, useState, useCallback } from 'react';
 
-// Maximum characters before syntax highlighting is disabled (15KB)
-export const MAX_HIGHLIGHT_CHARS = 15000;
+export const MAX_HIGHLIGHT_CHARS = 500000;
 
 interface CodeContentProps {
     content: string;
@@ -12,100 +10,98 @@ interface CodeContentProps {
     wrapLines?: boolean;
 }
 
+/** Maps common language identifiers to Monaco language IDs */
+function getMonacoLanguage(language: string): string {
+    const languageMap: Record<string, string> = {
+        'js': 'javascript',
+        'jsx': 'javascript',
+        'ts': 'typescript',
+        'tsx': 'typescript',
+        'py': 'python',
+        'rb': 'ruby',
+        'yml': 'yaml',
+        'md': 'markdown',
+        'sh': 'shell',
+        'bash': 'shell',
+        'zsh': 'shell',
+        'txt': 'plaintext',
+        'text': 'plaintext',
+        'plain': 'plaintext',
+    };
+    return languageMap[language.toLowerCase()] || language.toLowerCase();
+}
+
 export function CodeContent({ content, language, showLineNumbers, wrapLines = false }: CodeContentProps) {
-    const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
-    const isTooBig = content.length > MAX_HIGHLIGHT_CHARS;
+    const [isDark, setIsDark] = useState(false);
 
-    if (isTooBig) {
-        return (
-            <div
-                className="text-xs font-mono p-3"
-                style={{ background: 'hsl(var(--muted))' }}
-            >
-                <div className="text-muted-foreground text-[10px] uppercase mb-2 pb-2 border-b border-border">
-                    Syntax highlighting disabled ({Math.round(content.length / 1000)}KB)
-                </div>
-                <pre className={wrapLines ? "whitespace-pre-wrap break-all overflow-x-hidden" : "whitespace-pre"}>
-                    {content}
-                </pre>
-            </div>
-        );
-    }
+    useEffect(() => {
+        const checkDarkMode = () => setIsDark(document.documentElement.classList.contains('dark'));
+        checkDarkMode();
+        const observer = new MutationObserver(checkDarkMode);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
 
-    if (wrapLines) {
-        return (
-            <SyntaxHighlighter
-                language={language}
-                style={isDark ? oneDark : oneLight}
-                showLineNumbers={showLineNumbers}
-                wrapLines
-                wrapLongLines
-                lineProps={{
-                    style: {
-                        display: 'block',
-                        width: '100%',
-                    }
-                }}
-                customStyle={{
-                    margin: 0,
-                    padding: '12px',
-                    background: 'transparent',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-all',
-                    overflowWrap: 'break-word',
-                }}
-                codeTagProps={{
-                    className: 'text-xs font-mono',
-                    style: {
-                        display: 'block',
-                        whiteSpace: 'pre-wrap',
-                        wordBreak: 'break-all',
-                        background: 'transparent',
-                    }
-                }}
-                lineNumberStyle={{
-                    minWidth: '2.5em',
-                    paddingRight: '1em',
-                    color: 'var(--muted-foreground)',
-                    userSelect: 'none',
-                    display: 'inline-block',
-                    textAlign: 'right',
-                }}
-                lineNumberContainerStyle={{
-                    float: 'left',
-                    paddingRight: '10px',
-                }}
-            >
-                {content}
-            </SyntaxHighlighter>
-        );
-    }
+    // Configure Monaco for read-only viewing: disable type libraries and diagnostics
+    const handleBeforeMount: BeforeMount = useCallback((monaco) => {
+        const diagnosticsOff = {
+            noSemanticValidation: true,
+            noSyntaxValidation: true,
+            noSuggestionDiagnostics: true,
+        };
+        const compilerOpts = { noLib: true, allowNonTsExtensions: true };
+
+        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(diagnosticsOff);
+        monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOpts);
+        monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions(diagnosticsOff);
+        monaco.languages.typescript.javascriptDefaults.setCompilerOptions(compilerOpts);
+    }, []);
 
     return (
-        <SyntaxHighlighter
-            language={language}
-            style={isDark ? oneDark : oneLight}
-            showLineNumbers={showLineNumbers}
-            customStyle={{
-                margin: 0,
-                padding: '12px',
-                background: 'transparent',
-                minWidth: 'max-content',
+        <Editor
+            height="100%"
+            language={getMonacoLanguage(language)}
+            value={content}
+            theme={isDark ? 'vs-dark' : 'light'}
+            beforeMount={handleBeforeMount}
+            options={{
+                readOnly: true,
+                domReadOnly: true,
+                // Appearance
+                fontSize: 12,
+                fontFamily: 'JetBrains Mono, Fira Code, Consolas, monospace',
+                lineNumbers: showLineNumbers ? 'on' : 'off',
+                minimap: { enabled: false },
+                padding: { top: 8, bottom: 8 },
+                scrollBeyondLastLine: false,
+                wordWrap: wrapLines ? 'on' : 'off',
+                renderLineHighlight: 'none',
+                overviewRulerBorder: false,
+                overviewRulerLanes: 0,
+                hideCursorInOverviewRuler: true,
+                glyphMargin: false,
+                folding: true,
+                lineDecorationsWidth: 8,
+                lineNumbersMinChars: 3,
+                automaticLayout: true,
+                // Scrollbar
+                scrollbar: {
+                    vertical: 'auto',
+                    horizontal: wrapLines ? 'hidden' : 'auto',
+                    verticalScrollbarSize: 8,
+                    horizontalScrollbarSize: 8,
+                },
+                // Disable IntelliSense features (read-only viewer, no context)
+                hover: { enabled: false },
+                quickSuggestions: false,
+                parameterHints: { enabled: false },
+                // Find (Ctrl+F)
+                find: {
+                    addExtraSpaceOnTop: false,
+                    autoFindInSelection: 'never',
+                    seedSearchStringFromSelection: 'selection',
+                },
             }}
-            codeTagProps={{
-                className: 'text-xs font-mono',
-                style: {
-                    background: 'transparent',
-                }
-            }}
-            lineNumberStyle={{
-                minWidth: '2.5em',
-                paddingRight: '1em',
-                color: 'var(--muted-foreground)',
-                userSelect: 'none',
-            }}
-        >
-            {content}
-        </SyntaxHighlighter>
+        />
     );
 }
