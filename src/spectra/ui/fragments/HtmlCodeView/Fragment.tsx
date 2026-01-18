@@ -61,7 +61,7 @@ export function HtmlCodeView({
 
     return (
         <div
-            className={`flex flex-col bg-background border border-border rounded-md overflow-hidden ${className || ''}`}
+            className={`flex flex-col bg-background border border-border rounded-md ${className || ''}`}
             style={{ height: containerHeight, width, maxHeight, maxWidth }}
         >
             {/* Header / Tabs */}
@@ -92,7 +92,7 @@ export function HtmlCodeView({
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 min-h-0 overflow-hidden">
+            <div className="flex-1 min-h-0">
                 {mode === 'code' ? (
                     <FileCodeView
                         filename={filename}

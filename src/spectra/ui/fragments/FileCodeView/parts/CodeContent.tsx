@@ -1,5 +1,5 @@
-import Editor, { type BeforeMount } from '@monaco-editor/react';
-import { useEffect, useState, useCallback } from 'react';
+import Editor from '@monaco-editor/react';
+import { useEffect, useState } from 'react';
 
 export const MAX_HIGHLIGHT_CHARS = 500000;
 
@@ -10,7 +10,6 @@ interface CodeContentProps {
     wrapLines?: boolean;
 }
 
-/** Maps common language identifiers to Monaco language IDs */
 function getMonacoLanguage(language: string): string {
     const languageMap: Record<string, string> = {
         'js': 'javascript',
@@ -32,76 +31,44 @@ function getMonacoLanguage(language: string): string {
 }
 
 export function CodeContent({ content, language, showLineNumbers, wrapLines = false }: CodeContentProps) {
-    const [isDark, setIsDark] = useState(false);
+    const [isDark, setIsDark] = useState(() =>
+        typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+    );
 
     useEffect(() => {
         const checkDarkMode = () => setIsDark(document.documentElement.classList.contains('dark'));
-        checkDarkMode();
         const observer = new MutationObserver(checkDarkMode);
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
         return () => observer.disconnect();
     }, []);
 
-    // Configure Monaco for read-only viewing: disable type libraries and diagnostics
-    const handleBeforeMount: BeforeMount = useCallback((monaco) => {
-        const diagnosticsOff = {
-            noSemanticValidation: true,
-            noSyntaxValidation: true,
-            noSuggestionDiagnostics: true,
-        };
-        const compilerOpts = { noLib: true, allowNonTsExtensions: true };
-
-        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(diagnosticsOff);
-        monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOpts);
-        monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions(diagnosticsOff);
-        monaco.languages.typescript.javascriptDefaults.setCompilerOptions(compilerOpts);
-    }, []);
-
     return (
-        <Editor
-            height="100%"
-            language={getMonacoLanguage(language)}
-            value={content}
-            theme={isDark ? 'vs-dark' : 'light'}
-            beforeMount={handleBeforeMount}
-            options={{
-                readOnly: true,
-                domReadOnly: true,
-                // Appearance
-                fontSize: 12,
-                fontFamily: 'JetBrains Mono, Fira Code, Consolas, monospace',
-                lineNumbers: showLineNumbers ? 'on' : 'off',
-                minimap: { enabled: false },
-                padding: { top: 8, bottom: 8 },
-                scrollBeyondLastLine: false,
-                wordWrap: wrapLines ? 'on' : 'off',
-                renderLineHighlight: 'none',
-                overviewRulerBorder: false,
-                overviewRulerLanes: 0,
-                hideCursorInOverviewRuler: true,
-                glyphMargin: false,
-                folding: true,
-                lineDecorationsWidth: 8,
-                lineNumbersMinChars: 3,
-                automaticLayout: true,
-                // Scrollbar
-                scrollbar: {
-                    vertical: 'auto',
-                    horizontal: wrapLines ? 'hidden' : 'auto',
-                    verticalScrollbarSize: 8,
-                    horizontalScrollbarSize: 8,
-                },
-                // Disable IntelliSense features (read-only viewer, no context)
-                hover: { enabled: false },
-                quickSuggestions: false,
-                parameterHints: { enabled: false },
-                // Find (Ctrl+F)
-                find: {
-                    addExtraSpaceOnTop: false,
-                    autoFindInSelection: 'never',
-                    seedSearchStringFromSelection: 'selection',
-                },
-            }}
-        />
+        <div style={{ width: '100%', height: '100%' }}>
+            <Editor
+                height="100%"
+                defaultLanguage={getMonacoLanguage(language)}
+                value={content}
+                theme={isDark ? 'vs-dark' : 'light'}
+                options={{
+                    cursorBlinking: 'smooth',
+                    find: {
+                        cursorMoveOnType: true,
+                        seedSearchStringFromSelection: "always",
+                        autoFindInSelection: "never",
+                        addExtraSpaceOnTop: true,
+                        loop: true
+                    },
+                    hover: {
+                        enabled: true,
+                        above: true,
+                    },
+                    readOnly: true,
+                    lineNumbers: showLineNumbers ? 'on' : 'off',
+                    wordWrap: wrapLines ? 'on' : 'off',
+                    minimap: { enabled: false },
+                    scrollBeyondLastLine: true,
+                }}
+            />
+        </div>
     );
 }

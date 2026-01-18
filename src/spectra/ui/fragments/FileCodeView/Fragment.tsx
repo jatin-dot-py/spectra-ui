@@ -95,7 +95,6 @@ export function FileCodeView({
                 width,
                 maxHeight,
                 maxWidth,
-                overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column'
             }}
@@ -108,8 +107,8 @@ export function FileCodeView({
                 {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
             </button>
 
-            {/* Code area - Monaco handles its own scrolling */}
-            <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+            {/* Code area - Monaco handles its own scrolling and overflow */}
+            <div style={{ flex: 1, minHeight: 0 }}>
                 <CodeContent
                     content={displayContent}
                     language={finalLanguage}

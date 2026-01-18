@@ -1,7 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { codeToHtml } from 'shiki';
+import { createHighlighter, type Highlighter } from 'shiki';
+
+// Create a singleton highlighter with only the languages/themes we need
+let highlighterPromise: Promise<Highlighter> | null = null;
+
+function getHighlighter(): Promise<Highlighter> {
+    if (!highlighterPromise) {
+        highlighterPromise = createHighlighter({
+            themes: ['github-dark', 'github-light'],
+            langs: ['tsx', 'typescript', 'javascript', 'json', 'html', 'css'],
+        });
+    }
+    return highlighterPromise;
+}
 
 interface ShikiCodeBlockProps {
     code: string;
@@ -34,10 +47,11 @@ export function ShikiCodeBlock({
     useEffect(() => {
         let cancelled = false;
 
-        codeToHtml(code, {
-            lang: language,
-            theme: isDark ? 'github-dark' : 'github-light',
-        }).then((result) => {
+        getHighlighter().then((highlighter) => {
+            const result = highlighter.codeToHtml(code, {
+                lang: language,
+                theme: isDark ? 'github-dark' : 'github-light',
+            });
             if (!cancelled) setHtml(result);
         }).catch(() => {
             // Fallback to plain text on error

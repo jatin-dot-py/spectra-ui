@@ -109,7 +109,7 @@ export function JsonCodeView({
 
     return (
         <div
-            className={`flex flex-col bg-background overflow-hidden ${className || ''}`}
+            className={`flex flex-col bg-background ${className || ''}`}
             style={{ height: containerHeight, width, maxHeight, maxWidth }}
         >
             {/* Path breadcrumb with copy button */}
@@ -125,7 +125,7 @@ export function JsonCodeView({
             </div>
 
             {/* JSON code view */}
-            <div className="flex-1 min-h-0 overflow-hidden">
+            <div className="flex-1 min-h-0">
                 <FileCodeView
                     filename={filename}
                     content={jsonString}

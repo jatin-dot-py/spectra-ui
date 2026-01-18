@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pure Monaco Test - No React, No CSS</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1e1e1e;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            color: white;
+        }
+
+        #editor {
+            width: 800px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Pure Monaco Test (No React, No Tailwind)</h1>
+    <p style="color: #aaa;">Press Ctrl+F and hover over the buttons to test for flickering</p>
+    <div id="editor" style="position: relative;"></div>
+
+    <script src="https://unpkg.com/monaco-editor@0.55.1/min/vs/loader.js"></script>
+    <script>
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.55.1/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            monaco.editor.create(document.getElementById('editor'), {
+                value: `// Pure Monaco Test\nfunction hello() {\n    console.log("Hello World");\n}\n\n// Press Ctrl+F to test the Find widget\n// Hover over the buttons to check for flickering`,
+                language: 'javascript',
+                theme: 'vs-dark',
+                minimap: { enabled: false },
+                fixedOverflowWidgets: true,
+                hover: {
+                    enabled: "off"
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
