@@ -11,8 +11,10 @@ export interface GroupTabItem {
     icon?: SpectraIconType;
     /** Optional badge text */
     badgeText?: string;
-    /** Tab panel content */
-    children: ReactNode;
+    /** Tab panel content (optional if using onClick only) */
+    children?: ReactNode;
+    /** Click handler - called when tab is clicked. If children also exist, tab switches after onClick. */
+    onClick?: () => void;
     /** Show warning indicator (alert icon) */
     warning?: boolean;
     /** Show notification indicator (accent dot), or pass a number to show count */
@@ -111,7 +113,10 @@ export function GroupTab({
                             <button
                                 key={item.title}
                                 type="button"
-                                onClick={() => setActiveTab(item.title)}
+                                onClick={() => {
+                                    item.onClick?.();
+                                    if (item.children) setActiveTab(item.title);
+                                }}
                                 className={cn(
                                     'flex items-center font-medium transition-colors border-b-2 -mb-px',
                                     s.gap,
@@ -163,7 +168,10 @@ export function GroupTab({
                         <button
                             key={item.title}
                             type="button"
-                            onClick={() => setActiveTab(item.title)}
+                            onClick={() => {
+                                item.onClick?.();
+                                if (item.children) setActiveTab(item.title);
+                            }}
                             className={cn(
                                 'flex items-center font-medium transition-colors border-r-2 -mr-px text-left',
                                 s.gap,
