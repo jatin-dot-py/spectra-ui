@@ -9,6 +9,8 @@ export interface JsonCodeViewProps {
     data: unknown;
     /** Label for root in breadcrumb (default: shows "root") */
     rootLabel?: string;
+    /** Initial path to open (default: root level) */
+    initialPath?: PathSegment[];
     /** Show footer bar (default: true) */
     showFooter?: boolean;
     /** Custom footer text */
@@ -49,9 +51,9 @@ function formatPathForCopy(path: PathSegment[], rootLabel?: string): string {
     return `[${formatted.join(', ')}]`;
 }
 
-/** Calculate container height based on JSON content */
-function calculateAutoHeight(jsonString: string): number {
-    const lineCount = jsonString.split('\n').length;
+/** Calculate container height based on content */
+function calculateAutoHeight(content: string): number {
+    const lineCount = content.split('\n').length;
     const lineHeight = 19; // Monaco default line height
     const breadcrumbHeight = 40; // Breadcrumb bar height
     const footerHeight = 28;
@@ -67,6 +69,7 @@ export function JsonCodeView({
     filename,
     data,
     rootLabel,
+    initialPath,
     showFooter = true,
     footer,
     wrapLines = false,
@@ -76,23 +79,31 @@ export function JsonCodeView({
     maxWidth,
     className,
 }: JsonCodeViewProps) {
-    const [path, setPath] = useState<PathSegment[]>([]);
+    const [path, setPath] = useState<PathSegment[]>(initialPath ?? []);
     const [pathCopied, setPathCopied] = useState(false);
 
     // Get current value at path
     const currentValue = useMemo(() => getValueAtPath(data, path), [data, path]);
 
-    // Format as JSON string
-    const jsonString = useMemo(() => {
-        try {
-            return JSON.stringify(currentValue, null, 2);
-        } catch {
-            return String(currentValue ?? 'undefined');
+    // Determine if current value is a primitive string (show as plain text)
+    const isString = typeof currentValue === 'string';
+
+    // Format content and determine MIME type
+    const { displayContent, mimeType } = useMemo(() => {
+        if (isString) {
+            // For strings: show raw content with text/plain (no JSON encoding)
+            return { displayContent: currentValue as string, mimeType: 'text/plain' };
         }
-    }, [currentValue]);
+        // For objects/arrays/primitives: show as formatted JSON
+        try {
+            return { displayContent: JSON.stringify(currentValue, null, 2), mimeType: 'application/json' };
+        } catch {
+            return { displayContent: String(currentValue ?? 'undefined'), mimeType: 'text/plain' };
+        }
+    }, [currentValue, isString]);
 
     // Auto-calculate height when not provided
-    const autoHeight = useMemo(() => calculateAutoHeight(jsonString), [jsonString]);
+    const autoHeight = useMemo(() => calculateAutoHeight(displayContent), [displayContent]);
     const containerHeight = height || `${autoHeight}px`;
 
     // Path change handler
@@ -124,12 +135,12 @@ export function JsonCodeView({
                 />
             </div>
 
-            {/* JSON code view */}
+            {/* Code view - JSON or plain text depending on value type */}
             <div className="flex-1 min-h-0">
                 <FileCodeView
                     filename={filename}
-                    content={jsonString}
-                    mimeType="application/json"
+                    content={displayContent}
+                    mimeType={mimeType}
                     showLineNumbers={true}
                     showFooter={showFooter}
                     footer={footer}

@@ -1,3 +1,4 @@
+import { PathSegment } from './parts/PathBreadcrumb';
 export interface JsonCodeViewProps {
     /** Display filename in footer */
     filename: string;
@@ -5,6 +6,8 @@ export interface JsonCodeViewProps {
     data: unknown;
     /** Label for root in breadcrumb (default: shows "root") */
     rootLabel?: string;
+    /** Initial path to open (default: root level) */
+    initialPath?: PathSegment[];
     /** Show footer bar (default: true) */
     showFooter?: boolean;
     /** Custom footer text */
@@ -25,4 +28,4 @@ export interface JsonCodeViewProps {
     /** Custom class name for styling overrides */
     className?: string;
 }
-export declare function JsonCodeView({ filename, data, rootLabel, showFooter, footer, wrapLines, height, width, maxHeight, maxWidth, className, }: JsonCodeViewProps): import("react/jsx-runtime").JSX.Element;
+export declare function JsonCodeView({ filename, data, rootLabel, initialPath, showFooter, footer, wrapLines, height, width, maxHeight, maxWidth, className, }: JsonCodeViewProps): import("react/jsx-runtime").JSX.Element;
