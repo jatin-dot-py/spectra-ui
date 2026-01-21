@@ -331,6 +331,28 @@ function PanelDialogPreview() {
     );
 }
 
+function PanelDialogCompactPreview() {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className="space-y-2">
+            <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+                Open Compact Panel
+            </Button>
+            <PanelDialog
+                open={open}
+                onOpenChange={setOpen}
+                title="Data Viewer"
+                icon={Settings}
+            >
+                <div className="h-full flex items-center justify-center text-muted-foreground">
+                    <p>No description = compact header. Maximum space for content.</p>
+                </div>
+            </PanelDialog>
+        </div>
+    );
+}
+
 // ============================================================================
 // Component Configurations
 // ============================================================================
@@ -525,6 +547,20 @@ const PANEL_DIALOG_CONFIG: ComponentConfig = {
   </Group>
 </PanelDialog>`,
             preview: <PanelDialogPreview />,
+        },
+        {
+            title: 'Compact Mode',
+            description: 'Omit description for minimal header — maximum content space',
+            code: `<PanelDialog
+  open={open}
+  onOpenChange={setOpen}
+  title="Data Viewer"
+  icon={Settings}
+>
+  {/* No description = compact header */}
+  <ContentHere />
+</PanelDialog>`,
+            preview: <PanelDialogCompactPreview />,
         },
     ],
 };

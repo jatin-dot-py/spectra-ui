@@ -12,14 +12,9 @@ import { type SpectraIconType } from '@/spectra/types';
 export interface PanelDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-
-    /** Panel title */
     title: string;
-    /** Optional description below title */
     description?: string;
-    /** Optional icon */
     icon?: SpectraIconType;
-    /** Content to render in the scrollable area */
     children: React.ReactNode;
 }
 
@@ -31,38 +26,48 @@ export function PanelDialog({
     icon: Icon,
     children,
 }: PanelDialogProps) {
+    const hasDescription = !!description;
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
                 showCloseButton
                 className={cn(
-                    // Near full-screen dimensions
-                    'sm:max-w-[98vw] sm:max-h-[98vh] h-[98vh]',
-                    // Fixed layout - no content wrapping
-                    'flex flex-col',
-                    // Remove default gap since we handle our own spacing
-                    'gap-0'
+                    "sm:max-w-[98vw] sm:max-h-[98vh] h-[98vh]",
+                    "flex flex-col gap-0 p-0", // p-0 is the absolute minimum
+                    "overflow-hidden"
                 )}
             >
-                {/* Fixed header */}
-                <DialogHeader className="shrink-0 pb-4 border-b border-border">
-                    <div className="flex items-start gap-3">
-                        {Icon && (
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                                <Icon className="h-4 w-4" />
-                            </div>
-                        )}
-                        <div className="flex flex-col gap-1 pt-0.5">
-                            <DialogTitle>{title}</DialogTitle>
-                            {description && (
-                                <DialogDescription>{description}</DialogDescription>
-                            )}
+                {/* Unified Header */}
+                <DialogHeader
+                    className={cn(
+                        "shrink-0 border-b border-border px-3 flex flex-row items-center gap-3 space-y-0",
+                        hasDescription ? "py-2.5" : "py-1.5" // Ultra-compact toggle
+                    )}
+                >
+                    {Icon && (
+                        <div className={cn(
+                            "flex shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary",
+                            hasDescription ? "h-8 w-8" : "h-6 w-6" // Scale icon container
+                        )}>
+                            <Icon className={hasDescription ? "h-4 w-4" : "h-3.5 w-3.5"} />
                         </div>
+                    )}
+
+                    <div className="flex flex-col justify-center min-w-0">
+                        <DialogTitle className="text-sm font-semibold leading-none truncate">
+                            {title}
+                        </DialogTitle>
+                        {description && (
+                            <DialogDescription className="text-[12px] leading-tight mt-1 line-clamp-1">
+                                {description}
+                            </DialogDescription>
+                        )}
                     </div>
                 </DialogHeader>
 
-                {/* Scrollable content area */}
-                <div className="flex-1 overflow-y-auto overflow-x-hidden py-4">
+                {/* Content Area */}
+                <div className="flex-1 overflow-y-auto p-2">
                     {children}
                 </div>
             </DialogContent>
