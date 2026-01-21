@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Type, Hash, ToggleLeft, Braces, CircleSlash, ChevronDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { TextInput } from './TextInput';
+import { TextAreaInput } from './TextAreaInput';
 import { NumericalInput } from './NumericalInput';
 import { BooleanInput } from './BooleanInput';
 import { ObjectInput } from './ObjectInput';
@@ -73,13 +73,14 @@ export function DynamicInput({
                 );
             case 'string':
                 return (
-                    <TextInput
+                    <TextAreaInput
                         value={value as string}
                         onChange={onChange}
                         placeholder="Enter text..."
                         disabled={disabled}
                         suggestions={suggestions}
                         className="flex-1"
+                        noResize
                     />
                 );
             case 'number':
